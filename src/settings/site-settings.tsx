@@ -7,7 +7,7 @@ import { ESFlag } from '@components/icons/language/ESFlag';
 import siteLogo from 'public/assets/images/logo.svg';
 
 export const siteSettings = {
-  name: 'SARDARSTORE',
+  name: 'SARDAR BABA',
   description:
     'Fastest E-commerce template built with React, NextJS, TypeScript, TanStack-React-Query and Tailwind CSS.',
   author: {
