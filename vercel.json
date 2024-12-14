@@ -1,0 +1,15 @@
+{
+  "env": {
+    "NEXT_PUBLIC_REST_API_ENDPOINT": "https://lihabackend.mayonity.com/api",
+    "NEXT_PUBLIC_SITE_URL": "https://liha-website.vercel.app/",
+    "NEXT_PUBLIC_LOCAL_API_ENDPOINT": "https://liha-website.vercel.app/api"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_REST_API_ENDPOINT": "https://lihabackend.mayonity.com/api",
+      "NEXT_PUBLIC_SITE_URL": "https://liha-website.vercel.app/",
+      "NEXT_PUBLIC_LOCAL_API_ENDPOINT": "https://liha-website.vercel.app/api"
+
+    }
+  }
+}
