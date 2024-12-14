@@ -39,8 +39,8 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    template: 'SARDAR_STORE | %s',
-    default: 'SARDAR_STORE',
+    template: 'SARDARSTORE | %s',
+    default: 'SARDARSTORE',
   },
 };
 

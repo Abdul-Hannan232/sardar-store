@@ -9,7 +9,7 @@ import Header from '@layouts/ancient/header';
 import MobileNavigation from '@layouts/mobile-navigation/mobile-navigation';
 
 export const metadata: Metadata = {
-  title: 'SARDAR_STORE',
+  title: 'SARDARSTORE',
 };
 
 export default async function Page() {

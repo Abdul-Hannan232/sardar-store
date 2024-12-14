@@ -63,7 +63,7 @@ const RefinedAllProductFeed: FC<ProductFeedProps> = ({ className = '' }) => {
       {error ? (
         <Alert message={error?.message} />
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 3xl:grid-cols-4 md:gap-4 2xl:gap-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-4 md:gap-4 2xl:gap-5">
           {isLoading && !data?.pages?.length ? (
             Array.from({ length: LIMITS.REFINED_PRODUCTS_LIMITS }).map(
               (_, idx) => (
