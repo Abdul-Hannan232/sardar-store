@@ -88,7 +88,12 @@ export default function MobileMenu() {
     {
       id: 6,
       path: '/pages/faq',
-      name: 'Faq',
+      name: 'Faqs',
+    },
+    {
+      id: 7,
+      path: 'https://sardar-store-dashboard.vercel.app/login',
+      name: 'Admin',
     },
    
   ];
