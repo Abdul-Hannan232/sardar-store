@@ -2,7 +2,7 @@ export const privacyPolicy = [
   {
     id: '1',
     title: 'Personal Information',
-    description: `<p>SARDARSTORE is a trademark of SARDARSTORE Private Limited (“Company”), a company incorporated under the Companies Act, 2013 with its registered and corporate office at Plot 64H, Sector 18, Gudgeon 122001 in the course of its business. The domain name grocers.com is owned by the Company.</p><p>If you are a California resident, the information below also applies to you. Certain terms used in this section have the meanings given to them in the California Consumer Privacy Act of 2018 (“CCPA”).</p>`,
+    description: `<p>SARDARBABA is a trademark of SARDARBABA Private Limited (“Company”), a company incorporated under the Companies Act, 2013 with its registered and corporate office at Plot 64H, Sector 18, Gudgeon 122001 in the course of its business. The domain name grocers.com is owned by the Company.</p><p>If you are a California resident, the information below also applies to you. Certain terms used in this section have the meanings given to them in the California Consumer Privacy Act of 2018 (“CCPA”).</p>`,
   },
   {
     id: '2',

@@ -169,6 +169,11 @@ const HeaderMenu: React.FC<MenuProps> = ({ className }) => {
       path: '/pages/faq',
       label: 'Faq',
     },
+    {
+      id: 7,
+      path: 'https://sardar-store-dashboard.vercel.app/',
+      label: 'Admin',
+    },
    
   ];
   // console.log('site_header ', site_header);

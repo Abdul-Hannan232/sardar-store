@@ -35,7 +35,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             fill="#02B290"
           />
         </svg>
-        <p className="">SARDARSTORE</p>
+        <p className="">SARDARBABA</p>
       </div>
       {/* <Image
         src={siteSettings?.logo?.url}
