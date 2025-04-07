@@ -158,13 +158,13 @@ function CategoryFilterMenuItem({
       {Array.isArray(items) && isOpen ? (
         <li>
           <ul key="content" className="px-4 text-xs">
-            {items?.map((currentItem: any) => {
+            {items?.map((currentItem: any, index:any) => {
               const childDepth = depth + 1;
               // console.log('currentItem ', currentItem);
 
               return (
                 <CategoryFilterMenuItem
-                  key={`${currentItem.name}${currentItem.name}`}
+                  key={`${currentItem.name}${currentItem.name} ${index}`}
                   item={currentItem}
                   depth={childDepth}
                   className="px-0 border-t border-border-base first:border-t-0 mx-[3px] bg-transparent"

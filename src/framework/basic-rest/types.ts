@@ -84,6 +84,9 @@ export type Product = {
   name: string;
   slug?: string;
   price: number;
+  promo_price_pkr:number;
+  price_usd?:number;
+  promo_price_usd?:number;
   quantity: number;
   sold?: number;
   unit?: string;

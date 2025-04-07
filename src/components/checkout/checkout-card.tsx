@@ -168,7 +168,8 @@ import { useUI } from '@contexts/ui.context';
 import { useModalAction } from '@components/common/modal/modal.context';
 import http from '@framework/utils/http';
 import { Order, OrderItem, CheckoutCardProps } from '@framework/types';
-
+import { toast } from 'react-toastify';
+import useWindowSize from '@utils/use-window-size';
 
 
 const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
@@ -182,6 +183,8 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   const [productData, setProductData] = useState<Product | null>(null);
   const [isLoading, setLoading] = useState(true);
   const [order, setOrder] = useState<Order | null>(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const { width } = useWindowSize();
 
   useEffect(() => {
     if (id) {
@@ -214,18 +217,17 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   const { price: subtotal } = usePrice({
     amount: total,
     currencyCode: 'USD',
-  }); 
+  });
 
   const updateUser = async (id: number) => {
-    if(id){
+    if (id) {
       const { data } = await http.put(
         `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${id}`,
         userData,
       );
-  
+
       return data;
     }
-   
   };
 
   //  cart data order
@@ -257,28 +259,38 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
 
   // place order
 
-  function orderHeader () {
-    // console.log('items  -------------------  ', order);
-
-    // console.log('User Data:', userData);
+  function orderHeader() {
+    setIsPending(true)
     updateUser(userData?.id as number);
-    // console.log('oredr ------------------- ', order);
-
     const placeOrder = async () => {
       try {
+        if(!userData.phone || !userData.address){
+          toast(!userData.phone ? "Phone is required" : "Address is required", {
+            progressClassName: 'fancy-progress-bar',
+            position: width! > 768 ? 'bottom-right' : 'top-right',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          return;
+        }
         const { data } = await http.post(
           `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/order/add`,
           order,
         );
-       
-        console.log('order success ', data);
-       data ? router.push(`${ROUTES.ORDER}?oid=${data.id}`) : ''
+
+        // console.log('order success ', data);
+        data ? router.push(`${ROUTES.ORDER}?oid=${data.id}`) : '';
         return data;
       } catch (error) {
         console.error('Error in Place order:', error);
+      }finally{
+        setIsPending(false)
       }
     };
-    
+
     !isAuthorized ? openModal('LOGIN_VIEW') : placeOrder();
   }
 
@@ -341,10 +353,11 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
           variant="formButton"
           className={cn(
             'w-full mt-8 mb-5 rounded font-semibold px-4 py-3 transition-all',
-            mounted && isEmpty
+            mounted && isEmpty && !isAuthorized
               ? 'opacity-40 cursor-not-allowed'
               : '!bg-brand !text-brand-light',
           )}
+          loading={isPending}
           onClick={orderHeader}
         >
           Order Now

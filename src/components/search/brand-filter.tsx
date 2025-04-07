@@ -58,7 +58,7 @@ export const BrandFilter = () => {
               onChange={handleItemClick}
             />
           ))}
-        {items!.length > 3 && (
+        {items!?.length > 3 && (
           <div className="w-full">
             <Disclosure>
               {({ open }) => (

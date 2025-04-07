@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/upload/:path*',
+        destination: 'http://localhost:5055/upload/:path*',
+      },
+    ];
+  },
   reactStrictMode: true,
   swcMinify: true,
   images: {

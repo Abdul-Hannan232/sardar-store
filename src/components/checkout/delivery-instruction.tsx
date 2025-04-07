@@ -159,24 +159,137 @@ import { ContactFormValues ,DeliveryInstructionsProps, User} from '@framework/ty
 
 
 
-const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData, onUpdate }) => {
-// const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData}) => {
+// const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData, onUpdate }) => {
+// // const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData}) => {
+
+//   const isBrowser = typeof window !== 'undefined';
+
+//   const [user, setUser] = useState<User | null>(null);
+
+//   useEffect(() => {
+//     const fetchUserData = async () => {
+//       if (isBrowser) {
+//         const storedUser = localStorage.getItem('user');
+//         const user = storedUser ? JSON.parse(storedUser) : null;
+        
+//         if (user) {
+//           try {
+//             const { data } = await http.get(`${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${Number(user?.id)}` );
+//             setUser(data);
+
+//           } catch (error) {
+//             console.error('Error fetching user data:', error);
+//           }
+//         }
+//       }
+//     };
+
+//     fetchUserData();
+//   }, [isBrowser]);
+
+//   // console.log('------------------ ' ,user);
+//   const {
+//     register,
+//     handleSubmit,
+//     watch,
+//     setValue,
+//     formState: { errors },
+//   } = useForm<ContactFormValues>({
+//     defaultValues: {
+//       address: user?.address || '',
+//       phone: initialData?.phone || user?.phone || null,
+//       id: initialData?.id || user?.id || null,
+//     },
+//   });
+
+//   useEffect(() => {
+//     if (user) {
+//       setValue('address', user.address as string);
+//       setValue('phone', user.phone as string);
+//       setValue('id', user.id as number);
+//     }
+//   }, [user, setValue]);
+//   useEffect(() => {
+//     const subscription = watch((values) => {
+//       onUpdate({
+//         address: values.address || '',
+//         phone: values.phone || null,
+//         id:  values.id || null
+//       });
+//     });
+//     return () => subscription.unsubscribe();
+//   }, [watch, onUpdate]);
+
+//   const onSubmit = (values: ContactFormValues) => {
+//     console.log(values, 'Delivery Note');
+//   };
+
+//   return (
+//     <div className="w-full">
+//       <div className="w-full mx-auto">
+//         <form onSubmit={handleSubmit(onSubmit)} noValidate>
+//           <div className="mb-6">
+//             <TextArea
+//               inputClassName="focus:border-2 focus:outline-none focus:border-brand"
+//               label="Address"
+//               variant="normal"
+//               {...register('address', { required: true })}
+//               className="w-full lg:w-4/5 "
+//             />
+//           </div>
+//           <div className="mb-6">
+//             <Input
+//               type="tel"
+//               label="Phone/Mobile *"
+//               {...register('phone', {
+//                 required: 'forms:phone-required',
+//               })}
+//               error={errors.phone?.message}
+//               variant="solid"
+//               className="w-full lg:w-4/5 "
+//             />
+//           </div>
+
+//           {/* <div className="mb-6">
+//             <Input
+//               type="hidden"
+//               {...register('id', {
+//                 required: 'forms:phone-required',
+//               })}
+//               error={errors.id?.message}
+//               variant="solid"
+//               className="w-full lg:w-4/5 "
+//             />
+//           </div> */}
+//         </form>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DeliveryInstructions;
+
+
+const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({
+  initialData,
+  onUpdate,
+}) => {
+  const [user, setUser] = useState<User | null>(null);
 
   const isBrowser = typeof window !== 'undefined';
-
-  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (isBrowser) {
         const storedUser = localStorage.getItem('user');
-        const user = storedUser ? JSON.parse(storedUser) : null;
-        
-        if (user) {
-          try {
-            const { data } = await http.get(`${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${Number(user?.id)}` );
-            setUser(data);
+        const localUser = storedUser ? JSON.parse(storedUser) : null;
 
+        if (localUser) {
+          try {
+            const { data } = await http.get<User>(
+              `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${Number(localUser.id)}`
+            );
+            setUser(data); // Ensure data is of type User
           } catch (error) {
             console.error('Error fetching user data:', error);
           }
@@ -187,7 +300,6 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData
     fetchUserData();
   }, [isBrowser]);
 
-  // console.log('------------------ ' ,user);
   const {
     register,
     handleSubmit,
@@ -197,8 +309,8 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData
   } = useForm<ContactFormValues>({
     defaultValues: {
       address: user?.address || '',
-      phone: initialData?.phone || user?.phone || null,
-      id: initialData?.id || user?.id || null,
+      phone: user?.phone || null,
+      id: user?.id || null,
     },
   });
 
@@ -209,12 +321,13 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData
       setValue('id', user.id as number);
     }
   }, [user, setValue]);
+
   useEffect(() => {
     const subscription = watch((values) => {
       onUpdate({
         address: values.address || '',
         phone: values.phone || null,
-        id:  values.id || null
+        id: values.id || null,
       });
     });
     return () => subscription.unsubscribe();
@@ -249,18 +362,6 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({ initialData
               className="w-full lg:w-4/5 "
             />
           </div>
-
-          {/* <div className="mb-6">
-            <Input
-              type="hidden"
-              {...register('id', {
-                required: 'forms:phone-required',
-              })}
-              error={errors.id?.message}
-              variant="solid"
-              className="w-full lg:w-4/5 "
-            />
-          </div> */}
         </form>
       </div>
     </div>

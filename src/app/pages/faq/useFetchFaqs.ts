@@ -1,35 +1,3 @@
-// 'use client';
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// const usefetchFaqs= () => {
-//   const [faqs, setFaqs] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | undefined>(undefined);
-
-//   useEffect(() => {
-//     const fetchFaqs = async () => {
-//       try {
-//         const res = await axios.get('http://localhost:5055/api/faqs/all');
-//         if (res.data.success) {
-//           setFaqs(res.data.faqs);
-//         } else {
-//           setError('Failed to fetch FAQs');
-//         }
-//       } catch (err: any) {
-//         setError(err.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchFaqs();
-//   }, []);
-
-//   return { faqs, loading, error };
-// };
-
-// export default usefetchFaqs;
 
 import axios from 'axios';
 

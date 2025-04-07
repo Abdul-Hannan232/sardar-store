@@ -111,7 +111,7 @@ const ThumbnailCarousel: React.FC<Props> = ({
         >
           {Array.isArray(gallery) && gallery.map((item: any, i:number) => (
             <SwiperSlide
-              key={`product-thumb-gallery-${item.id}`}
+            key={item.id ? `product-thumb-gallery-${item.id}` : `product-thumb-gallery-index-${i}`}
               className="flex items-center justify-center overflow-hidden transition border rounded cursor-pointer border-border-base hover:opacity-75"
             >
               <Image

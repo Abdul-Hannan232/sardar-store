@@ -77,7 +77,7 @@ export function cartReducer(state: State, action: Action): State {
   }
 }
 
-const generateFinalState = (state: State, items: Item[]) => {
+const generateFinalState = (state: State, items: Item[] ) => {
   const totalUniqueItems = calculateUniqueItems(items);
   return {
     ...state,

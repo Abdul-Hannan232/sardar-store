@@ -65,7 +65,8 @@ export default function useQueryParam(pathname: string = '/') {
     const url = new URL(location.href);
     url.searchParams.set(key, value.toString());
     setQuery(url.search);
-    router.push(`${pathname}${url.search}`);
+    // router.push(`${pathname}${url.search}`);
+    window.history.pushState({}, '', `${pathname}${url.search}`); // stop to scroll top 
   };
 
   return {

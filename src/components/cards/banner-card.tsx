@@ -14,7 +14,16 @@ interface BannerProps {
 }
 
 function getImage(deviceWidth: number, imgObj: any) {
-  return deviceWidth < 480 ? imgObj.mobile : imgObj.desktop;
+  // return deviceWidth < 480 ? imgObj.mobile : imgObj.desktop;
+  return deviceWidth < 480 ? {
+    url: imgObj,
+    width: 450,
+    height: 520,
+  } : {
+    url: imgObj,
+    width: 1840,
+    height: 370,
+  };
 }
 
 const BannerCard: React.FC<BannerProps> = ({
@@ -33,7 +42,7 @@ const BannerCard: React.FC<BannerProps> = ({
         // href={`${slug}`}
         href={`/pages/search`}
         className={cn(
-          'h-full group flex justify-center relative overflow-hidden',
+          ' h-full group flex justify-center relative overflow-hidden',
           classNameInner,
         )}
       >
@@ -44,7 +53,8 @@ const BannerCard: React.FC<BannerProps> = ({
           alt={title}
           quality={100}
           priority
-          className={cn('bg-fill-thumbnail object-cover w-full', {
+          // className={cn(' bg-fill-thumbnail object-cover max-h-[280px] w-full', {
+          className={cn(' bg-fill-thumbnail object-cover object-center max-h-[250px] w-full', {
             'rounded-md': variant === 'rounded',
           })}
         />

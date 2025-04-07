@@ -11,8 +11,11 @@ interface Props {
 
 const HeroCarouselBlock: React.FC<Props> = ({
   heroBanner,
-  className = 'mt-5 mb-8 xl:mb-10',
+  className = 'mt-5 mb-8 xl:mb-10 max-h-[250px]',
 }) => {
+
+  // console.log(heroBanner);
+  
   return (
     <div className={`${className}`}>
       <Carousel
