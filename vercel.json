@@ -9,7 +9,9 @@
       "NEXT_PUBLIC_REST_API_ENDPOINT": "https://sardarstore.backend.mayonity.com/api",
       "NEXT_PUBLIC_SITE_URL": "https://www.sardarbaba.com/",
       "NEXT_PUBLIC_LOCAL_API_ENDPOINT": "https://www.sardarbaba.com/api"
-
+    },
+    "commands": {
+      "install": "pnpm install --frozen-lockfile=false"
     }
   }
 }
