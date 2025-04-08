@@ -13,7 +13,8 @@
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "test-all": "yarn check-format && yarn lint && yarn check-types && yarn build",
-    "prepare": "husky"
+    "prepare": "husky",
+     "install": "pnpm install --frozen-lockfile=false"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.1",
