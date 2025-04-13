@@ -35,6 +35,13 @@ module.exports = {
         port: '',
         pathname: '/upload/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'sardarstore.backend.mayonity.com',
+        port: '',
+        pathname: '/upload/**',
+      }
+      
     ],
   },
   ...(process.env.NODE_ENV === 'production' && {

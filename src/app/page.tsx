@@ -45,6 +45,7 @@ export default async function Page() {
       <Header />
       <Container className="mt-24">
         <HeroCarouselBlock heroBanner={banners} />
+        {/* <HeroCarouselBlock heroBanner={visibleBanners} /> */}
         {/* <HeroCarouselBlock heroBanner={heroBanner} /> */}
         <CategoryWithProduct />
       </Container>

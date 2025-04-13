@@ -130,7 +130,7 @@ const data = {
   appButtons: [
     {
       id: 1,
-      slug: 'https://www.apple.com/app-store/hello',
+      slug: 'https://www.apple.com/app-store/',
       altText: 'App Store',
       appButton: '/assets/images/app-store.png',
       buttonWidth: 170,
@@ -138,7 +138,7 @@ const data = {
     },
     {
       id: 2,
-      slug: 'https://play.google.com/store/games/hello',
+      slug: 'https://play.google.com/store/games/',
       altText: 'Play Store',
       appButton: '/assets/images/play-store.png',
       buttonWidth: 170,
