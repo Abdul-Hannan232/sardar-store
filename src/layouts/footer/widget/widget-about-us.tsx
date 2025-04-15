@@ -38,8 +38,10 @@ const WidgetAbout: React.FC<AboutProps> = ({ social, className }) => {
               className="transition hover:opacity-80 last:ltr:mr-0 md:ltr:mr-5 md:mx-0 ltr:mr-4 last:rtl:ml-0 rtl:ml-4 md:rtl:ml-5"
               key={`social-list--key${item.id}`}
             >
-              <Link href={item.path ? item.path : '/#'} legacyBehavior>
-                <a target="_blank" rel="noreferrer">
+              {/* <Link href={item.path ? item.path : '/#'} legacyBehavior> */}
+              <Link href={item.path ? item.path : '/#'}   target="_blank"
+  rel="noreferrer">
+                {/* <a target="_blank" rel="noreferrer"> */}
                   <Image
                     src={item.image}
                     alt={item.name}
@@ -48,7 +50,7 @@ const WidgetAbout: React.FC<AboutProps> = ({ social, className }) => {
                     className="transform scale-85 md:scale-100"
                     style={{ width: 'auto' }}
                   />
-                </a>
+                {/* </a> */}
               </Link>
             </li>
           ))}

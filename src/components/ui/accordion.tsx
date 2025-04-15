@@ -22,7 +22,7 @@ export const Accordion: React.FC<CollapseProps> = ({
       <div className="w-full mx-auto mb-4 rounded shadow-category text-brand-light group">
         <Disclosure>
           {({ open }) => (
-            <>
+            <div>
               <Disclosure.Button className="flex justify-between w-full px-5 py-4 text-base font-medium 2xl:px-6 2xl:py-6 ltr:text-left rtl:text-right text-brand-dark focus:outline-none">
                 <span
                   className={cn(
@@ -59,7 +59,7 @@ export const Accordion: React.FC<CollapseProps> = ({
                   </Disclosure.Panel>
                 )}
               </Transition>
-            </>
+            </div>
           )}
         </Disclosure>
       </div>

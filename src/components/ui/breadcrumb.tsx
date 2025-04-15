@@ -71,18 +71,20 @@ const Breadcrumb: React.FC<{ separator?: string }> = ({
   return (
     <BreadcrumbItems separator={separator}>
       <ActiveLink
-        legacyBehavior
+        
         // href={`${ROUTES.HOME}${lang}`}
         href={`${ROUTES.HOME}`}
-        activeClassName="font-semibold text-heading"
+        activeClassName="font-semibold text-heading "
       >
-        <a className="inline-flex items-center">
+        <div className="inline-flex items-center">
+        {/* <a className="inline-flex items-center"> */}
           <IoHomeOutline className="ltr:mr-1.5 rtl:ml-1.5 text-brand-dark text-15px" />
           Home
-        </a>
+        {/* </a> */}
+        </div>
       </ActiveLink>
 
-      {breadcrumbs?.map((breadcrumb: any) => (
+      {/* {breadcrumbs?.map((breadcrumb: any) => (
         <ActiveLink
           href={breadcrumb.href}
           activeClassName="font-semibold text-heading"
@@ -92,6 +94,18 @@ const Breadcrumb: React.FC<{ separator?: string }> = ({
           <a className="capitalize">
             {convertBreadcrumbTitle(breadcrumb.breadcrumb)}
           </a>
+        </ActiveLink>
+      ))} */}
+      {breadcrumbs?.map((breadcrumb: any) => (
+        <ActiveLink
+          href={breadcrumb.href}
+          activeClassName="font-semibold text-heading "
+          key={breadcrumb.href}
+          
+        >
+          <div className='capitalize'>
+            {convertBreadcrumbTitle(breadcrumb.breadcrumb)}
+            </div>
         </ActiveLink>
       ))}
     </BreadcrumbItems>
