@@ -38,7 +38,7 @@ type CarouselPropsType = {
 
 export default function Carousel({
   // lang,
-  children,
+  children = null,
   className = '',
   buttonGroupClassName = '',
   prevActivateId = '',

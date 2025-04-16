@@ -365,12 +365,12 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       </div>
       <Text className="mt-8">
         By placing your order, you agree to be bound by the BoroBazar
-        <Link href={`${ROUTES.TERMS}`} legacyBehavior>
-          <a className="font-medium underline text-brand">Terms of Service</a>
+        <Link href={`${ROUTES.TERMS}`} >
+          <span className="font-medium underline text-brand">Terms of Service</span>
         </Link>
         and
-        <Link href={`${ROUTES.PRIVACY}`} legacyBehavior>
-          <a className="font-medium underline text-brand">Privacy</a>
+        <Link href={`${ROUTES.PRIVACY}`} >
+          <span className="font-medium underline text-brand">Privacy</span>
         </Link>
         . Your credit/debit card data will not be saved.
       </Text>

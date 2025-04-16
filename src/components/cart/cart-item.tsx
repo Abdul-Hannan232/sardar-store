@@ -1,17 +1,18 @@
 import Link from '@components/ui/link';
-import Image from '@components/ui/image';
+// import Image from '@components/ui/image';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { useCart } from '@contexts/cart/cart.context';
 import usePrice from '@framework/product/use-price';
 import { ROUTES } from '@utils/routes';
 import Counter from '@components/ui/counter';
+import Image from 'next/image';
 
 type CartItemProps = {
   item: any;
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  // console.log('cart ',item);
+  console.log('cart ',item.image);
 
   const { isInStock, addItemToCart, removeItemFromCart, clearItemFromCart, isInCart, getItemFromCart } =
     useCart();
@@ -32,7 +33,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
        
         <Image
           src={
-            item?.image.replace('4000', '5055') ??
+            item?.image ??
             '/assets/placeholder/cart-item.svg'
           }
           width={100}
@@ -42,6 +43,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           // alt={item.name || 'Product Image'}
           style={{ width: 'auto' }}
           className="object-cover bg-fill-thumbnail"
+          unoptimized
         />
         <div
           className="absolute top-0 flex items-center justify-center w-full h-full transition duration-200 ease-in-out bg-black ltr:left-0 rtl:right-0 bg-opacity-30 md:bg-opacity-0 md:group-hover:bg-opacity-30"

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import Image from '@components/ui/image';
 import useQueryParam from '@utils/use-query-params';
 
-function SidebarMenuItem({ className, item, subItem, depth = 0 }: any) {
+const SidebarMenuItem =({ className, item, subItem, depth = 0 }: any) =>{
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { updateQueryparams } = useQueryParam(pathname ?? '/');

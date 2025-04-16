@@ -5,7 +5,8 @@ import {
   Navigation,
   Thumbs,
 } from '@components/ui/carousel/slider';
-import Image from '@components/ui/image';
+import Image from 'next/image';
+// import Image from '@components/ui/image';
 import { useRef, useState } from 'react';
 import cn from 'classnames';
 import { productGalleryPlaceholder } from '@assets/placeholders';
@@ -42,6 +43,7 @@ const ThumbnailCarousel: React.FC<Props> = ({
   const nextRef = useRef<HTMLDivElement>(null);
   // const dir = getDirection(lang);
   const dir = getDirection('rtl');
+// console.log(gallery);
 
   return (
     <div className="w-full xl:flex xl:flex-row-reverse">
@@ -116,10 +118,11 @@ const ThumbnailCarousel: React.FC<Props> = ({
             >
               <Image
                 // src={item?.thumbnail ?? productGalleryPlaceholder}
-                src={item ?? productGalleryPlaceholder}
-                alt={`Product thumb gallery ${i}`}
+                src={`${item}` || productGalleryPlaceholder}
+                alt={`Product thumb gallery ${item}`}
                 width={170}
                 height={170}
+                unoptimized
                 style={{ width: 'auto' }}
               />
             </SwiperSlide>
