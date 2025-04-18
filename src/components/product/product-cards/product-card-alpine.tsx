@@ -133,7 +133,13 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
       console.error('Failed to parse gallery:', error);
     }
   }
-// console.log(galleryImgs);
+  // console.log(galleryImgs);
+
+
+  const showTitle = (title as string).length > 88
+  ? `${(title as string).substring(0, 88)}...`
+  : title
+
 
   return (
     <article
@@ -192,13 +198,14 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
         <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">
           <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
             {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
-            RS {price.toFixed(2)}
+            RS {price}
           </span>
-          <del className="mx-1 text-sm text-brand-dark text-opacity-70">
-            {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
-           
-            RS {promo_price_pkr.toFixed(2)}
-          </del>
+          {promo_price_pkr > 0 && (
+            <del className="mx-1 text-sm text-brand-dark text-opacity-70">
+              {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
+              RS {promo_price_pkr}
+            </del>
+          )}
           {/* {basePrice && (
             <del className="mx-1 text-sm text-brand-dark text-opacity-70">
               {basePrice}
@@ -209,19 +216,18 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
           <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">
             {price_usd && (
               <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
-               $ {promo_price_usd?.toFixed(2)}
+                $ {promo_price_usd}
               </span>
             )}
             {promo_price_usd && (
               <del className="mx-1 text-sm text-brand-dark text-opacity-70">
-                 $ {price_usd?.toFixed(2)}
-                
+                $ {price_usd}
               </del>
             )}
           </div>
         )}
         <h2 className="text-brand-dark text-13px sm:text-sm lg:text-15px leading-5 sm:leading-6 mb-1.5">
-          {title as string}
+          {showTitle as string}
         </h2>
         <div className="mt-auto text-13px sm:text-sm">{unit}</div>
       </div>

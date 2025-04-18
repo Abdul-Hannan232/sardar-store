@@ -84,6 +84,7 @@ export default function ProductPopup() {
     parent,
     quantity,
     stock,
+    promo_price_pkr,
     status,
     category_id,
   } = data;
@@ -314,6 +315,11 @@ export default function ProductPopup() {
                     <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
                       {price}
                     </div>
+                    {promo_price_pkr > 0 &&
+                       <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
+                       {promo_price_pkr}
+                     </del>
+                    }
                     {discount && (
                       <>
                         <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
