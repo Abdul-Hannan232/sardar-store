@@ -38,7 +38,6 @@ const ProductSingleDetails = () => {
   const { slug } = pathname;
   const { width } = useWindowSize();
   const { data, isLoading } = useProductQuery(slug as string);
-
   // if(data && (typeof data?.category_id === 'number')){
 
   //   getCid(data?.category_id)
@@ -54,7 +53,7 @@ const ProductSingleDetails = () => {
   const [addToWishlistLoader, setAddToWishlistLoader] =
     useState<boolean>(false);
   const [shareButtonStatus, setShareButtonStatus] = useState<boolean>(false);
-  // console.log('----------pathname ', data?.stock);
+  // console.log('----------pathname ', data?.brand);
 
   const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${pathname.slug}`;
 
@@ -63,7 +62,7 @@ const ProductSingleDetails = () => {
     data && {
       amount: data.sale_price ? data.sale_price : data.price,
       baseAmount: data.price,
-      currencyCode: 'USD',
+      currencyCode: 'PKR',
     },
   );
 
@@ -255,6 +254,11 @@ const ProductSingleDetails = () => {
                 <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
                   {price}
                 </div>
+                {(data?.promo_price_pkr as number) > 0 && (
+                  <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
+                    {data?.promo_price_pkr as number}
+                  </del>
+                )}
                 {discount && (
                   <>
                     <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
@@ -354,20 +358,20 @@ const ProductSingleDetails = () => {
               }
             /> */}
 
-<Counter
-                  variant="single"
-                  value={selectedQuantity}
-                  onIncrement={() => setSelectedQuantity((prev) => prev + 1)}
-                  onDecrement={() =>
-                    setSelectedQuantity((prev) => (prev !== 1 ? prev - 1 : 1))
-                  }
-                  disabled={
-                    isInCart(item.id)
-                      ? getItemFromCart(item.id).quantity + selectedQuantity >=
-                        Number(data?.stock)
-                      : selectedQuantity >= Number(data?.stock)
-                  }
-                />
+            <Counter
+              variant="single"
+              value={selectedQuantity}
+              onIncrement={() => setSelectedQuantity((prev) => prev + 1)}
+              onDecrement={() =>
+                setSelectedQuantity((prev) => (prev !== 1 ? prev - 1 : 1))
+              }
+              disabled={
+                isInCart(item.id)
+                  ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                    Number(data?.stock)
+                  : selectedQuantity >= Number(data?.stock)
+              }
+            />
             {/* <Button
               onClick={addToCart}
               className="w-full px-1.5"
@@ -456,6 +460,27 @@ const ProductSingleDetails = () => {
               ))}
             </ul>
           )}
+
+          <div className="pt-6 ">
+            <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+              Category:{' '}
+            </span>
+            {data?.children as string}
+          </div>
+
+          <div className="pt-6 ">
+            <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+              Brand:{' '}
+            </span>
+            {data?.brand as string}
+          </div>
+
+          <div className="pt-6 ">
+            <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+              Product Code:{' '}
+            </span>{' '}
+            {data?.productCode as string}
+          </div>
         </div>
       </div>
       <ProductDetailsTab products_detail={data?.description as string} />

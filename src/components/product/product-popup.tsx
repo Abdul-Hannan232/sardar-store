@@ -69,7 +69,7 @@ export default function ProductPopup() {
   const { price, basePrice, discount } = usePrice({
     amount: data.sale_price ? data.sale_price : data.price,
     baseAmount: data.price,
-    currencyCode: 'USD',
+    currencyCode: 'PKR',
   });
   const variations = getVariations(data.variations);
   // const { slug, image, name, unit, description, gallery, tag, quantity } = data;
@@ -82,6 +82,9 @@ export default function ProductPopup() {
     gallery,
     tag,
     parent,
+    children,
+    brand,
+    productCode,
     quantity,
     stock,
     promo_price_pkr,
@@ -172,22 +175,21 @@ export default function ProductPopup() {
         ? 'Remove from favorite list'
         : 'Added to favorite list';
 
-    // Retrieve existing wishlist 
+    // Retrieve existing wishlist
     let wishlist =
       JSON.parse(localStorage?.getItem('wishlist') as string) || [];
     console.log(wishlist);
 
-   
     const itemIndex = wishlist.findIndex((item: any) => item.id === newItem.id);
 
     if (itemIndex === -1) {
-            wishlist.push(newItem);
+      wishlist.push(newItem);
     } else {
       // remove item
       wishlist.splice(itemIndex, 1);
     }
 
-    // Save updated wishlist 
+    // Save updated wishlist
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
 
     setTimeout(() => {
@@ -315,11 +317,11 @@ export default function ProductPopup() {
                     <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
                       {price}
                     </div>
-                    {promo_price_pkr > 0 &&
-                       <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
-                       {promo_price_pkr}
-                     </del>
-                    }
+                    {promo_price_pkr > 0 && (
+                      <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
+                        {promo_price_pkr}
+                      </del>
+                    )}
                     {discount && (
                       <>
                         <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
@@ -493,6 +495,27 @@ export default function ProductPopup() {
                   ))}
                 </ul>
               )}
+
+              <div className="pt-6 ">
+                <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+                  Category:{' '}
+                </span>{' '}
+                {children}
+              </div>
+
+              <div className="pt-6 ">
+                <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+                  Brand:{' '}
+                </span>{' '}
+                {brand}
+              </div>
+
+              <div className="pt-6 ">
+                <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+                  Product Code:{' '}
+                </span>{' '}
+                {productCode}
+              </div>
 
               <div className="pt-6 xl:pt-8">
                 <Heading className="mb-3 lg:mb-3.5">Product Details:</Heading>

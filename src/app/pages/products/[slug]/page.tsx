@@ -26,8 +26,9 @@ export default async function Page() {
       <Divider />
       <div className="pt-6 lg:pt-7">
         <Container>
-          <Breadcrumb />
+          {/* <Breadcrumb /> */}
           <ProductSingleDetails/>
+          
         </Container>
       </div>
 

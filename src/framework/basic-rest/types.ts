@@ -101,7 +101,8 @@ export type Product = {
   category?: Category;
   tag?: Tag[];
   meta?: any[];
-  brand?: Brand;
+  // brand?: Brand;
+  brand?: string;
   description?: string;
   variations?: object;
   [key: string]: unknown;

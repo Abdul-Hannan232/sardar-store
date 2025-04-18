@@ -136,8 +136,8 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
   // console.log(galleryImgs);
 
 
-  const showTitle = (title as string).length > 88
-  ? `${(title as string).substring(0, 88)}...`
+  const showTitle = (title as string).length > 70
+  ? `${(title as string).substring(0, 70)}...`
   : title
 
 
