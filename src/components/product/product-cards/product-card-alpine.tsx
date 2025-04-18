@@ -192,11 +192,12 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
         <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">
           <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
             {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
-           RS {promo_price_pkr.toFixed(2)}
+            RS {price.toFixed(2)}
           </span>
           <del className="mx-1 text-sm text-brand-dark text-opacity-70">
             {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
-            RS {price.toFixed(2)}
+           
+            RS {promo_price_pkr.toFixed(2)}
           </del>
           {/* {basePrice && (
             <del className="mx-1 text-sm text-brand-dark text-opacity-70">
