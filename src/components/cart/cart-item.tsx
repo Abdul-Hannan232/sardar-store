@@ -12,14 +12,14 @@ type CartItemProps = {
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  console.log('cart ',item.image);
+  // console.log('cart --------  ',item.delivery);
 
   const { isInStock, addItemToCart, removeItemFromCart, clearItemFromCart, isInCart, getItemFromCart } =
     useCart();
    
   const { price: totalPrice } = usePrice({
     amount: item?.itemTotal,
-    currencyCode: 'USD',
+    currencyCode: 'PKR',
   });
   const outOfStock = !isInStock(item.id);
   return (
@@ -85,8 +85,11 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           />
         </div>
 
-        <div className="flex font-semibold text-sm md:text-base text-brand-dark leading-5 shrink-0 min-w-[65px] md:min-w-[80px] justify-end">
-          {totalPrice}
+        {/* <div className="flex  font-semibold text-sm md:text-base text-brand-dark leading-5 shrink-0 min-w-[65px] md:min-w-[80px] justify-end">
+          {totalPrice} <span>hello</span>
+        </div> */}
+        <div className="flex flex-col font-semibold text-sm md:text-base text-brand-dark leading-5 shrink-0 min-w-[65px] md:min-w-[80px] justify-end items-end">
+          {totalPrice}  {item?.delivery &&  <span className='text-13px sm:text-sm text-brand-muted  font-normal'>Delivery:<span className='    ltr:pl-3 rtl:pr-3 '>Rs {item?.delivery}</span> </span>} 
         </div>
       </div>
     </div>

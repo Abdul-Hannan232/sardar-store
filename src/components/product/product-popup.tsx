@@ -67,7 +67,7 @@ export default function ProductPopup() {
     useState<boolean>(false);
   const [shareButtonStatus, setShareButtonStatus] = useState<boolean>(false);
   const { price, basePrice, discount } = usePrice({
-    amount: data.sale_price ? data.sale_price : data.price,
+    amount: data.promo_price_pkr ? data.promo_price_pkr : data.price,
     baseAmount: data.price,
     currencyCode: 'PKR',
   });
@@ -274,10 +274,7 @@ export default function ProductPopup() {
                 <div className="flex items-center justify-center w-auto">
                   <Image
                     src={
-                      image.replace(
-                        'http://localhost:4000/',
-                        ' http://localhost:5055/',
-                      ) ?? productGalleryPlaceholder
+                      image ?? productGalleryPlaceholder
                     }
                     // src={image?.original ?? productGalleryPlaceholder}
                     // alt={name!}
@@ -317,11 +314,11 @@ export default function ProductPopup() {
                     <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
                       {price}
                     </div>
-                    {promo_price_pkr > 0 && (
+                    {/* {promo_price_pkr > 0 && (
                       <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
-                        {promo_price_pkr}
+                       PKR {promo_price_pkr}
                       </del>
-                    )}
+                    )} */}
                     {discount && (
                       <>
                         <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
@@ -335,6 +332,14 @@ export default function ProductPopup() {
                   </div>
                 )}
               </div>
+
+
+              <div className="  mb-5 ">
+            <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+              Delivery Charges:{' '}
+            </span>
+            Rs {data?.delivery as string}
+          </div>
 
               {Object.keys(variations).map((variation) => {
                 return (

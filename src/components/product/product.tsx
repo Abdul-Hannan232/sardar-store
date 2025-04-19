@@ -60,7 +60,7 @@ const ProductSingleDetails = () => {
   // const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${data?.title}`;
   const { price, basePrice, discount } = usePrice(
     data && {
-      amount: data.sale_price ? data.sale_price : data.price,
+      amount: data?.promo_price_pkr ? data?.promo_price_pkr : data.price,
       baseAmount: data.price,
       currencyCode: 'PKR',
     },
@@ -254,11 +254,11 @@ const ProductSingleDetails = () => {
                 <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
                   {price}
                 </div>
-                {(data?.promo_price_pkr as number) > 0 && (
+                {/* {(data?.promo_price_pkr as number) > 0 && (
                   <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
                     {data?.promo_price_pkr as number}
                   </del>
-                )}
+                )} */}
                 {discount && (
                   <>
                     <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
@@ -271,6 +271,13 @@ const ProductSingleDetails = () => {
                 )}
               </div>
             )}
+          </div>
+
+          <div className="  mb-5 ">
+            <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+              Delivery Charges:{' '}
+            </span>
+            Rs {data?.delivery as string}
           </div>
 
           {Object.keys(variations).map((variation) => {

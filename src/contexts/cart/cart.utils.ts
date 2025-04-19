@@ -2,6 +2,7 @@ export interface Item {
   id: string | number;
   price: number;
   quantity?: number;
+  delivery?: any;
   stock?: number;
   [key: string]: any;
 }
@@ -49,6 +50,7 @@ export function addItemWithQuantity(
     };
     return newItems;
   }
+// console.log("<<<< ", item);
 
   return [...items, { ...item, quantity }];
 }
@@ -103,14 +105,28 @@ export function inStock(items: Item[], id: Item['id']) {
   return true;
 }
 
+// export const calculateItemTotals = (items: Item[]) =>
+//   items.map((item) => ({
+//     ...item,
+//     itemTotal: item.price * item.quantity!,
+//   }));
+
+// export const calculateTotal = (items: Item[]) =>
+//   items?.reduce((total, item) => total + item.quantity! * item.price, 0);
+
 export const calculateItemTotals = (items: Item[]) =>
   items.map((item) => ({
     ...item,
-    itemTotal: item.price * item.quantity!,
+    itemTotal: item.price * item.quantity! + (item.delivery || 0), 
   }));
 
 export const calculateTotal = (items: Item[]) =>
-  items?.reduce((total, item) => total + item.quantity! * item.price, 0);
+  items?.reduce(
+    (total, item) =>
+      total + item.quantity! * item.price + (item.delivery || 0), 
+    0
+  );
+
 
 export const calculateTotalItems = (items: Item[]) =>
   items?.reduce((sum, item) => sum + item.quantity!, 0);

@@ -22,7 +22,7 @@ interface Variation {
   [key: string]: unknown;
 }
 export function generateCartItem(item: Item, variation: Variation) {
-  const { id,title, name, slug, image, gallery, price, sale_price, quantity, unit , stock} = item;
+  const { id,title, name, slug, image, gallery, price, sale_price, delivery, quantity, unit , stock} = item;
 
   // console.log('generateCartItem ', typeof gallery);
   
@@ -41,6 +41,7 @@ export function generateCartItem(item: Item, variation: Variation) {
       // stock: variation.quantity,
       price: variation.sale_price ? variation.sale_price : variation.price,
       image: img ,
+      delivery:delivery,
       // image: image?.thumbnail,
       variationId: variation.id,
     };
@@ -52,6 +53,7 @@ export function generateCartItem(item: Item, variation: Variation) {
     slug,
     unit,
     image: img,
+    delivery:delivery,
     // image: image?.thumbnail,
     stock: stock as number,
     price: sale_price ? sale_price : price,

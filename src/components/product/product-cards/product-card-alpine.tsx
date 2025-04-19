@@ -135,11 +135,10 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
   }
   // console.log(galleryImgs);
 
-
-  const showTitle = (title as string).length > 70
-  ? `${(title as string).substring(0, 70)}...`
-  : title
-
+  const showTitle =
+    (title as string).length > 70
+      ? `${(title as string).substring(0, 70)}...`
+      : title;
 
   return (
     <article
@@ -194,16 +193,16 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
         </div>
       </div>
 
-      <div className="flex flex-col px-3 md:px-4 lg:px-[18px] pb-5 lg:pb-6 lg:pt-1.5 h-full">
+      <div className="flex flex-col px-3 md:px-4 lg:px-[18px] pb-5 lg:pb-6 pt-1.5 h-full">
         <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">
           <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
             {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
-            RS {price}
+            RS {promo_price_pkr > 0 ? promo_price_pkr : price}
           </span>
           {promo_price_pkr > 0 && (
             <del className="mx-1 text-sm text-brand-dark text-opacity-70">
               {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
-              RS {promo_price_pkr}
+              RS {price}
             </del>
           )}
           {/* {basePrice && (
