@@ -212,7 +212,7 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
             </del>
           )} */}
         </div>
-        {price_usd && (
+        {/* {price_usd && (
           <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">
             {price_usd && (
               <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
@@ -225,7 +225,7 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
               </del>
             )}
           </div>
-        )}
+        )} */}
         <h2 className="text-brand-dark text-13px sm:text-sm lg:text-15px leading-5 sm:leading-6 mb-1.5">
           {showTitle as string}
         </h2>
