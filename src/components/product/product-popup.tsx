@@ -273,9 +273,7 @@ export default function ProductPopup() {
               ) : (
                 <div className="flex items-center justify-center w-auto">
                   <Image
-                    src={
-                      image ?? productGalleryPlaceholder
-                    }
+                    src={image ?? productGalleryPlaceholder}
                     // src={image?.original ?? productGalleryPlaceholder}
                     // alt={name!}
                     alt={title!}
@@ -333,13 +331,14 @@ export default function ProductPopup() {
                 )}
               </div>
 
-
-              <div className="  mb-5 ">
-            <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
-              Delivery Charges:{' '}
-            </span>
-            Rs {data?.delivery as string}
-          </div>
+             
+                <div className="  mb-5 ">
+                  <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
+                    Delivery Charges:{' '}
+                  </span>
+                  Rs {data?.delivery ? data?.delivery as string: "No Charges"}
+                </div>
+              
 
               {Object.keys(variations).map((variation) => {
                 return (

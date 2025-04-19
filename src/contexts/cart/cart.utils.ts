@@ -1,6 +1,6 @@
 export interface Item {
   id: string | number;
-  price: number;
+  price: number | any;
   quantity?: number;
   delivery?: any;
   stock?: number;
@@ -105,20 +105,20 @@ export function inStock(items: Item[], id: Item['id']) {
   return true;
 }
 
-// export const calculateItemTotals = (items: Item[]) =>
-//   items.map((item) => ({
-//     ...item,
-//     itemTotal: item.price * item.quantity!,
-//   }));
+export const calculateItemTotals = (items: Item[]) =>
+  items.map((item) => ({
+    ...item,
+    itemTotal: item.price * item.quantity!,
+  }));
 
 // export const calculateTotal = (items: Item[]) =>
 //   items?.reduce((total, item) => total + item.quantity! * item.price, 0);
 
-export const calculateItemTotals = (items: Item[]) =>
-  items.map((item) => ({
-    ...item,
-    itemTotal: item.price * item.quantity! + (item.delivery || 0), 
-  }));
+// export const calculateItemTotals = (items: Item[]) =>
+//   items.map((item) => ({
+//     ...item,
+//     itemTotal: item.price * item.quantity! + (item.delivery || 0), 
+//   }));
 
 export const calculateTotal = (items: Item[]) =>
   items?.reduce(
