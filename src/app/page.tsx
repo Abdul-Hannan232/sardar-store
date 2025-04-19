@@ -15,12 +15,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { data:{banners} } = await http.get(
-    `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/banners`,
-  );
+  // const { data:{banners} } = await http.get(
+  //   `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/banners`,
+  // );
 
-  const today = new Date(); 
-  const visibleBanners = banners.filter((banner:any) => banner.isVisible && new Date(banner.endingDate) >= today);
+  // const today = new Date(); 
+  // const visibleBanners = banners.filter((banner:any) => banner.isVisible && new Date(banner.endingDate) >= today);
 
 
   // let banners = [];
@@ -38,15 +38,16 @@ export default async function Page() {
   //   console.error("Failed to fetch banners", error);
   //   banners = [];
   // }
-console.log("banners >>>> ",banners);
-console.log("visibleBanners >>>> ",visibleBanners);
+// console.log("banners >>>> ",banners);
+// console.log("visibleBanners >>>> ",visibleBanners);
 
   return (
     <>
     
       <Header />
       <Container className="mt-24">
-        <HeroCarouselBlock heroBanner={visibleBanners} />
+        {/* <HeroCarouselBlock heroBanner={visibleBanners} /> */}
+        <HeroCarouselBlock  />
         {/* <HeroCarouselBlock heroBanner={banners} /> 
         {/* <HeroCarouselBlock heroBanner={heroBanner} /> */}
         <CategoryWithProduct />
