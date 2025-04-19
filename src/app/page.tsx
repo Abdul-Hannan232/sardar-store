@@ -38,6 +38,8 @@ export default async function Page() {
   //   console.error("Failed to fetch banners", error);
   //   banners = [];
   // }
+console.log("banners >>>> ",banners);
+console.log("visibleBanners >>>> ",visibleBanners);
 
   return (
     <>
