@@ -19,22 +19,46 @@ const HeroCarouselBlock: React.FC<Props> = ({
 
 
 
-const fetchBanner = async ()=>{
-  const { data:{banners} } = await http.get(
-    `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/banners`,
+// const fetchBanner = async ()=>{
+//   const { data:{banners} } = await http.get(
+//     `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/banners`,
+//   );
+
+//   const today = new Date(); 
+//   const visibleBanners = banners.filter((banner:any) => banner.isVisible && new Date(banner.endingDate) >= today);
+//   setHeroBanner(visibleBanners)
+
+// }
+
+// useEffect(()=>{
+//   fetchBanner();
+// }, [])
+
+
+const fetchBanner = async () => {
+  const { data: { banners = [] } = {} } = await http.get(
+    `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/banners`
   );
 
-  const today = new Date(); 
-  const visibleBanners = banners.filter((banner:any) => banner.isVisible && new Date(banner.endingDate) >= today);
-  setHeroBanner(visibleBanners)
+  const now = new Date();
 
-}
+  const visibleBanners = banners.filter((banner: any) => {
+    const startDate = new Date(banner.startDate);
+    const endingDate = new Date(banner.endingDate);
 
-useEffect(()=>{
+    
+    return banner.isVisible && startDate <= now && endingDate >= now;
+  });
+
+  setHeroBanner(visibleBanners);
+};
+
+useEffect(() => {
   fetchBanner();
-}, [])
+}, []);
 
-  console.log(heroBanner);
+
+  // console.log(heroBanner);
   
   return (
     <div className={`${className}`}>
