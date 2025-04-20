@@ -57,7 +57,7 @@
 //   const { items, total, isEmpty } = useCart();
 //   const { price: subtotal } = usePrice({
 //     amount: total,
-//     currencyCode: 'USD',
+//     currencyCode: 'PKR',
 //   });
 //   function orderHeader() {
 //     !isAuthorized ? openModal('LOGIN_VIEW') : router.push(`${ROUTES.ORDER}`);
@@ -216,7 +216,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
 
   const { price: subtotal } = usePrice({
     amount: total,
-    currencyCode: 'USD',
+    currencyCode: 'PKR',
   });
 
   const updateUser = async (id: number) => {
@@ -298,27 +298,47 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
     id: number;
     name: string;
     price?: string | number;
+    delivery?:string | number;
   };
 
+  // console.log(items);
+  
+
+  const totalDelivery =
+  items && !id
+    ? items?.reduce((acc, item) => acc + Number(item.delivery), 0)
+    : Number(productData?.delivery) * Number(quantity);
   const checkoutFooter: FooterD[] = [
     {
       id: 1,
       name: 'Subtotal',
-      price: productData?.price
-        ? productData?.price * Number(quantity)
-        : subtotal,
+      // price: productData?.price
+      //   ? productData?.price * Number(quantity)
+      //   : subtotal,
+      price:  productData?.price
+        ? "Rs "+ productData?.price * Number(quantity)
+        : "Rs "+ items?.reduce((acc, item) => acc + (item.price * (item?.quantity as number)), 0),
+
+        delivery: Number(productData?.delivery)
+       
     },
     {
       id: 2,
       name: 'Shipping',
-      price: '$0',
+      // price:  productData?.delivery
+      // ? Number(productData?.delivery)
+      // : 'Rs 0',
+      // price: items && !id  
+      // ? "Rs "+ items?.reduce((acc, item) => acc + Number(item.delivery), 0)
+      //   : "Rs "+ Number(productData?.delivery) * Number(quantity)
+      price:totalDelivery === 0 ? "Free Shipping" : "Rs " + totalDelivery
     },
     {
       id: 3,
       name: 'Total',
       price: productData?.price
-        ? productData?.price * Number(quantity)
-        : subtotal,
+        ?  productData?.price * Number(quantity) + (Number(productData?.delivery) || 0)
+        :  subtotal?.replace("$", "Rs "),
     },
   ];
 

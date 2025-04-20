@@ -6,7 +6,7 @@ export const OrderDetailsContent: React.FC<{ item?: any }> = ({ item }) => {
 
   const { price } = usePrice({
     amount: item.productDetails.price,
-    currencyCode: 'USD',
+    currencyCode: 'PKR',
   });
 
 

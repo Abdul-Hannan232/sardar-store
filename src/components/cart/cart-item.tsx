@@ -60,10 +60,10 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
             href={`${ROUTES.PRODUCT}/${item?.title}`}
             className="block leading-5 transition-all text-brand-dark text-13px sm:text-sm lg:text-15px hover:text-brand"
           >
-            {item?.title}
+            {item.title.split(" ").slice(0,3).join(" ")}
           </Link>
           <div className="text-13px sm:text-sm text-brand-muted mt-1.5 block mb-2">
-            1 {item.title} X {item.quantity}
+            1 each X {item.quantity}
             {/* {item.unit} X {item.quantity} */}
           </div>
           <Counter
@@ -89,7 +89,8 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           {totalPrice} <span>hello</span>
         </div> */}
         <div className="flex flex-col font-semibold text-sm md:text-base text-brand-dark leading-5 shrink-0 min-w-[65px] md:min-w-[80px] justify-end items-end">
-          {totalPrice}  {item?.delivery &&  <span className='text-13px sm:text-sm text-brand-muted  font-normal'>Delivery:<span className='    ltr:pl-3 rtl:pr-3 '>Rs {item?.delivery}</span> </span>} 
+          {/* {totalPrice}  {item?.delivery &&  <span className='text-13px sm:text-sm text-brand-muted  font-normal'>Delivery:<span className='    ltr:pl-3 rtl:pr-3 '>Rs {item?.delivery}</span> </span>}  */}
+          {totalPrice}  { <span className='text-13px sm:text-sm text-brand-muted  font-normal'>Delivery:<span className='    ' > {item?.delivery ? `Rs ${item?.delivery}` : "Free"}</span> </span>} 
         </div>
       </div>
     </div>

@@ -277,7 +277,7 @@ const ProductSingleDetails = () => {
             <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
               Delivery Charges:{' '}
             </span>
-            Rs {data?.delivery ? data?.delivery as string: "No Charges"}
+            {data?.delivery ? "Rs "+ data?.delivery as string: "Free Delivery"}
           </div>
 
         

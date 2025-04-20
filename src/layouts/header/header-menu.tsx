@@ -167,7 +167,7 @@ const HeaderMenu: React.FC<MenuProps> = ({ className }) => {
     {
       id: 6,
       path: '/pages/faq',
-      label: 'Faqsss',
+      label: 'Faqs',
     },
     {
       id: 7,

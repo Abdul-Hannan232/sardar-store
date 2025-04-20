@@ -6,15 +6,13 @@ import { useRouter } from 'next/navigation';
 import Heading from '@components/ui/heading';
 
 const OrderItemCard = ({ product }: { product: OrderItem }) => {
-
-
   const { price: itemTotal } = usePrice({
-    amount: product.productDetails?.price  * product.quantity,
-    currencyCode: 'USD',
+    amount: product.productDetails?.price * product.quantity,
+    currencyCode: 'PKR',
   });
 
   // console.log('>>>>>>>>>>>>>> product', product);
-  
+
   return (
     <tr
       className="font-normal border-b border-border-base last:border-b-0"
@@ -27,9 +25,9 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
     </tr>
   );
 };
-const OrderDetails: React.FC<{ className?: string; id?:number }> = ({
+const OrderDetails: React.FC<{ className?: string; id?: number }> = ({
   className = 'pt-10 lg:pt-12',
-  id
+  id,
 }) => {
   // const {
   //   query: { id },
@@ -39,7 +37,7 @@ const OrderDetails: React.FC<{ className?: string; id?:number }> = ({
   const { price: subtotal } = usePrice(
     order && {
       amount: order.totalPrice,
-      currencyCode: 'USD',
+      currencyCode: 'PKR',
     },
   );
   // const { price: total } = usePrice(
@@ -47,13 +45,13 @@ const OrderDetails: React.FC<{ className?: string; id?:number }> = ({
   //     amount: order.shipping_fee
   //       ? order.total + order.shipping_fee
   //       : order.total,
-  //     currencyCode: 'USD',
+  //     currencyCode: 'PKR',
   //   },
   // );
   // const { price: shipping } = usePrice(
   //   order && {
   //     amount: order.shipping_fee,
-  //     currencyCode: 'USD',
+  //     currencyCode: 'PKR',
   //   },
   // );
   if (isLoading) return <p>Loading...</p>;

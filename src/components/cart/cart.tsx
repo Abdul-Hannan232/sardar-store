@@ -19,7 +19,7 @@ export default function Cart() {
   const { items, total, isEmpty, resetCart } = useCart();
   const { price: cartTotal } = usePrice({
     amount: total,
-    currencyCode: 'USD',
+    currencyCode: 'PKR',
   });
 
   // console.log('----------- cart',items)

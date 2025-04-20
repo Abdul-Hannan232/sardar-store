@@ -24,7 +24,7 @@ export const siteSettings = {
     height: 30,
   },
   defaultLanguage: '',
-  currencyCode: 'USD',
+  currencyCode: 'PKR',
   site_header: {
     menu: [
       {

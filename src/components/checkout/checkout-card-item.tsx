@@ -3,17 +3,18 @@ import Image from '@components/ui/image';
 import { generateCartItemName } from '@utils/generate-cart-item-name';
 import usePrice from '@framework/product/use-price';
 
-export const CheckoutItem: React.FC<{ item: Item , quantity?:string}> = ({ item , quantity}) => {
-
+export const CheckoutItem: React.FC<{ item: Item; quantity?: string }> = ({
+  item,
+  quantity,
+}) => {
   // console.log('tData ------------', item);
-
 
   const { price } = usePrice({
     amount: item.itemTotal,
-    currencyCode: 'USD',
+    currencyCode: 'PKR',
   });
 
-  let gallery: string[] = []; 
+  let gallery: string[] = [];
   if (item?.gallery) {
     try {
       gallery = Array.isArray(item.gallery)
@@ -52,10 +53,21 @@ export const CheckoutItem: React.FC<{ item: Item , quantity?:string}> = ({ item 
       </div>
       <h6 className="font-normal text-15px text-brand-dark ltr:pl-3 rtl:pr-3">
         {/* hello */}
-        {item.title ? item.title: generateCartItemName(item.name, item.attributes)}
+        {item.title
+          ? item.title
+          : generateCartItemName(item.name, item.attributes)}
       </h6>
-      <div className="flex font-normal ltr:ml-auto rtl:mr-auto text-15px text-brand-dark ltr:pl-2 rtl:pr-2 shrink-0">
-       {price ? price : item.price * Number(quantity)}
+      <div className="flex flex-col font-normal ltr:ml-auto rtl:mr-auto text-15px text-brand-dark ltr:pl-2 rtl:pr-2 shrink-0 items-end ">
+        {price ? price : item.price * Number(quantity)}
+
+        {item?.delivery && Number(item?.delivery) > 0? (
+          <span className="text-13px sm:text-sm text-brand-muted  font-normal">
+            Delivery:
+            <span className="    ltr:pl-3 rtl:pr-3 ">
+              Rs  {item?.delivery}
+            </span>{' '}
+          </span>
+        ):""}
       </div>
     </div>
   );

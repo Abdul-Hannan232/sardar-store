@@ -9,7 +9,6 @@ import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import useWindowSize from '@utils/use-window-size';
 
-
 interface ProductProps {
   product: Product;
   className?: string;
@@ -18,16 +17,15 @@ interface ProductProps {
 const WishlistProductCard: FC<ProductProps> = ({ product, className }) => {
   const { title, gallery, image, price } = product ?? {};
   const [addToWishlistLoader, setAddToWishlistLoader] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const { width } = useWindowSize();
-
 
   const placeholderImage = `/assets/placeholder/product.svg`;
   const [favorite, setFavorite] = useState<boolean>(false);
   // const { price, basePrice, discount } = usePrice({
   //   amount: product.sale_price ? product.sale_price : product.price,
   //   baseAmount: product.price,
-  //   currencyCode: 'USD',
+  //   currencyCode: 'PKR',
   // });
 
   // track status
@@ -59,22 +57,21 @@ const WishlistProductCard: FC<ProductProps> = ({ product, className }) => {
         ? 'Remove from favorite list'
         : 'Added to favorite list';
 
-    // Retrieve existing wishlist 
+    // Retrieve existing wishlist
     let wishlist =
       JSON.parse(localStorage?.getItem('wishlist') as string) || [];
     // console.log(wishlist);
 
-   
     const itemIndex = wishlist.findIndex((item: any) => item.id === newItem.id);
 
     if (itemIndex === -1) {
-            wishlist.push(newItem);
+      wishlist.push(newItem);
     } else {
       // remove item
       wishlist.splice(itemIndex, 1);
     }
 
-    // Save updated wishlist 
+    // Save updated wishlist
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
 
     // setTimeout(() => {
@@ -91,8 +88,6 @@ const WishlistProductCard: FC<ProductProps> = ({ product, className }) => {
       draggable: true,
     });
   }
-
-
 
   return (
     <div className="flex flex-col py-4 border-b md:flex-row border-border-base 2xl:py-5 wishlist-card last:pb-0 first:-mt-8 lg:first:-mt-4 2xl:first:-mt-7">
