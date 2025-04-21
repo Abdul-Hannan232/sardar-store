@@ -33,8 +33,8 @@ export default  function SearchTopBar({ itemsLength }:{itemsLength:number}) {
         </div>
         <ListBox
           options={[
-            { name: 'Lowest Price', value: 'lowest' },
-            { name: 'Highest Price', value: 'highest' },
+            // { name: 'Lowest Price', value: 'lowest' },
+            // { name: 'Highest Price', value: 'highest' },
             { name: 'New Arrival', value: 'new-arrival' },
             { name: 'Most Order', value: 'most-order' },
           ]}

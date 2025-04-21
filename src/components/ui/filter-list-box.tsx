@@ -27,7 +27,7 @@ export default function ListBox({ options }: { options: Option[] }) {
     // updateQueryparams('sort_by', currentSelectedItem.value.toString());
     updateQueryparams('price', currentSelectedItem.value.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSelectedItem.value]);
+  }, [currentSelectedItem?.value]);
 
   function handleItemClick(value: string) {
     // updateQueryparams('sort_by', value);
@@ -46,7 +46,7 @@ export default function ListBox({ options }: { options: Option[] }) {
               Sort by
             </div>
             <Listbox.Button className="relative w-full text-sm font-semibold rounded-lg cursor-pointer ltr:pr-5 rtl:pl-5 text-brand-dark ltr:text-left rtl:text-right focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-brand focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
-              <span className="block truncate">{selectedItem.name}</span>
+              <span className="block truncate">{selectedItem?.name}</span>
               <span className="absolute flex items-end pointer-events-none top-1 ltr:right-0 rtl:left-0 ltr:pl-1 rtl:pr-1">
                 <IoChevronDown
                   className="w-3.5 h-3.5 text-brand-muted"
