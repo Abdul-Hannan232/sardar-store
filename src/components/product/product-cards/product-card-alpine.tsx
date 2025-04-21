@@ -102,11 +102,11 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
 
   const { openModal } = useModalAction();
   // const { t } = useTranslation(lang, 'common');
-  // const { price, basePrice, discount } = usePrice({
-  //   amount: product?.sale_price ? product?.sale_price : product?.price,
-  //   baseAmount: product?.price,
-  //   currencyCode: 'PKR',
-  // });
+  const { price: finalPrice, basePrice, discount } = usePrice({
+    amount: product?.promo_price_pkr ? product?.promo_price_pkr : product?.price,
+    baseAmount: product?.price,
+    currencyCode: 'PKR',
+  });
   // const { price: minPrice } = usePrice({
   //   amount: product?.min_price ?? 0,
   //   currencyCode: 'PKR',
@@ -182,11 +182,11 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
           )}
         </div>
         <div className="w-full h-full absolute top-0 pt-2.5 md:pt-3.5 px-3 md:px-4 lg:px-[18px] z-10 -mx-0.5 sm:-mx-1">
-          {/* {discount && (
+          {discount && (
             <span className="text-[11px] md:text-xs font-bold text-brand-light uppercase inline-block bg-brand rounded-full px-2.5 pt-1 pb-[3px] mx-0.5 sm:mx-1">
               on sale
             </span>
-          )} */}
+          )}
           <div className={`block product-count-button-position`}>
             <RenderPopupOrAddToCart props={{ data: product }} />
           </div>

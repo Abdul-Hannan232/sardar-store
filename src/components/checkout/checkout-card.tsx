@@ -171,7 +171,6 @@ import { Order, OrderItem, CheckoutCardProps } from '@framework/types';
 import { toast } from 'react-toastify';
 import useWindowSize from '@utils/use-window-size';
 
-
 const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -260,12 +259,12 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   // place order
 
   function orderHeader() {
-    setIsPending(true)
+    setIsPending(true);
     updateUser(userData?.id as number);
     const placeOrder = async () => {
       try {
-        if(!userData.phone || !userData.address){
-          toast(!userData.phone ? "Phone is required" : "Address is required", {
+        if (!userData.phone || !userData.address) {
+          toast(!userData.phone ? 'Phone is required' : 'Address is required', {
             progressClassName: 'fancy-progress-bar',
             position: width! > 768 ? 'bottom-right' : 'top-right',
             autoClose: 1500,
@@ -286,8 +285,8 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
         return data;
       } catch (error) {
         console.error('Error in Place order:', error);
-      }finally{
-        setIsPending(false)
+      } finally {
+        setIsPending(false);
       }
     };
 
@@ -298,16 +297,16 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
     id: number;
     name: string;
     price?: string | number;
-    delivery?:string | number;
+    delivery?: string | number;
   };
 
   // console.log(items);
-  
 
   const totalDelivery =
-  items && !id
-    ? items?.reduce((acc, item) => acc + Number(item.delivery), 0)
-    : Number(productData?.delivery) * Number(quantity);
+    items && !id
+      ? items?.reduce((acc, item) => acc + Number(item.delivery), 0)
+      : // : Number(productData?.delivery) * Number(quantity);
+        Number(productData?.delivery);
   const checkoutFooter: FooterD[] = [
     {
       id: 1,
@@ -315,12 +314,20 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       // price: productData?.price
       //   ? productData?.price * Number(quantity)
       //   : subtotal,
-      price:  productData?.price
-        ? "Rs "+ productData?.price * Number(quantity)
-        : "Rs "+ items?.reduce((acc, item) => acc + (item.price * (item?.quantity as number)), 0),
+      price: productData?.promo_price_pkr
+        ? 'Rs ' + productData?.promo_price_pkr * Number(quantity)
+        : productData?.price
+          ? productData?.price * Number(quantity)
+          : 'Rs ' +
+            items?.reduce(
+              (acc, item) => acc + item.price * (item?.quantity as number),
+              0,
+            ),
+      // price:  productData?.price
+      //   ? "Rs "+ productData?.price * Number(quantity)
+      //   : "Rs "+ items?.reduce((acc, item) => acc + (item.price * (item?.quantity as number)), 0),
 
-        delivery: Number(productData?.delivery)
-       
+      delivery: Number(productData?.delivery),
     },
     {
       id: 2,
@@ -328,17 +335,22 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       // price:  productData?.delivery
       // ? Number(productData?.delivery)
       // : 'Rs 0',
-      // price: items && !id  
+      // price: items && !id
       // ? "Rs "+ items?.reduce((acc, item) => acc + Number(item.delivery), 0)
       //   : "Rs "+ Number(productData?.delivery) * Number(quantity)
-      price:totalDelivery === 0 ? "Free Shipping" : "Rs " + totalDelivery
+      price: totalDelivery === 0 ? 'Free Shipping' : 'Rs ' + totalDelivery,
     },
     {
       id: 3,
       name: 'Total',
-      price: productData?.price
-        ?  productData?.price * Number(quantity) + (Number(productData?.delivery) || 0)
-        :  subtotal?.replace("$", "Rs "),
+      price: productData?.promo_price_pkr
+        ? 'Rs ' +
+          (productData?.promo_price_pkr * Number(quantity) +
+            (Number(productData?.delivery) || 0))
+        : productData?.price
+          ? 'Rs ' +  (Number(productData?.price) * Number(quantity) +
+            (Number(productData?.delivery) || 0))
+          : subtotal?.replace('$', 'Rs '),
     },
   ];
 
@@ -385,11 +397,13 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       </div>
       <Text className="mt-8">
         By placing your order, you agree to be bound by the BoroBazar
-        <Link href={`${ROUTES.TERMS}`} >
-          <span className="font-medium underline text-brand">Terms of Service</span>
+        <Link href={`${ROUTES.TERMS}`}>
+          <span className="font-medium underline text-brand">
+            Terms of Service
+          </span>
         </Link>
         and
-        <Link href={`${ROUTES.PRIVACY}`} >
+        <Link href={`${ROUTES.PRIVACY}`}>
           <span className="font-medium underline text-brand">Privacy</span>
         </Link>
         . Your credit/debit card data will not be saved.
