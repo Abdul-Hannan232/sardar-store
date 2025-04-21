@@ -14,7 +14,7 @@ interface ProductDetailsTab  {
 export default function ProductDetailsTab({products_detail}: { products_detail: string }) {
   let [tabHeading] = useState({
     Product_Details: '',
-    Review_Rating: '',
+    // Review_Rating: '',
   });
 
   return (
@@ -26,7 +26,8 @@ export default function ProductDetailsTab({products_detail}: { products_detail: 
               key={item}
               className={({ selected }) =>
                 classNames(
-                  'relative inline-block transition-all text-15px lg:text-17px leading-5 text-brand-dark focus:outline-none pb-3 lg:pb-5 hover:text-brand ltr:mr-8 rtl:ml-8',
+                  // 'relative inline-block transition-all text-15px lg:text-17px leading-5 text-brand-dark focus:outline-none pb-3 lg:pb-5 hover:text-brand ltr:mr-8 rtl:ml-8',
+                  'relative inline-block transition-all text-15px lg:text-17px leading-5 text-brand-dark focus:outline-none pb-3 lg:pb-5 cursor-default ltr:mr-8 rtl:ml-8',
                   selected
                     ? 'font-semibold after:absolute after:w-full after:h-0.5 after:bottom-0 after:translate-y-[1px] after:ltr:left-0 after:rtl:right-0 after:bg-brand'
                     : '',
@@ -134,9 +135,9 @@ export default function ProductDetailsTab({products_detail}: { products_detail: 
               </div>
             </div> */}
           </Tab.Panel>
-          <Tab.Panel>
+          {/* <Tab.Panel>
             <ProductReviewRating />
-          </Tab.Panel>
+          </Tab.Panel> */}
         </Tab.Panels>
       </Tab.Group>
     </div>
