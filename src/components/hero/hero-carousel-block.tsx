@@ -19,20 +19,6 @@ const HeroCarouselBlock: React.FC<Props> = ({
 
 
 
-// const fetchBanner = async ()=>{
-//   const { data:{banners} } = await http.get(
-//     `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/banners`,
-//   );
-
-//   const today = new Date(); 
-//   const visibleBanners = banners.filter((banner:any) => banner.isVisible && new Date(banner.endingDate) >= today);
-//   setHeroBanner(visibleBanners)
-
-// }
-
-// useEffect(()=>{
-//   fetchBanner();
-// }, [])
 
 
 const fetchBanner = async () => {
@@ -58,12 +44,11 @@ useEffect(() => {
 }, []);
 
 
-  // console.log(heroBanner);
   
   return (
     <div className={`${className}`}>
       <Carousel
-        autoplay={false}
+        autoplay={true}
         prevActivateId="hero-carousel-button-prev"
         nextActivateId="hero-carousel-button-next"
       >
