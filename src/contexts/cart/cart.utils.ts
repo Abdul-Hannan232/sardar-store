@@ -105,7 +105,7 @@ export function inStock(items: Item[], id: Item['id']) {
   return true;
 }
 
-export const calculateItemTotals = (items: Item[]) =>
+export const calculateItemTotals = (items: Item[]) => 
   items.map((item) => ({
     ...item,
     itemTotal: item.price * item.quantity!,

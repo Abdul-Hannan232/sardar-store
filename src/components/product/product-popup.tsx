@@ -71,7 +71,90 @@ export default function ProductPopup() {
     baseAmount: data.price,
     currencyCode: 'PKR',
   });
-  const variations = getVariations(data.variations);
+  // const variations = getVariations(data.variations);
+  const variations = getVariations([
+    {
+      "id": 8,
+      "attribute_id": 3,
+      "value": "12oz",
+      "attribute": {
+        "id": 3,
+        "slug": "available-in",
+        "name": "Available In",
+        "values": [
+          {
+            "id": 8,
+            "attribute_id": 3,
+            "value": "12oz"
+          },
+          {
+            "id": 9,
+            "attribute_id": 3,
+            "value": "24oz"
+          },
+          {
+            "id": 10,
+            "attribute_id": 3,
+            "value": "36oz"
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "attribute_id": 3,
+      "value": "24oz",
+      "attribute": {
+        "id": 3,
+        "slug": "available-in",
+        "name": "Available In",
+        "values": [
+          {
+            "id": 8,
+            "attribute_id": 3,
+            "value": "12oz"
+          },
+          {
+            "id": 9,
+            "attribute_id": 3,
+            "value": "24oz"
+          },
+          {
+            "id": 10,
+            "attribute_id": 3,
+            "value": "36oz"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "attribute_id": 3,
+      "value": "36oz",
+      "attribute": {
+        "id": 3,
+        "slug": "available-in",
+        "name": "Available In",
+        "values": [
+          {
+            "id": 8,
+            "attribute_id": 3,
+            "value": "12oz"
+          },
+          {
+            "id": 9,
+            "attribute_id": 3,
+            "value": "24oz"
+          },
+          {
+            "id": 10,
+            "attribute_id": 3,
+            "value": "36oz"
+          }
+        ]
+      }
+    }
+  ]);
   // const { slug, image, name, unit, description, gallery, tag, quantity } = data;
   const {
     slug,

@@ -241,10 +241,16 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       }));
 
       // Calculate total price
+      // const totalPrice = items.reduce(
+      //   (total, item) => total + item.itemTotal,
+      //   0,
+      // );
       const totalPrice = items.reduce(
-        (total, item) => total + item.itemTotal,
+        (total, item) => total + item.itemTotal + item.delivery,
         0,
       );
+      // console.log(totalPrice);
+      
 
       const order: Order = {
         userId: Number(userData?.id),
