@@ -12,7 +12,7 @@ type CartItemProps = {
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  // console.log('cart --------  ',item.delivery);
+  // console.log('cart --------  ',item);
 
   const { isInStock, addItemToCart, removeItemFromCart, clearItemFromCart, isInCart, getItemFromCart } =
     useCart();
@@ -60,7 +60,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
             href={`${ROUTES.PRODUCT}/${item?.title}`}
             className="block leading-5 transition-all text-brand-dark text-13px sm:text-sm lg:text-15px hover:text-brand"
           >
-            {item.title.split(" ").slice(0,3).join(" ")}
+            {item?.title?.split(" ").slice(0,3).join(" ")}
           </Link>
           <div className="text-13px sm:text-sm text-brand-muted mt-1.5 block mb-2">
             1 each X {item.quantity}

@@ -8,8 +8,8 @@ export default function VariationPrice({
 }: any) {
   const { price, basePrice, discount } = usePrice(
     selectedVariation && {
-      amount: selectedVariation.sale_price
-        ? selectedVariation.sale_price
+      amount: selectedVariation.promo_price_pkr
+        ? selectedVariation.promo_price_pkr
         : selectedVariation.price,
       baseAmount: selectedVariation.price,
       currencyCode: 'PKR',

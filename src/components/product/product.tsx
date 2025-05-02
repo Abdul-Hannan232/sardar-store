@@ -1,5 +1,5 @@
 'use client';
-
+import cn from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@components/ui/button';
@@ -27,6 +27,7 @@ import ProductDetailsTab from '@components/product/product-details/product-tab';
 import VariationPrice from './variation-price';
 import isEqual from 'lodash/isEqual';
 import CheckoutPage from '@pages/pages/checkout/page';
+import CalculatePrice from '@utils/calculate-price';
 
 // interface ChildProps {
 //   getCid: (data: number) => void;
@@ -53,18 +54,26 @@ const ProductSingleDetails = () => {
   const [addToWishlistLoader, setAddToWishlistLoader] =
     useState<boolean>(false);
   const [shareButtonStatus, setShareButtonStatus] = useState<boolean>(false);
-  // console.log('----------pathname ', data?.brand);
+
+
+  const variations = data?.variations? JSON.parse(data?.variations as string): []
+  // console.log(variations);
+  
+    // const [variationName, setVariationName ]= useState(variations[0]?.size || "")
+    const {delPrice, displayPrice, discount,variationName, setVariationName} = CalculatePrice(data, variations)
+  
+
 
   const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${pathname.slug}`;
 
   // const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${data?.title}`;
-  const { price, basePrice, discount } = usePrice(
-    data && {
-      amount: data?.promo_price_pkr ? data?.promo_price_pkr : data.price,
-      baseAmount: data.price,
-      currencyCode: 'PKR',
-    },
-  );
+  // const { price, basePrice, discount } = usePrice(
+  //   data && {
+  //     amount: data?.promo_price_pkr ? data?.promo_price_pkr : data.price,
+  //     baseAmount: data.price,
+  //     currencyCode: 'PKR',
+  //   },
+  // );
 
   const shareRef = useRef<HTMLButtonElement>(null);
 
@@ -95,28 +104,35 @@ const ProductSingleDetails = () => {
 
   // console.log(shareButtonStatus);
   if (isLoading) return <p>Loading...</p>;
-  const variations = getVariations(data?.variations);
+  // const variations = getVariations(data?.variations);
 
-  const isSelected = !isEmpty(variations)
-    ? !isEmpty(attributes) &&
-      Object.keys(variations).every((variation) =>
-        attributes.hasOwnProperty(variation),
-      )
-    : true;
-  let selectedVariation: any = {};
-  if (isSelected) {
-    const dataVaiOption: any = data?.variation_options;
-    selectedVariation = dataVaiOption?.find((o: any) =>
-      isEqual(
-        o.options.map((v: any) => v.value).sort(),
-        Object.values(attributes).sort(),
-      ),
-    );
-  }
-  const item = generateCartItem(data!, selectedVariation);
-  const outOfStock = isInCart(item.id) && !isInStock(item.id);
+  // const isSelected = !isEmpty(variations)
+  //   ? !isEmpty(attributes) &&
+  //     Object.keys(variations).every((variation) =>
+  //       attributes.hasOwnProperty(variation),
+  //     )
+  //   : true;
+  // let selectedVariation: any = {};
+  // if (isSelected) {
+  //   const dataVaiOption: any = data?.variation_options;
+  //   selectedVariation = dataVaiOption?.find((o: any) =>
+  //     isEqual(
+  //       o.options.map((v: any) => v.value).sort(),
+  //       Object.values(attributes).sort(),
+  //     ),
+  //   );
+  // }
+
+  const selectedVariation:any = variations?.find(
+    (v: any) => v.size === variationName,
+  );
+
+
+   const item = generateCartItem(data!, selectedVariation);
+    const outOfStock = isInCart(item.id) && !isInStock(item.id);
+  
   function addToCart() {
-    if (!isSelected) return;
+    // if (!isSelected) return;
     // to show btn feedback while product carting
     setAddToCartLoader(true);
     setTimeout(() => {
@@ -124,17 +140,32 @@ const ProductSingleDetails = () => {
     }, 1500);
 
     const item = generateCartItem(data!, selectedVariation);
-    addItemToCart(item, data?.stock as number);
-    toast('Added to the bag', {
-      progressClassName: 'fancy-progress-bar',
-      position: width! > 768 ? 'bottom-right' : 'top-right',
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  }
+        addItemToCart(item, selectedQuantity);
+        // @ts-ignore
+        toast('Added to the cart', {
+          progressClassName: 'fancy-progress-bar',
+          position: width! > 768 ? 'bottom-right' : 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    
+    
+    // addItemToCart(item, data?.stock as number);
+    // toast('Added to the bag', {
+    //   progressClassName: 'fancy-progress-bar',
+    //   position: width! > 768 ? 'bottom-right' : 'top-right',
+    //   autoClose: 1500,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    // });
+  // }
+
   function addToWishlist() {
     // to show btn feedback while product wishlist
     setAddToWishlistLoader(true);
@@ -195,7 +226,7 @@ const ProductSingleDetails = () => {
     //   query: { product: serializedProduct },
     // });
 
-    router.push(`/pages/checkout?id=${data?.id}&q=${selectedQuantity}`);
+    router.push(`/pages/checkout?id=${data?.id}&q=${selectedQuantity}&v=${variationName}`);
   };
 
   return (
@@ -249,10 +280,11 @@ const ProductSingleDetails = () => {
               />
             )} */}
 
-            {isEmpty(variations) && (
+            {/* {isEmpty(variations) && ( */}
               <div className="flex items-center mt-5">
                 <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
-                  {price}
+                  {/* {price} */}
+                  Rs {displayPrice || ""}
                 </div>
                 {/* {(data?.promo_price_pkr as number) > 0 && (
                   <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
@@ -262,7 +294,7 @@ const ProductSingleDetails = () => {
                 {discount && (
                   <>
                     <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
-                      {basePrice}
+                      Rs  {delPrice || 50}
                     </del>
                     <span className="inline-block rounded font-bold text-xs md:text-sm bg-brand-tree bg-opacity-20 text-brand-tree uppercase px-2 py-1 ltr:ml-2.5 rtl:mr-2.5">
                       {discount} Off
@@ -270,7 +302,7 @@ const ProductSingleDetails = () => {
                   </>
                 )}
               </div>
-            )}
+            {/* )} */}
           </div>
 
           <div className="  mb-5 ">
@@ -282,7 +314,7 @@ const ProductSingleDetails = () => {
 
         
 
-          {Object.keys(variations).map((variation) => {
+          {/* {Object.keys(variations).map((variation) => {
             return (
               <ProductAttributes
                 key={`popup-attribute-key${variation}`}
@@ -291,7 +323,28 @@ const ProductSingleDetails = () => {
                 setAttributes={setAttributes}
               />
             );
-          })}
+          })} */}
+
+
+           <ul className="flex flex-wrap ltr:-mr-2 rtl:-ml-2">
+                                    { variations?.map((attribute: any, index:any) => (
+                                      <li
+                                        key={attribute.id || index}
+                                        className={cn(
+                                          'cursor-pointer rounded border h-9 md:h-10 p-1 mb-2 md:mb-3 ltr:mr-2 rtl:ml-2 flex justify-center items-center font-medium text-sm md:text-15px text-brand-dark transition duration-200 ease-in-out hover:text-brand hover:border-brand px-3',
+                                          {
+                                            'border-brand text-brand':
+                                              variationName === attribute.size,
+                                          },
+                                        )}
+                                        onClick={() =>
+                                          setVariationName(attribute.size)
+                                        }
+                                      >
+                                        {attribute.size}
+                                      </li>
+                                    ))}
+                                  </ul>
 
           <div className="pb-2">
             {/* check that item isInCart and place the available quantity or the item quantity */}
@@ -309,11 +362,9 @@ const ProductSingleDetails = () => {
               </>
             )} */}
 
-            {isEmpty(selectedVariation) && data && (
+            {/* {isEmpty(selectedVariation) && data && (
               <>
-                {/* {console.log('>>>>>>>>>>>>>>>>>> stock', data.stock)} */}
 
-                {/* {(selectedQuantity >  Number(stock)) ? ( */}
                 {(
                   isInCart(item.id)
                     ? getItemFromCart(item.id).quantity + selectedQuantity >=
@@ -333,7 +384,7 @@ const ProductSingleDetails = () => {
                   </div>
                 )}
               </>
-            )}
+            )} */}
             {/* 
             {!isEmpty(selectedVariation) && (
               <span className="text-sm font-medium text-yellow">
@@ -352,6 +403,7 @@ const ProductSingleDetails = () => {
           </div>
 
           <div className="pt-1.5 lg:pt-3 xl:pt-4 space-y-2.5 md:space-y-3.5">
+            
             {/* <Counter
               variant="single"
               value={selectedQuantity}
@@ -375,8 +427,8 @@ const ProductSingleDetails = () => {
                 setSelectedQuantity((prev) => (prev !== 1 ? prev - 1 : 1))
               }
               disabled={
-                isInCart(item.id)
-                  ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                isInCart(data?.id as string)
+                  ? getItemFromCart(data?.id as string).quantity + selectedQuantity >=
                     Number(data?.stock)
                   : selectedQuantity >= Number(data?.stock)
               }

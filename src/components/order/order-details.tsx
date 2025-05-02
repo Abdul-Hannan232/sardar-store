@@ -8,16 +8,20 @@ import Heading from '@components/ui/heading';
 const OrderItemCard = ({ product }: { product: OrderItem }) => {
   const { price: itemTotal } = usePrice({
     // amount: product.productDetails?.price * product.quantity,
-    amount: product.productDetails?.promo_price_pkr
-    ?  product.productDetails?.promo_price_pkr * Number(product.quantity)
-    : product.productDetails?.price
-      ? product.productDetails?.price * Number(product.quantity):0,
+    amount: product?.selectedVariation?.promo_price_pkr
+      ? product?.selectedVariation?.promo_price_pkr * Number(product?.quantity)
+      : product?.selectedVariation?.price
+        ? product?.selectedVariation?.price * Number(product?.quantity)
+        : product.productDetails?.promo_price_pkr
+          ? product?.productDetails?.promo_price_pkr * Number(product?.quantity)
+          : product?.productDetails?.price
+            ? product?.productDetails?.price * Number(product.quantity)
+            : null,
     currencyCode: 'PKR',
   });
 
   console.log('>>>>>>>>>>>>>> product', product);
 
-  
   return (
     <tr
       className="font-normal border-b border-border-base last:border-b-0"
@@ -26,7 +30,14 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
       <td className="p-4">
         {product.productDetails.title} * {product.quantity}
       </td>
-      <td className="p-4 flex flex-col">{itemTotal} {product.productDetails.delivery &&<div className='text-sm text-gray-500'>Delivery: {product.productDetails.delivery}</div>}   </td>
+      <td className="p-4 flex flex-col">
+        {itemTotal}{' '}
+        {product.productDetails.delivery >0 && (
+          <div className="text-sm text-gray-500">
+            Delivery: {product.productDetails.delivery}
+          </div>
+        )}{' '}
+      </td>
     </tr>
   );
 };

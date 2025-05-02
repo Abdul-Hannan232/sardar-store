@@ -179,6 +179,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
 
   const id = searchParams.get('id');
   const quantity = searchParams.get('q');
+  const variationName = searchParams.get('v');
   const [productData, setProductData] = useState<Product | null>(null);
   const [isLoading, setLoading] = useState(true);
   const [order, setOrder] = useState<Order | null>(null);
@@ -190,12 +191,34 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       const getProductData = async () => {
         try {
           const data = await fetchProduct(`/product/${id}`);
+          // console.log('order', data);
+
+          let variations = data?.variations
+          ? JSON.parse(data?.variations as string)
+          : [];
+
+         
+         if(variationName && variations?.length > 0){
+          const selectedVariation = variations?.find(
+            (v: any) => v.size === variationName
+          );  
+          setProductData({...data, promo_price_pkr: selectedVariation.promo_price_pkr, price:selectedVariation.price});
+          setOrder({
+            userId: Number(userData?.id),
+            items: [{ productId: data.id, quantity: Number(quantity) || 1 , selectedVariation}],
+            totalPrice: (selectedVariation.promo_price_pkr ? selectedVariation.promo_price_pkr * Number(quantity): selectedVariation.price * Number(quantity)) as number + Number(data?.delivery),
+          });
+         }else{
           setProductData(data);
           setOrder({
             userId: Number(userData?.id),
             items: [{ productId: data.id, quantity: Number(quantity) || 1 }],
-            totalPrice: (data.price * Number(quantity)) as number,
+            totalPrice:(data.promo_price_pkr ? data.promo_price_pkr * Number(quantity): data.price * Number(quantity)) as number + Number(data?.delivery),
           });
+         }
+          
+          
+         
           setLoading(false);
         } catch (error) {
           console.error('Error fetching product data:', error);
@@ -245,12 +268,14 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       //   (total, item) => total + item.itemTotal,
       //   0,
       // );
+
+      console.log("----------------- ",items);
+      
       const totalPrice = items.reduce(
         (total, item) => total + item.itemTotal + item.delivery,
         0,
       );
-      // console.log(totalPrice);
-      
+      console.log("----------------- ",totalPrice);
 
       const order: Order = {
         userId: Number(userData?.id),
@@ -354,8 +379,9 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
           (productData?.promo_price_pkr * Number(quantity) +
             (Number(productData?.delivery) || 0))
         : productData?.price
-          ? 'Rs ' +  (Number(productData?.price) * Number(quantity) +
-            (Number(productData?.delivery) || 0))
+          ? 'Rs ' +
+            (Number(productData?.price) * Number(quantity) +
+              (Number(productData?.delivery) || 0))
           : subtotal?.replace('$', 'Rs '),
     },
   ];

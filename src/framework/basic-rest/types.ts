@@ -104,7 +104,8 @@ export type Product = {
   // brand?: Brand;
   brand?: string;
   description?: string;
-  variations?: object;
+  // variations?: object;
+  variations?: string | object;
   [key: string]: unknown;
 };
 // export type OrderItem = {
@@ -168,6 +169,7 @@ export interface OrderItem {
   quantity: number;
   price? : number;
   productDetails?: any;
+  selectedVariation?:any;
 }
 
 export interface Order {

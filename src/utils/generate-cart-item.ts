@@ -8,6 +8,7 @@ interface Item {
   //   thumbnail: string;
   //   [key: string]: unknown;
   // };
+  variations?:any;
   price: number;
   sale_price?: number;
   quantity?: number;
@@ -22,29 +23,28 @@ interface Variation {
   [key: string]: unknown;
 }
 export function generateCartItem(item: Item, variation: Variation) {
-  const { id,title, name, slug, image, gallery, price, sale_price, delivery, quantity, unit , stock, promo_price_pkr} = item;
+  const { id,title, name, slug, image, gallery, price, sale_price, delivery, quantity, unit , variations, stock, promo_price_pkr} = item;
 
   // console.log('generateCartItem ', typeof gallery);
   
   let img =   JSON.parse(gallery as string)[0] || image;
-// console.log('------------------gallery ', item);
+// console.log('------------------gallery ', variation, item);
 
-  if (!isEmpty(variation)) {
-    return {
-      id: `${id}.${variation.id}`,
+if (!isEmpty(variation)) {
+        return {
+      id: `${id}.${variation.size}`,
       productId: id,
-      name: `${title}`,
-      // name: `${name} - ${variation.title}`,
+        title,
       slug,
       unit,
       stock: stock as number,
       // stock: variation.quantity,
-      price: variation.sale_price ? variation.sale_price : variation.price,
+      price: variation?.promo_price_pkr ? variation?.promo_price_pkr : variation?.price,
       image: img ,
       delivery:delivery,
-      promo_price_pkr:promo_price_pkr,
+      // promo_price_pkr:promo_price_pkr,
       // image: image?.thumbnail,
-      variationId: variation.id,
+      // variationId: variation.id,
     };
   }
   return {

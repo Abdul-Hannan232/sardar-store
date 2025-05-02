@@ -44,8 +44,8 @@ export function formatVariantPrice({
 
 export default function usePrice(
   data?: {
-    amount: number;
-    baseAmount?: number;
+    amount: number | null;
+    baseAmount?: number | null;
     currencyCode: string;
   } | null,
 ) {

@@ -1,3 +1,4 @@
+"use client"
 import cn from 'classnames';
 // import Image from '@components/ui/image';
 import usePrice from '@framework/product/use-price';
@@ -6,10 +7,12 @@ import { useModalAction } from '@components/common/modal/modal.context';
 import useWindowSize from '@utils/use-window-size';
 import { Eye } from '@components/icons/eye-icon';
 import { useCart } from '@contexts/cart/cart.context';
+import {CalculatePrice} from "@utils/calculate-price"
 
 import { productPlaceholder } from '@assets/placeholders';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 const AddToCart = dynamic(() => import('@components/product/add-to-cart'), {
   ssr: false,
@@ -21,45 +24,18 @@ interface ProductProps {
 }
 function RenderPopupOrAddToCart({ props }: { props: Object }) {
   let { data }: any = props;
-  // console.log(variant);
+  // console.log(data);
 
   const { id, quantity, stock, product_type, status, gallery } = data ?? {};
-  const { width } = useWindowSize();
-  const { openModal } = useModalAction();
-  const { isInCart, isInStock } = useCart();
-  const iconSize = width! > 1024 ? '19' : '17';
-  const outOfStock = isInCart(id) && !isInStock(id);
-  function handlePopupView() {
-    openModal('PRODUCT_VIEW', data);
-  }
-  // if (status === 'Hide') {
-  //   return (
-  //     <>
-  //      {/* <span className="text-[11px] md:text-xs font-bold text-brand-light uppercase inline-block bg-brand-danger rounded-full px-2.5 pt-1 pb-[3px] mx-0.5 sm:mx-1">
-  //       Out Of Stock
-  //     </span> */}
-  //       <button
-  //         className="inline-flex items-center justify-center w-8 h-8 text-4xl rounded-full bg-brand lg:w-10 lg:h-10 text-brand-light focus:outline-none focus-visible:outline-none"
-  //         aria-label="Count Button"
-  //         onClick={handlePopupView}
-  //       >
-  //         <Eye width={iconSize} height={iconSize} opacity="1" />
-  //       </button>
-  //     </>
-  //     // <>
-  //     //  <span className="text-[11px] md:text-xs font-bold text-brand-light uppercase inline-block bg-brand-danger rounded-full px-2.5 pt-1 pb-[3px] mx-0.5 sm:mx-1">
-  //     //   Out Of Stock
-  //     // </span>
-  //     //   <button
-  //     //     className="inline-flex items-center justify-center w-8 h-8 text-4xl rounded-full bg-brand lg:w-10 lg:h-10 text-brand-light focus:outline-none focus-visible:outline-none"
-  //     //     aria-label="Count Button"
-  //     //     onClick={handlePopupView}
-  //     //   >
-  //     //     <Eye width={iconSize} height={iconSize} opacity="1" />
-  //     //   </button>
-  //     // </>
-  //   );
+  // const { width } = useWindowSize();
+  // const { openModal } = useModalAction();
+  // const { isInCart, isInStock } = useCart();
+  // const iconSize = width! > 1024 ? '19' : '17';
+  // const outOfStock = isInCart(id) && !isInStock(id);
+  // function handlePopupView() {
+  //   openModal('PRODUCT_VIEW', data);
   // }
+ 
   // if (Number(stock) < 1 || outOfStock) {
   if (Number(stock) < 1) {
     return (
@@ -68,22 +44,15 @@ function RenderPopupOrAddToCart({ props }: { props: Object }) {
       </span>
     );
   }
+  const variations = data?.variations? JSON.parse(data?.variations as string): []
+  const {delPrice, displayPrice, discount,variationName, setVariationName} = CalculatePrice(data, variations)
+// console.log(variationName);
 
-  // if (status === 'Show') {
-  //   // if (product_type === 'variable') {
-  //   return (
-  //     <button
-  //       className="inline-flex items-center justify-center w-8 h-8 text-4xl rounded-full bg-brand lg:w-10 lg:h-10 text-brand-light focus:outline-none focus-visible:outline-none"
-  //       aria-label="Count Button"
-  //       onClick={handlePopupView}
-  //     >
-  //       <Eye width={iconSize} height={iconSize} opacity="1" />
-  //     </button>
-  //   );
-  // }
-  return <AddToCart data={data} variant="mercury" />;
+  // return <AddToCart data={data} variant="mercury" />;
+  return <AddToCart data={data} variant={variationName} />;
 }
 const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
+
   // console.log('----------------- ', product);
 
   const {
@@ -96,25 +65,16 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
     price,
     price_usd,
     promo_price_pkr,
+    variations: productVariations,
     promo_price_usd,
   } = product ?? {};
-  // console.log('title,', title);
+  
+  let variations = JSON.parse(productVariations as string)
+  const {delPrice, displayPrice, discount} = CalculatePrice(product, variations)
+
+  // let variations =JSON.parse(productVariations as string)
 
   const { openModal } = useModalAction();
-  // const { t } = useTranslation(lang, 'common');
-  const { price: finalPrice, basePrice, discount } = usePrice({
-    amount: product?.promo_price_pkr ? product?.promo_price_pkr : product?.price,
-    baseAmount: product?.price,
-    currencyCode: 'PKR',
-  });
-  // const { price: minPrice } = usePrice({
-  //   amount: product?.min_price ?? 0,
-  //   currencyCode: 'PKR',
-  // });
-  // const { price: maxPrice } = usePrice({
-  //   amount: product?.max_price ?? 0,
-  //   currencyCode: 'PKR',
-  // });
 
   function handlePopupView() {
     openModal('PRODUCT_VIEW', product);
@@ -133,7 +93,6 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
       console.error('Failed to parse gallery:', error);
     }
   }
-  // console.log(galleryImgs);
 
   const showTitle =
     (title as string).length > 70
@@ -195,21 +154,29 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
 
       <div className="flex flex-col px-3 md:px-4 lg:px-[18px] pb-5 lg:pb-6 pt-1.5 h-full">
         <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">
-          <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
-            {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
+          {/* <span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
             RS {promo_price_pkr > 0 ? promo_price_pkr : price}
           </span>
           {promo_price_pkr > 0 && (
             <del className="mx-1 text-sm text-brand-dark text-opacity-70">
-              {/* {product_type === 'variable' ? `${minPrice} - ${maxPrice}` : price} */}
               RS {price}
             </del>
-          )}
+          )} */}
           {/* {basePrice && (
             <del className="mx-1 text-sm text-brand-dark text-opacity-70">
               {basePrice}
             </del>
           )} */}
+
+
+<span className="inline-block mx-1 text-sm font-semibold sm:text-15px lg:text-base text-brand-dark">
+        RS {displayPrice}
+      </span>
+      {delPrice && (
+        <del className="mx-1 text-sm text-brand-dark text-opacity-70">
+          RS {delPrice}
+        </del>
+      )}
         </div>
         {/* {price_usd && (
           <div className="mb-1 lg:mb-1.5 -mx-1 flex justify-between">

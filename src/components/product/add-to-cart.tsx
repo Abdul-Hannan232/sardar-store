@@ -16,6 +16,8 @@ const AddToCart = ({
   disabled,
   variant = 'mercury',
 }: Props) => {
+  // console.log(">>>>>>>>>>>>>. ", variant);
+  
   const { width } = useWindowSize();
   // const { t } = useTranslation(lang, 'common');
   const {
@@ -25,11 +27,16 @@ const AddToCart = ({
     getItemFromCart,
     isInCart,
   } = useCart();
-  const item = generateCartItem(data!, variation);
+  const selectedVariation = JSON.parse(data?.variations)?.find(
+    (v: any) => v.size === variant
+  );  
+  
+  const item = generateCartItem(data!, selectedVariation);
   const handleAddClick = (
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   ) => {
     e.stopPropagation();
+
     addItemToCart (item, 1);
   };
   const handleRemoveClick = (e: any) => {
@@ -39,6 +46,8 @@ const AddToCart = ({
   const outOfStock = isInCart(item?.id) && !isInStock(item.id);
   const iconSize = width! > 480 ? '19' : '17';
 
+
+  
   return !isInCart(item?.id) ? (
     variant === 'venus' ? (
       <button
