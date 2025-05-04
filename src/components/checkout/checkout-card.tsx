@@ -208,6 +208,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
               ...data,
               promo_price_pkr: selectedVariation.promo_price_pkr,
               price: selectedVariation.price,
+              variant:variationName
             });
             setOrder({
               userId: Number(userData?.id),
@@ -275,6 +276,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       return data;
     }
   };
+// console.log(items);
 
   //  cart data order
 
@@ -293,14 +295,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
           typeof item?.id === 'string' ? item?.id.split('.')[1] : '',
       }));
 
-      // Calculate total price
-      // const totalPrice = items.reduce(
-      //   (total, item) => total + item.itemTotal,
-      //   0,
-      // );
-
-      // console.log("----------------- ",items);
-
+      
       const totalPrice = items.reduce(
         (total, item) => total + item.itemTotal + item.delivery,
         0,
@@ -318,7 +313,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   }, [productData, items]);
 
   // place order
-  console.log(order);
+  // console.log(order);
 
   function orderHeader() {
     setIsPending(true);
@@ -432,7 +427,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
             <SearchResultLoader uniqueKey={`product-key`} />
           </div>
         ) : productData ? (
-          <CheckoutItem item={productData} quantity={quantity as string} />
+          <CheckoutItem item={productData} quantity={quantity as string} variationName={variationName as string} />
         ) : !productData && !isEmpty && mounted ? (
           items.map((item) => <CheckoutItem item={item} key={item.id} />)
         ) : (

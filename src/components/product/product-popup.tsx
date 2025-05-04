@@ -628,9 +628,7 @@ export default function ProductPopup() {
     useState<boolean>(false);
   const [shareButtonStatus, setShareButtonStatus] = useState<boolean>(false);
 
-// console.log("555555555555555555 , data ", data);
-
-
+  // console.log("555555555555555555 , data ", data);
 
   // const { price, basePrice, discount } = usePrice({
   //   amount: data.promo_price_pkr ? data.promo_price_pkr : data.price,
@@ -798,11 +796,13 @@ export default function ProductPopup() {
   }
 
   const orderNow = () => {
-    setAddOrderLoader(true)
+    setAddOrderLoader(true);
     setTimeout(() => {
       setAddOrderLoader(false);
     }, 1500);
-    router.push(`/pages/checkout?id=${data?.id}&q=${selectedQuantity}&v=${variationName}`);
+    router.push(
+      `/pages/checkout?id=${data?.id}&q=${selectedQuantity}&v=${variationName}`,
+    );
     closeModal();
   };
 
@@ -835,7 +835,6 @@ export default function ProductPopup() {
     setShareButtonStatus(!shareButtonStatus);
   };
 
-  
   return (
     // <div className="md:w-[600px] lg:w-[940px] xl:w-[1180px] 2xl:w-[1360px] mx-auto p-1 lg:p-0 xl:p-3 bg-brand-light rounded-md">
     <div className="md:w-[600px] lg:w-[940px] xl:w-[1180px] 2xl:w-[1360px] mx-auto p-1 lg:p-0 xl:p-3 bg-brand-light rounded-md">
@@ -983,6 +982,31 @@ export default function ProductPopup() {
                   </>
                 )}
 
+                {!isEmpty(variations) && (
+                  <>
+                    {/* {(selectedQuantity >  Number(stock)) ? ( */}
+                    {(
+                      isInCart(item.id)
+                        ? getItemFromCart(item.id).quantity +
+                            selectedQuantity >=
+                          Number(selectedVariation.stock)
+                        : selectedQuantity >= Number(selectedVariation?.stock)
+                    ) ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {` Only  ${selectedVariation?.stock} items are Available!`}
+                      </span>
+                    ) : Number(selectedVariation?.stock) > 0 ? (
+                      <span className="text-sm font-medium text-yellow">
+                        {` Only  ${selectedVariation?.stock} item left!`}
+                      </span>
+                    ) : (
+                      <div className="text-base text-brand-danger whitespace-nowrap">
+                        Out Of Stock
+                      </div>
+                    )}
+                  </>
+                )}
+
                 {/* {status === 'Hide' ? (
                   <span className="text-sm font-medium text-yellow">
                     Out Of Stock
@@ -1023,27 +1047,26 @@ export default function ProductPopup() {
                   //   isInCart(item.id)
                   //     ? getItemFromCart(item.id).quantity + selectedQuantity >=
                   //       Number(stock)
-                  //     : selectedQuantity >= Number(stock) 
+                  //     : selectedQuantity >= Number(stock)
                   // }
                   //  disabled={
                   //   isInCart(item.id)
                   //     ? getItemFromCart(item.id).quantity + selectedQuantity >=
                   //       Number(stock)
-                  //     : selectedQuantity >= Number(stock) 
+                  //     : selectedQuantity >= Number(stock)
                   // }
 
                   disabled={
                     isInCart(item.id)
                       ? getItemFromCart(item.id).quantity + selectedQuantity >=
-                          (selectedVariation
-                            ? Number(selectedVariation.stock)
-                            : Number(stock))
+                        (selectedVariation
+                          ? Number(selectedVariation.stock)
+                          : Number(stock))
                       : selectedQuantity >=
-                          (selectedVariation
-                            ? Number(selectedVariation.stock)
-                            : Number(stock))
+                        (selectedVariation
+                          ? Number(selectedVariation.stock)
+                          : Number(stock))
                   }
-                  
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <Button

@@ -14,14 +14,22 @@ type CartItemProps = {
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
   // console.log('cart --------  ',item);
 
-  const { isInStock, addItemToCart, removeItemFromCart, clearItemFromCart, isInCart, getItemFromCart } =
-    useCart();
-   
+  const {
+    isInStock,
+    addItemToCart,
+    removeItemFromCart,
+    clearItemFromCart,
+    isInCart,
+    getItemFromCart,
+  } = useCart();
+
   const { price: totalPrice } = usePrice({
     amount: item?.itemTotal,
     currencyCode: 'PKR',
   });
   const outOfStock = !isInStock(item.id);
+  // console.log('ite cart ', item);
+
   return (
     <div
       className={`group w-full h-auto flex justify-start items-center text-brand-light py-4 md:py-7 border-b border-border-one border-opacity-70 relative last:border-b-0`}
@@ -29,13 +37,8 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       // title={item?.name}
     >
       <div className="relative flex rounded overflow-hidden shrink-0 cursor-pointer w-[90px] md:w-[100px] h-[90px] md:h-[100px]">
-       
-       
         <Image
-          src={
-            item?.image ??
-            '/assets/placeholder/cart-item.svg'
-          }
+          src={item?.image ?? '/assets/placeholder/cart-item.svg'}
           width={100}
           height={100}
           loading="eager"
@@ -60,7 +63,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
             href={`${ROUTES.PRODUCT}/${item?.title}`}
             className="block leading-5 transition-all text-brand-dark text-13px sm:text-sm lg:text-15px hover:text-brand"
           >
-            {item?.title?.split(" ").slice(0,3).join(" ")}
+            {item?.title?.split(' ').slice(0, 3).join(' ')}
           </Link>
           <div className="text-13px sm:text-sm text-brand-muted mt-1.5 block mb-2">
             1 each X {item.quantity}
@@ -75,13 +78,11 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
             onDecrement={() => removeItemFromCart(item.id)}
             variant="cart"
             disabled={
-              isInCart (item.id)
-                ? getItemFromCart(item.id).quantity  >=
-                  Number(item?.stock)
-                : getItemFromCart(item.id).quantity  >= Number(item?.stock)
+              isInCart(item.id)
+                ? getItemFromCart(item.id).quantity >= Number(item?.stock)
+                : getItemFromCart(item.id).quantity >= Number(item?.stock)
             }
             // disabled={outOfStock}
-          
           />
         </div>
 
@@ -90,7 +91,21 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         </div> */}
         <div className="flex flex-col font-semibold text-sm md:text-base text-brand-dark leading-5 shrink-0 min-w-[65px] md:min-w-[80px] justify-end items-end">
           {/* {totalPrice}  {item?.delivery &&  <span className='text-13px sm:text-sm text-brand-muted  font-normal'>Delivery:<span className='    ltr:pl-3 rtl:pr-3 '>Rs {item?.delivery}</span> </span>}  */}
-          {totalPrice}  { <span className='text-13px sm:text-sm text-brand-muted  font-normal'>Delivery:<span className='    ' > {item?.delivery ? `Rs ${item?.delivery}` : "Free"}</span> </span>} 
+          {totalPrice}{' '}
+          {
+            <span className="text-13px sm:text-sm text-brand-muted  font-normal">
+              Delivery:
+              <span className="    ">
+                {' '}
+                {item?.delivery ? `Rs ${item?.delivery}` : 'Free'}
+              </span>{' '}
+            </span>
+          }
+          {item?.variant && (
+            <span className="text-13px  text-brand-muted  font-normal">
+              Variant:<span className=""> {item?.variant}</span>{' '}
+            </span>
+          )}
         </div>
       </div>
     </div>

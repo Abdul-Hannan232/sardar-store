@@ -8,11 +8,11 @@ import { useParams } from 'next/navigation';
 import { ROUTES } from '@utils/routes';
 import useWindowSize from '@utils/use-window-size';
 import { useProductQuery } from '@framework/product/get-product';
-import { getVariations } from '@framework/utils/get-variations';
-import usePrice from '@framework/product/use-price';
+// import { getVariations } from '@framework/utils/get-variations';
+// import usePrice from '@framework/product/use-price';
 import { useCart } from '@contexts/cart/cart.context';
 import { generateCartItem } from '@utils/generate-cart-item';
-import ProductAttributes from '@components/product/product-attributes';
+// import ProductAttributes from '@components/product/product-attributes';
 import isEmpty from 'lodash/isEmpty';
 import { toast } from 'react-toastify';
 import ThumbnailCarousel from '@components/ui/carousel/thumbnail-carousel';
@@ -24,14 +24,12 @@ import LabelIcon from '@components/icons/label-icon';
 import { IoArrowRedoOutline, IoCartOutline } from 'react-icons/io5';
 import SocialShareBox from '@components/ui/social-share-box';
 import ProductDetailsTab from '@components/product/product-details/product-tab';
-import VariationPrice from './variation-price';
-import isEqual from 'lodash/isEqual';
-import CheckoutPage from '@pages/pages/checkout/page';
+// import VariationPrice from './variation-price';
+// import isEqual from 'lodash/isEqual';
+// import CheckoutPage from '@pages/pages/checkout/page';
 import CalculatePrice from '@utils/calculate-price';
 
-// interface ChildProps {
-//   getCid: (data: number) => void;
-// }
+ 
 const ProductSingleDetails = () => {
   // const ProductSingleDetails:React.FC<ChildProps> = ({getCid}) => {
   const router = useRouter();
@@ -39,31 +37,77 @@ const ProductSingleDetails = () => {
   const { slug } = pathname;
   const { width } = useWindowSize();
   const { data, isLoading } = useProductQuery(slug as string);
-  // if(data && (typeof data?.category_id === 'number')){
-
-  //   getCid(data?.category_id)
-  // }
-
   const { addItemToCart, isInCart, getItemFromCart, isInStock } = useCart();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [attributes, setAttributes] = useState<{ [key: string]: string }>({});
   const [favorite, setFavorite] = useState<boolean>(false);
-  const [stock, setStock] = useState();
   // const [gallery, setGallery] = useState([]);
   const [addToCartLoader, setAddToCartLoader] = useState<boolean>(false);
   const [addToWishlistLoader, setAddToWishlistLoader] =
     useState<boolean>(false);
   const [shareButtonStatus, setShareButtonStatus] = useState<boolean>(false);
 
+  const variations = data?.variations
+  ? JSON.parse(data?.variations as string)
+  : [];
+  const { delPrice, displayPrice, discount, variationName, setVariationName } =
+    CalculatePrice(data, variations);
 
-  const variations = data?.variations? JSON.parse(data?.variations as string): []
+ 
+    // const selectedVariation: any = variations?.find(
+    //   (v: any) => v.size === variationName,
+    // );
+    const [selectedVariation, setSelectedVariation] = useState<any>(null);
+    const [stock, setStock] = useState<number>();
+  
+    useEffect(() => {
+      setStock(data?.stock as number); // Set product stock
+    
+      if (variations?.length > 0) {
+        let newVariation = null;
+    
+        if (variationName) {
+          // Select variation based on variationName
+          newVariation = variations.find((v: any) => v.size === variationName);
+        } else {
+          // Select lowest price variation by default
+          newVariation = [...variations].sort((a: any, b: any) => {
+            const priceA = a.promo_price_pkr || a.price;
+            const priceB = b.promo_price_pkr || b.price;
+            return priceA - priceB; // Ascending order
+          })[0]; // First item in sorted array is the lowest price
+        }
+    
+        // Update selectedVariation only if it's different
+        if (JSON.stringify(newVariation) !== JSON.stringify(selectedVariation)) {
+          setSelectedVariation(newVariation);
+          setVariationName(newVariation.size)
+          console.log("Selected Variation:", newVariation); // Debug log
+        }
+      }
+    }, [data, variations, variationName, selectedVariation]);
+    
+// useEffect(()=>{
+// setStock(data?.stock as number)
+
+// if(variations){
+//   const lowest = variations?.sort((a:any, b:any) => {
+//     const priceA = a.promo_price_pkr || a.price;
+//     const priceB = b.promo_price_pkr || b.price;
+//     return priceA - priceB; // Ascending order
+//   });
+//   console.log("----------",lowest[0]);
+  
+// }
+// },[data,variations])
+
+
+
+    // console.log("stock ?>>>> ", data);
+    // console.log("selectedQuantity ?>>>> ", selectedQuantity);
+  
   // console.log(variations);
-  
-    // const [variationName, setVariationName ]= useState(variations[0]?.size || "")
-    const {delPrice, displayPrice, discount,variationName, setVariationName} = CalculatePrice(data, variations)
-  
 
-
+  // const [variationName, setVariationName ]= useState(variations[0]?.size || "")
   const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${pathname.slug}`;
 
   // const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${data?.title}`;
@@ -104,35 +148,11 @@ const ProductSingleDetails = () => {
 
   // console.log(shareButtonStatus);
   if (isLoading) return <p>Loading...</p>;
-  // const variations = getVariations(data?.variations);
+ 
+  const item = generateCartItem(data!, selectedVariation);
+  // const outOfStock = isInCart(item.id) && !isInStock(item.id);
 
-  // const isSelected = !isEmpty(variations)
-  //   ? !isEmpty(attributes) &&
-  //     Object.keys(variations).every((variation) =>
-  //       attributes.hasOwnProperty(variation),
-  //     )
-  //   : true;
-  // let selectedVariation: any = {};
-  // if (isSelected) {
-  //   const dataVaiOption: any = data?.variation_options;
-  //   selectedVariation = dataVaiOption?.find((o: any) =>
-  //     isEqual(
-  //       o.options.map((v: any) => v.value).sort(),
-  //       Object.values(attributes).sort(),
-  //     ),
-  //   );
-  // }
-
-  const selectedVariation:any = variations?.find(
-    (v: any) => v.size === variationName,
-  );
-
-
-   const item = generateCartItem(data!, selectedVariation);
-    const outOfStock = isInCart(item.id) && !isInStock(item.id);
-  
   function addToCart() {
-    // if (!isSelected) return;
     // to show btn feedback while product carting
     setAddToCartLoader(true);
     setTimeout(() => {
@@ -140,32 +160,20 @@ const ProductSingleDetails = () => {
     }, 1500);
 
     const item = generateCartItem(data!, selectedVariation);
-        addItemToCart(item, selectedQuantity);
-        // @ts-ignore
-        toast('Added to the cart', {
-          progressClassName: 'fancy-progress-bar',
-          position: width! > 768 ? 'bottom-right' : 'top-right',
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      }
-    
-    
-    // addItemToCart(item, data?.stock as number);
-    // toast('Added to the bag', {
-    //   progressClassName: 'fancy-progress-bar',
-    //   position: width! > 768 ? 'bottom-right' : 'top-right',
-    //   autoClose: 1500,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    // });
-  // }
+    addItemToCart(item, selectedQuantity);
+    // @ts-ignore
+    toast('Added to the cart', {
+      progressClassName: 'fancy-progress-bar',
+      position: width! > 768 ? 'bottom-right' : 'top-right',
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  }
 
+ 
   function addToWishlist() {
     // to show btn feedback while product wishlist
     setAddToWishlistLoader(true);
@@ -211,24 +219,13 @@ const ProductSingleDetails = () => {
   // console.log('gallery', gallery);
 
   const orderNow = () => {
-    // router.push({
-    //   pathname: '/pages/checkout',
-    //   query: {
-    //     id: data?.id,
-    //     name: data?.name,
-    //     price: data?.price,
-    //   },
-    // });
-
-    // const serializedProduct = encodeURIComponent(JSON.stringify(data));
-    // router.push({
-    //   pathname: '/pages/checkout',
-    //   query: { product: serializedProduct },
-    // });
-
-    router.push(`/pages/checkout?id=${data?.id}&q=${selectedQuantity}&v=${variationName}`);
+        router.push(
+      `/pages/checkout?id=${data?.id}&q=${selectedQuantity}&v=${variationName}`,
+    );
   };
 
+
+  
   return (
     <div className="pt-6 pb-2 md:pt-7">
       <div className="grid-cols-10 lg:grid gap-7 2xl:gap-8">
@@ -281,27 +278,27 @@ const ProductSingleDetails = () => {
             )} */}
 
             {/* {isEmpty(variations) && ( */}
-              <div className="flex items-center mt-5">
-                <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
-                  {/* {price} */}
-                  Rs {displayPrice || ""}
-                </div>
-                {/* {(data?.promo_price_pkr as number) > 0 && (
+            <div className="flex items-center mt-5">
+              <div className="text-brand-dark font-bold text-base md:text-xl xl:text-[22px]">
+                {/* {price} */}
+                Rs {displayPrice || ''}
+              </div>
+              {/* {(data?.promo_price_pkr as number) > 0 && (
                   <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
                     {data?.promo_price_pkr as number}
                   </del>
                 )} */}
-                {discount && (
-                  <>
-                    <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
-                      Rs  {delPrice || 50}
-                    </del>
-                    <span className="inline-block rounded font-bold text-xs md:text-sm bg-brand-tree bg-opacity-20 text-brand-tree uppercase px-2 py-1 ltr:ml-2.5 rtl:mr-2.5">
-                      {discount} Off
-                    </span>
-                  </>
-                )}
-              </div>
+              {discount && (
+                <>
+                  <del className="text-sm text-opacity-50 md:text-15px ltr:pl-3 rtl:pr-3 text-brand-dark ">
+                    Rs {delPrice || 50}
+                  </del>
+                  <span className="inline-block rounded font-bold text-xs md:text-sm bg-brand-tree bg-opacity-20 text-brand-tree uppercase px-2 py-1 ltr:ml-2.5 rtl:mr-2.5">
+                    {discount} Off
+                  </span>
+                </>
+              )}
+            </div>
             {/* )} */}
           </div>
 
@@ -309,10 +306,10 @@ const ProductSingleDetails = () => {
             <span className="text-sm md:text-15px text-brand-dark text-opacity-80 ltr:mr-2 rtl:ml-2 ">
               Delivery Charges:{' '}
             </span>
-            {data?.delivery ? "Rs "+ data?.delivery as string: "Free Delivery"}
+            {data?.delivery
+              ? (('Rs ' + data?.delivery) as string)
+              : 'Free Delivery'}
           </div>
-
-        
 
           {/* {Object.keys(variations).map((variation) => {
             return (
@@ -325,26 +322,22 @@ const ProductSingleDetails = () => {
             );
           })} */}
 
-
-           <ul className="flex flex-wrap ltr:-mr-2 rtl:-ml-2">
-                                    { variations?.map((attribute: any, index:any) => (
-                                      <li
-                                        key={attribute.id || index}
-                                        className={cn(
-                                          'cursor-pointer rounded border h-9 md:h-10 p-1 mb-2 md:mb-3 ltr:mr-2 rtl:ml-2 flex justify-center items-center font-medium text-sm md:text-15px text-brand-dark transition duration-200 ease-in-out hover:text-brand hover:border-brand px-3',
-                                          {
-                                            'border-brand text-brand':
-                                              variationName === attribute.size,
-                                          },
-                                        )}
-                                        onClick={() =>
-                                          setVariationName(attribute.size)
-                                        }
-                                      >
-                                        {attribute.size}
-                                      </li>
-                                    ))}
-                                  </ul>
+          <ul className="flex flex-wrap ltr:-mr-2 rtl:-ml-2">
+            {variations?.map((attribute: any, index: any) => (
+              <li
+                key={attribute.id || index}
+                className={cn(
+                  'cursor-pointer rounded border h-9 md:h-10 p-1 mb-2 md:mb-3 ltr:mr-2 rtl:ml-2 flex justify-center items-center font-medium text-sm md:text-15px text-brand-dark transition duration-200 ease-in-out hover:text-brand hover:border-brand px-3',
+                  {
+                    'border-brand text-brand': variationName === attribute.size || selectedVariation?.size === attribute.size,
+                  },
+                )}
+                onClick={() => setVariationName(attribute.size)}
+              >
+                {attribute.size}
+              </li>
+            ))}
+          </ul>
 
           <div className="pb-2">
             {/* check that item isInCart and place the available quantity or the item quantity */}
@@ -400,10 +393,57 @@ const ProductSingleDetails = () => {
                     }`}
               </span>
             )} */}
+
+            {isEmpty(variations) && (
+              <>
+                {/* {(selectedQuantity >  Number(stock)) ? ( */}
+                {(
+                  isInCart(item.id)
+                    ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                      Number(stock)
+                    : selectedQuantity >= Number(stock)
+                ) ? (
+                  <span className="text-sm font-medium text-red-500">
+                    {` Only  ${stock} items are Available!`}
+                  </span>
+                ) : Number(stock) > 0 ? (
+                  <span className="text-sm font-medium text-yellow">
+                    {` Only  ${stock} item left!`}
+                  </span>
+                ) : (
+                  <div className="text-base text-brand-danger whitespace-nowrap">
+                    Out Of Stock
+                  </div>
+                )}
+              </>
+            )}
+
+            {!isEmpty(variations) && (
+              <>
+                {/* {(selectedQuantity >  Number(stock)) ? ( */}
+                {(
+                  isInCart(item.id)
+                    ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                      Number(selectedVariation.stock)
+                    : selectedQuantity >= Number(selectedVariation?.stock)
+                ) ? (
+                  <span className="text-sm font-medium text-red-500">
+                    {` Only  ${selectedVariation?.stock} items are Available!`}
+                  </span>
+                ) : Number(selectedVariation?.stock) > 0 ? (
+                  <span className="text-sm font-medium text-yellow">
+                    {` Only  ${selectedVariation?.stock} item left!`}
+                  </span>
+                ) : (
+                  <div className="text-base text-green-500 whitespace-nowrap">
+                    Out Of Stock
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
           <div className="pt-1.5 lg:pt-3 xl:pt-4 space-y-2.5 md:space-y-3.5">
-            
             {/* <Counter
               variant="single"
               value={selectedQuantity}
@@ -435,15 +475,14 @@ const ProductSingleDetails = () => {
               disabled={
                 isInCart(item.id)
                   ? getItemFromCart(item.id).quantity + selectedQuantity >=
-                      (selectedVariation
-                        ? Number(selectedVariation.stock)
-                        : Number(stock))
+                    (selectedVariation
+                      ? Number(selectedVariation.stock)
+                      : Number(stock))
                   : selectedQuantity >=
-                      (selectedVariation
-                        ? Number(selectedVariation.stock)
-                        : Number(stock))
+                    (selectedVariation
+                      ? Number(selectedVariation.stock)
+                      : Number(stock))
               }
-              
             />
             {/* <Button
               onClick={addToCart}

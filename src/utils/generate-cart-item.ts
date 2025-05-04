@@ -42,6 +42,7 @@ if (!isEmpty(variation)) {
       price: variation?.promo_price_pkr ? variation?.promo_price_pkr : variation?.price,
       image: img ,
       delivery:delivery,
+      variant:variation.size,
       // promo_price_pkr:promo_price_pkr,
       // image: image?.thumbnail,
       // variationId: variation.id,
