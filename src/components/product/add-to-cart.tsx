@@ -16,7 +16,7 @@ const AddToCart = ({
   disabled,
   variant = 'mercury',
 }: Props) => {
-  // console.log(">>>>>>>>>>>>>. ", variant);
+  // console.log(">>>>>>>>>>>>>. ", variation);
   
   const { width } = useWindowSize();
   // const { t } = useTranslation(lang, 'common');
@@ -27,17 +27,21 @@ const AddToCart = ({
     getItemFromCart,
     isInCart,
   } = useCart();
-  const selectedVariation = JSON.parse(data?.variations)?.find(
-    (v: any) => v.size === variant
-  );  
+ 
   
-  const item = generateCartItem(data!, selectedVariation);
+  const item = generateCartItem(data!, variation);
   const handleAddClick = (
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   ) => {
     e.stopPropagation();
+    // console.log("Button clicked" , item);
 
-    addItemToCart (item, 1);
+    if(variation){
+
+      addItemToCart ({...item, stock:variation?.stock}, 1);
+    }else{
+      addItemToCart (item, 1);
+    }
   };
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();
@@ -83,12 +87,26 @@ const AddToCart = ({
       value={getItemFromCart(item.id).quantity}
       onDecrement={handleRemoveClick}
       onIncrement={handleAddClick}
+    
       // disabled={outOfStock}
+      // disabled={
+      //   isInCart(item.id)
+      //     ? getItemFromCart(item.id).quantity  >=
+      //       Number(data?.stock)
+      //     : getItemFromCart(item.id).quantity  >= Number(data?.stock)
+      // }
+      // disabled={
+      //   isInCart(item.id)
+      //     ? getItemFromCart(item.id).quantity  >=
+      //       Number(data?.stock) || getItemFromCart(item.id).quantity  >=
+      //       Number(variation?.stock)
+      //     : getItemFromCart(item.id).quantity  >= Number(data?.stock) 
+      // }
       disabled={
-        isInCart(item.id)
+        isInCart (item.id)
           ? getItemFromCart(item.id).quantity  >=
-            Number(data?.stock)
-          : getItemFromCart(item.id).quantity  >= Number(data?.stock)
+            Number(item?.stock)
+          : getItemFromCart(item.id).quantity  >= Number(item?.stock)
       }
       className="w-full h-10"
       variant={variant}

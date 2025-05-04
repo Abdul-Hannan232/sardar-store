@@ -23,21 +23,16 @@ interface ProductProps {
   className?: string;
 }
 function RenderPopupOrAddToCart({ props }: { props: Object }) {
-  let { data }: any = props;
-  // console.log(data);
-
+  let { data , variations:allVariations}: any = props;
   const { id, quantity, stock, product_type, status, gallery } = data ?? {};
-  // const { width } = useWindowSize();
-  // const { openModal } = useModalAction();
-  // const { isInCart, isInStock } = useCart();
-  // const iconSize = width! > 1024 ? '19' : '17';
-  // const outOfStock = isInCart(id) && !isInStock(id);
-  // function handlePopupView() {
-  //   openModal('PRODUCT_VIEW', data);
-  // }
+
+
+  const outOfStock = !allVariations.some(
+    (variation:any) => Number(variation?.stock) >0 
+  ) && (Number(stock) < 1)
  
   // if (Number(stock) < 1 || outOfStock) {
-  if (Number(stock) < 1) {
+  if (outOfStock ) {
     return (
       <span className="text-[11px] md:text-xs font-bold text-brand-light uppercase inline-block bg-brand-danger rounded-full px-2.5 pt-1 pb-[3px] mx-0.5 sm:mx-1">
         Out Of Stock
@@ -46,10 +41,13 @@ function RenderPopupOrAddToCart({ props }: { props: Object }) {
   }
   const variations = data?.variations? JSON.parse(data?.variations as string): []
   const {delPrice, displayPrice, discount,variationName, setVariationName} = CalculatePrice(data, variations)
-// console.log(variationName);
 
+  let selectedVariation = variations?.find((v:any)=> v.size === variationName)
+
+  // console.log("5554444444444",selectedVariation);
+  
   // return <AddToCart data={data} variant="mercury" />;
-  return <AddToCart data={data} variant={variationName} />;
+  return <AddToCart data={data} variation={selectedVariation} />;
 }
 const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
 
@@ -147,7 +145,7 @@ const ProductCardAlpine: React.FC<ProductProps> = ({ product, className }) => {
             </span>
           )}
           <div className={`block product-count-button-position`}>
-            <RenderPopupOrAddToCart props={{ data: product }} />
+            <RenderPopupOrAddToCart props={{ data: product , variations}} />
           </div>
         </div>
       </div>

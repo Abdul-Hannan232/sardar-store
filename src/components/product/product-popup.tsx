@@ -627,6 +627,11 @@ export default function ProductPopup() {
   const [addToWishlistLoader, setAddToWishlistLoader] =
     useState<boolean>(false);
   const [shareButtonStatus, setShareButtonStatus] = useState<boolean>(false);
+
+// console.log("555555555555555555 , data ", data);
+
+
+
   // const { price, basePrice, discount } = usePrice({
   //   amount: data.promo_price_pkr ? data.promo_price_pkr : data.price,
   //   baseAmount: data.price,
@@ -830,7 +835,9 @@ export default function ProductPopup() {
     setShareButtonStatus(!shareButtonStatus);
   };
 
+  
   return (
+    // <div className="md:w-[600px] lg:w-[940px] xl:w-[1180px] 2xl:w-[1360px] mx-auto p-1 lg:p-0 xl:p-3 bg-brand-light rounded-md">
     <div className="md:w-[600px] lg:w-[940px] xl:w-[1180px] 2xl:w-[1360px] mx-auto p-1 lg:p-0 xl:p-3 bg-brand-light rounded-md">
       <CloseButton onClick={closeModal} />
       <div className="overflow-hidden">
@@ -1012,12 +1019,31 @@ export default function ProductPopup() {
                   onDecrement={() =>
                     setSelectedQuantity((prev) => (prev !== 1 ? prev - 1 : 1))
                   }
+                  // disabled={
+                  //   isInCart(item.id)
+                  //     ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                  //       Number(stock)
+                  //     : selectedQuantity >= Number(stock) 
+                  // }
+                  //  disabled={
+                  //   isInCart(item.id)
+                  //     ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                  //       Number(stock)
+                  //     : selectedQuantity >= Number(stock) 
+                  // }
+
                   disabled={
                     isInCart(item.id)
                       ? getItemFromCart(item.id).quantity + selectedQuantity >=
-                        Number(stock)
-                      : selectedQuantity >= Number(stock)
+                          (selectedVariation
+                            ? Number(selectedVariation.stock)
+                            : Number(stock))
+                      : selectedQuantity >=
+                          (selectedVariation
+                            ? Number(selectedVariation.stock)
+                            : Number(stock))
                   }
+                  
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <Button

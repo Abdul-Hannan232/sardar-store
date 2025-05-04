@@ -37,7 +37,7 @@ if (!isEmpty(variation)) {
         title,
       slug,
       unit,
-      stock: stock as number,
+      stock: Number(variation.stock)  || stock as number  ,
       // stock: variation.quantity,
       price: variation?.promo_price_pkr ? variation?.promo_price_pkr : variation?.price,
       image: img ,

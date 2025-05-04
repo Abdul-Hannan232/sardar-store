@@ -59,7 +59,7 @@ const DownloadAppsTwo: React.FC<Props> = ({
         );
 
         const today = new Date();
-        const filtered = banners.filter(
+        const filtered = banners?.filter(
           (banner: any) =>
             banner.isVisible && new Date(banner.endingDate) >= today,
         );

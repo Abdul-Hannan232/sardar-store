@@ -3,6 +3,7 @@ export interface Item {
   price: number | any;
   quantity?: number;
   delivery?: any;
+  variations?:any;
   stock?: number;
   [key: string]: any;
 }
@@ -28,6 +29,33 @@ export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 //   }
 //   return [...items, { ...item, quantity }];
 // }
+// export function addItemWithQuantity(
+//   items: Item[],
+//   item: Item,
+//   quantity: number,
+// ) {
+//   if (quantity <= 0)
+//     throw new Error("cartQuantity can't be zero or less than zero");
+
+//   const existingItemIndex = items.findIndex(
+//     (existingItem) => existingItem.id === item.id,
+//   );
+
+//   console.log('existingItemIndex ', item);
+
+//   if (existingItemIndex > -1) {
+//     const newItems = [...items];
+//     newItems[existingItemIndex] = {
+//       ...newItems[existingItemIndex],
+//       quantity: (newItems[existingItemIndex].quantity || 0) + quantity,
+//     };
+//     return newItems;
+//   }
+// // console.log("<<<< ", item);
+
+//   return [...items, { ...item, quantity }];
+// }
+
 export function addItemWithQuantity(
   items: Item[],
   item: Item,
@@ -41,6 +69,7 @@ export function addItemWithQuantity(
   );
 
   // console.log('existingItemIndex ', item);
+  // console.log('existingItemIndex ', quantity);
 
   if (existingItemIndex > -1) {
     const newItems = [...items];
@@ -100,7 +129,7 @@ export function inStock(items: Item[], id: Item['id']) {
   const item = getItem(items, id);
   
   if (item){ 
-    // console.log(item)
+    // console.log("-------------------- test",item)
     return item['quantity']! < item['stock']!;}
   return true;
 }

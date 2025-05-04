@@ -170,6 +170,7 @@ import http from '@framework/utils/http';
 import { Order, OrderItem, CheckoutCardProps } from '@framework/types';
 import { toast } from 'react-toastify';
 import useWindowSize from '@utils/use-window-size';
+import { isString } from 'lodash';
 
 const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   const router = useRouter();
@@ -191,34 +192,57 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       const getProductData = async () => {
         try {
           const data = await fetchProduct(`/product/${id}`);
-          // console.log('order', data);
 
           let variations = data?.variations
-          ? JSON.parse(data?.variations as string)
-          : [];
+            ? JSON.parse(data?.variations as string)
+            : [];
 
-         
-         if(variationName && variations?.length > 0){
-          const selectedVariation = variations?.find(
-            (v: any) => v.size === variationName
-          );  
-          setProductData({...data, promo_price_pkr: selectedVariation.promo_price_pkr, price:selectedVariation.price});
-          setOrder({
-            userId: Number(userData?.id),
-            items: [{ productId: data.id, quantity: Number(quantity) || 1 , selectedVariation}],
-            totalPrice: (selectedVariation.promo_price_pkr ? selectedVariation.promo_price_pkr * Number(quantity): selectedVariation.price * Number(quantity)) as number + Number(data?.delivery),
-          });
-         }else{
-          setProductData(data);
-          setOrder({
-            userId: Number(userData?.id),
-            items: [{ productId: data.id, quantity: Number(quantity) || 1 }],
-            totalPrice:(data.promo_price_pkr ? data.promo_price_pkr * Number(quantity): data.price * Number(quantity)) as number + Number(data?.delivery),
-          });
-         }
-          
-          
-         
+          if (variationName && variations?.length > 0) {
+            const selectedVariation = variations?.find(
+              (v: any) => v.size === variationName,
+            );
+
+            // console.log('order',selectedVariation);
+
+            setProductData({
+              ...data,
+              promo_price_pkr: selectedVariation.promo_price_pkr,
+              price: selectedVariation.price,
+            });
+            setOrder({
+              userId: Number(userData?.id),
+              items: [
+                {
+                  productId: data.id,
+                  quantity: Number(quantity) || 1,
+                  selectedVariation,
+                },
+              ],
+              totalPrice:
+                ((selectedVariation.promo_price_pkr
+                  ? selectedVariation.promo_price_pkr * Number(quantity)
+                  : selectedVariation.price * Number(quantity)) as number) +
+                Number(data?.delivery),
+            });
+
+            // console.log("order >>> ",{
+            //   userId: Number(userData?.id),
+            //   items: [{ productId: data.id, quantity: Number(quantity) || 1 , selectedVariation}],
+            //   totalPrice: (selectedVariation.promo_price_pkr ? selectedVariation.promo_price_pkr * Number(quantity): selectedVariation.price * Number(quantity)) as number + Number(data?.delivery),
+            // });
+          } else {
+            setProductData(data);
+            setOrder({
+              userId: Number(userData?.id),
+              items: [{ productId: data.id, quantity: Number(quantity) || 1 }],
+              totalPrice:
+                ((data.promo_price_pkr
+                  ? data.promo_price_pkr * Number(quantity)
+                  : data.price * Number(quantity)) as number) +
+                Number(data?.delivery),
+            });
+          }
+
           setLoading(false);
         } catch (error) {
           console.error('Error fetching product data:', error);
@@ -259,8 +283,14 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       setLoading(false);
 
       const orderItems: OrderItem[] = items.map((item) => ({
-        productId: Number(item.id),
+        productId:
+          typeof item?.id === 'string'
+            ? parseInt(item?.id?.split('.')[0], 10)
+            : Number(item.id),
+        // productId: Number(item.id),
         quantity: Number(item.quantity),
+        selectedVariation:
+          typeof item?.id === 'string' ? item?.id.split('.')[1] : '',
       }));
 
       // Calculate total price
@@ -269,13 +299,13 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       //   0,
       // );
 
-      console.log("----------------- ",items);
-      
+      // console.log("----------------- ",items);
+
       const totalPrice = items.reduce(
         (total, item) => total + item.itemTotal + item.delivery,
         0,
       );
-      console.log("----------------- ",totalPrice);
+      // console.log("----------------- ",totalPrice);
 
       const order: Order = {
         userId: Number(userData?.id),
@@ -288,6 +318,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   }, [productData, items]);
 
   // place order
+  console.log(order);
 
   function orderHeader() {
     setIsPending(true);

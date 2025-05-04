@@ -426,12 +426,24 @@ const ProductSingleDetails = () => {
               onDecrement={() =>
                 setSelectedQuantity((prev) => (prev !== 1 ? prev - 1 : 1))
               }
+              // disabled={
+              //   isInCart(data?.id as string)
+              //     ? getItemFromCart(data?.id as string).quantity + selectedQuantity >=
+              //       Number(data?.stock)
+              //     : selectedQuantity >= Number(data?.stock)
+              // }
               disabled={
-                isInCart(data?.id as string)
-                  ? getItemFromCart(data?.id as string).quantity + selectedQuantity >=
-                    Number(data?.stock)
-                  : selectedQuantity >= Number(data?.stock)
+                isInCart(item.id)
+                  ? getItemFromCart(item.id).quantity + selectedQuantity >=
+                      (selectedVariation
+                        ? Number(selectedVariation.stock)
+                        : Number(stock))
+                  : selectedQuantity >=
+                      (selectedVariation
+                        ? Number(selectedVariation.stock)
+                        : Number(stock))
               }
+              
             />
             {/* <Button
               onClick={addToCart}

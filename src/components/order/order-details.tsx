@@ -6,12 +6,21 @@ import { useRouter } from 'next/navigation';
 import Heading from '@components/ui/heading';
 
 const OrderItemCard = ({ product }: { product: OrderItem }) => {
+  // console.log("order details >>> ", product);
+
+  const selectedVariation =
+    typeof product?.selectedVariation === 'string'
+      ? JSON.parse(product?.productDetails.variations || '[]').find(
+          (v: any) => v.size === product?.selectedVariation,
+        )
+      : product?.selectedVariation;
+
   const { price: itemTotal } = usePrice({
     // amount: product.productDetails?.price * product.quantity,
-    amount: product?.selectedVariation?.promo_price_pkr
-      ? product?.selectedVariation?.promo_price_pkr * Number(product?.quantity)
-      : product?.selectedVariation?.price
-        ? product?.selectedVariation?.price * Number(product?.quantity)
+    amount: selectedVariation?.promo_price_pkr
+      ? selectedVariation?.promo_price_pkr * Number(product?.quantity)
+      : selectedVariation?.price
+        ? selectedVariation?.price * Number(product?.quantity)
         : product.productDetails?.promo_price_pkr
           ? product?.productDetails?.promo_price_pkr * Number(product?.quantity)
           : product?.productDetails?.price
@@ -19,8 +28,21 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
             : null,
     currencyCode: 'PKR',
   });
+  // const { price: itemTotal } = usePrice({
+  //   // amount: product.productDetails?.price * product.quantity,
+  //   amount: product?.selectedVariation?.promo_price_pkr
+  //     ? product?.selectedVariation?.promo_price_pkr * Number(product?.quantity)
+  //     : product?.selectedVariation?.price
+  //       ? product?.selectedVariation?.price * Number(product?.quantity)
+  //       : product.productDetails?.promo_price_pkr
+  //         ? product?.productDetails?.promo_price_pkr * Number(product?.quantity)
+  //         : product?.productDetails?.price
+  //           ? product?.productDetails?.price * Number(product.quantity)
+  //           : null,
+  //   currencyCode: 'PKR',
+  // });
 
-  console.log('>>>>>>>>>>>>>> product', product);
+  console.log('>>>>>>>>>>>>>> order details product', product);
 
   return (
     <tr
@@ -32,7 +54,7 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
       </td>
       <td className="p-4 flex flex-col">
         {itemTotal}{' '}
-        {product.productDetails.delivery >0 && (
+        {product.productDetails.delivery > 0 && (
           <div className="text-sm text-gray-500">
             Delivery: {product.productDetails.delivery}
           </div>

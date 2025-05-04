@@ -39,6 +39,7 @@ export default function ManagedModal() {
       </Modal>
     );
   }
+  
 
   return (
     <Modal open={isOpen} onClose={closeModal}>

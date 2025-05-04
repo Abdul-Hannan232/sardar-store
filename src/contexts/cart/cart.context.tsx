@@ -5,7 +5,7 @@ import { cartReducer, State, initialState } from './cart.reducer';
 import { Item, getItem, inStock } from './cart.utils';
 import { useLocalStorage } from '@utils/use-local-storage';
 interface CartProviderState extends State {
-  addItemToCart: (item: Item, quantity: number) => void;
+  addItemToCart: (item: Item, quantity: number ) => void;
   removeItemFromCart: (id: Item['id']) => void;
   clearItemFromCart: (id: Item['id']) => void;
   getItemFromCart: (id: Item['id']) => any | undefined;
