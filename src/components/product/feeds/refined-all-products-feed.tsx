@@ -1,5 +1,5 @@
 'use client';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import ProductCardAlpine from '@components/product/product-cards/product-card-alpine';
 import type { FC } from 'react';
 import { useProductsQuery } from '@framework/product/get-all-products';
@@ -12,17 +12,30 @@ import { usePathname, useRouter } from 'next/navigation';
 import { LIMITS } from '@framework/utils/limits';
 import { Product } from '@framework/types';
 import useQueryParam from '@utils/use-query-params';
+import { useCategoryContext } from '@pages/category-with-products';
 interface ProductFeedProps {
   className?: string;
 }
+
+
+
 const RefinedAllProductFeed: FC<ProductFeedProps> = ({ className = '' }) => {
-  const pathname = usePathname();
-  const { getParams, query } = useQueryParam(pathname ?? '/');
-  const newQuery: any = getParams(
-    // @ts-ignore
-    `${process.env.NEXT_PUBLIC_WEBSITE_URL}${query}`,
-  );
-  // console.log('query' , newQuery);
+  const { params, setParams } = useCategoryContext();
+
+  const [newQuery, setNewQuery] = useState<string>("")
+  
+  // const pathname = usePathname();
+  // const { getParams, query } = useQueryParam(pathname ?? '/');
+  // const newQuery: any = getParams(
+  //   // @ts-ignore
+  //   `${process.env.NEXT_PUBLIC_WEBSITE_URL}${query}`,
+  // );
+  console.log('query  >>>> ' , newQuery);
+  
+  useEffect(()=>{
+    setNewQuery(params)
+  },[params])
+
 
   const {
     isFetching: isLoading,
@@ -34,7 +47,8 @@ const RefinedAllProductFeed: FC<ProductFeedProps> = ({ className = '' }) => {
   } = useProductsQuery({
     // limit: LIMITS.REFINED_PRODUCTS_LIMITS,
     // @ts-ignore
-    text: newQuery.category ? `category=${newQuery?.category}` : 'all=true',
+    // text: newQuery.category ? `category=${newQuery?.category}` : 'all=true',
+    text: newQuery ? `category=${newQuery}` : 'all=true',
     // text: 'all=true',
     // newQuery: 'all=true',
   });

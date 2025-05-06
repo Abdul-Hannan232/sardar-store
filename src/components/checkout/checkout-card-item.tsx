@@ -3,12 +3,14 @@ import Image from '@components/ui/image';
 import { generateCartItemName } from '@utils/generate-cart-item-name';
 import usePrice from '@framework/product/use-price';
 
-export const CheckoutItem: React.FC<{ item: Item; quantity?: string , variationName?:string}> = ({
-  item,
-  quantity,
-  variationName
-}) => {
-  // console.log('tData ------------', item);
+export const CheckoutItem: React.FC<{
+  item: Item;
+  quantity?: string;
+  variationName?: string;
+}> = ({ item, quantity, variationName }) => {
+
+  console.log('tData ------------', item);
+  console.log('variationName ------------', variationName);
 
   const { price } = usePrice({
     amount: item.itemTotal,
@@ -60,12 +62,12 @@ export const CheckoutItem: React.FC<{ item: Item; quantity?: string , variationN
       </h6>
       <div className="flex flex-col font-normal ltr:ml-auto rtl:mr-auto text-15px text-brand-dark ltr:pl-2 rtl:pr-2 shrink-0 items-end ">
         {/* {price ? price : item.price * Number(quantity)} */}
-      Rs  {price
+        Rs{' '}
+        {price
           ? price
           : item?.promo_price_pkr
             ? item?.promo_price_pkr * Number(quantity)
             : item.price * Number(quantity)}
-
         {item?.delivery && Number(item?.delivery) > 0 ? (
           <span className="text-13px sm:text-sm text-brand-muted  font-normal">
             Delivery:
@@ -76,7 +78,25 @@ export const CheckoutItem: React.FC<{ item: Item; quantity?: string , variationN
         ) : (
           ''
         )}
-        {variationName  && (
+        {item?.variant === variationName && variationName !== undefined ? (
+          <span className="text-13px sm:text-sm text-brand-muted  font-normal">
+            Variant:
+            <span className="    ltr:pl-3 rtl:pr-3 ">{item?.variant}</span>{' '}
+          </span>
+        ) : item?.variant  ? (
+          <span className="text-13px sm:text-sm text-brand-muted  font-normal">
+            Variant:
+            <span className="    ltr:pl-3 rtl:pr-3 ">{item?.variant}</span>{' '}
+          </span>
+        ): variationName && variationName !== undefined ? (
+          <span className="text-13px sm:text-sm text-brand-muted  font-normal">
+            Variant:
+            <span className="    ltr:pl-3 rtl:pr-3 ">{variationName}</span>{' '}
+          </span>
+        ): null}
+
+
+        {/* {variationName  && (
           <span className="text-13px sm:text-sm text-brand-muted  font-normal">
             Variant:
             <span className="    ltr:pl-3 rtl:pr-3 ">
@@ -91,7 +111,7 @@ export const CheckoutItem: React.FC<{ item: Item; quantity?: string , variationN
                {item?.variant}
             </span>{' '}
           </span>
-        ) }
+        ) } */}
       </div>
     </div>
   );

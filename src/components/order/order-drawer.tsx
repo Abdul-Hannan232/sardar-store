@@ -146,7 +146,7 @@ const OrderDrawer = () => {
                   <p className="flex justify-between mb-2 ltr:pl-20 rtl:pr-20">
                     <span className="ltr:mr-8 rtl:ml-8">Total Cost:</span>
                     <span className="font-medium">
-                      {data.totalPrice}
+                     Rs {data.totalPrice}
                       {/* <TotalPrice items={data} /> */}
                     </span>
                   </p>

@@ -9,10 +9,13 @@ import cn from 'classnames';
 
 interface CategorySidebarProps {
   className?: string;
+  // setParams: Function;
 }
 
 export default function CategoryDropdownSidebar({
   className,
+  // setParams
+  
 }: CategorySidebarProps) {
   const {
     data,
@@ -42,7 +45,8 @@ export default function CategoryDropdownSidebar({
                   />
                 ))
               ) : (
-                <SidebarMenu className="list" items={data?.categories?.data} />
+                // <SidebarMenu setParams={setParams as Function}  className="list" items={data?.categories?.data} />
+                <SidebarMenu   className="list" items={data?.categories?.data} />
               )}
             </div>
           </Scrollbar>

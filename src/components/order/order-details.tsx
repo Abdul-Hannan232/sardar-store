@@ -28,21 +28,9 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
             : null,
     currencyCode: 'PKR',
   });
-  // const { price: itemTotal } = usePrice({
-  //   // amount: product.productDetails?.price * product.quantity,
-  //   amount: product?.selectedVariation?.promo_price_pkr
-  //     ? product?.selectedVariation?.promo_price_pkr * Number(product?.quantity)
-  //     : product?.selectedVariation?.price
-  //       ? product?.selectedVariation?.price * Number(product?.quantity)
-  //       : product.productDetails?.promo_price_pkr
-  //         ? product?.productDetails?.promo_price_pkr * Number(product?.quantity)
-  //         : product?.productDetails?.price
-  //           ? product?.productDetails?.price * Number(product.quantity)
-  //           : null,
-  //   currencyCode: 'PKR',
-  // });
+ 
 
-  console.log('>>>>>>>>>>>>>> order details product', product);
+  // console.log('>>>>>>>>>>>>>> order details product', product);
 
   return (
     <tr
@@ -57,6 +45,11 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
         {product.productDetails.delivery > 0 && (
           <div className="text-sm text-gray-500">
             Delivery: {product.productDetails.delivery}
+          </div>
+        )}{' '}
+        {product.productDetails.variations  && selectedVariation &&  (
+          <div className="text-sm text-gray-500">
+            Variation: {selectedVariation?.size}
           </div>
         )}{' '}
       </td>
@@ -78,20 +71,7 @@ const OrderDetails: React.FC<{ className?: string; id?: number }> = ({
       currencyCode: 'PKR',
     },
   );
-  // const { price: total } = usePrice(
-  //   order && {
-  //     amount: order.shipping_fee
-  //       ? order.total + order.shipping_fee
-  //       : order.total,
-  //     currencyCode: 'PKR',
-  //   },
-  // );
-  // const { price: shipping } = usePrice(
-  //   order && {
-  //     amount: order.shipping_fee,
-  //     currencyCode: 'PKR',
-  //   },
-  // );
+ 
   if (isLoading) return <p>Loading...</p>;
 
   return (
@@ -120,15 +100,7 @@ const OrderDetails: React.FC<{ className?: string; id?: number }> = ({
             <td className="p-4 italic">Subtotal:</td>
             <td className="p-4">{subtotal}</td>
           </tr>
-          {/* <tr className="odd:bg-fill-secondary">
-            <td className="p-4 italic">Shipping:</td>
-            <td className="p-4">
-              {shipping}
-              <span className="text-[13px] font-normal ltr:pl-1.5 rtl:pr-1.5 inline-block">
-                via Flat rate
-              </span>
-            </td>
-          </tr> */}
+          
           <tr className="odd:bg-fill-secondary">
             <td className="p-4 italic">Payment method:</td>
             <td className="p-4">{order?.paymentMethod}</td>

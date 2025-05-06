@@ -2,13 +2,32 @@ import usePrice from '@framework/product/use-price';
 import Image from '@components/ui/image';
 
 export const OrderDetailsContent: React.FC<{ item?: any }> = ({ item }) => {
-  // console.log('----------- product ',item);
+  console.log('----------- product ',item);
 
-  const { price } = usePrice({
-    amount: item.productDetails.price,
+  // const { price } = usePrice({
+  //   amount: item.productDetails.price,
+  //   currencyCode: 'PKR',
+  // });
+const product = item
+  const selectedVariation =
+  typeof product?.selectedVariation === 'string'
+    ? JSON.parse(product?.productDetails.variations || '[]').find(
+        (v: any) => v.size === product?.selectedVariation,
+      )
+    : product?.selectedVariation;
+ const { price: itemTotal } = usePrice({
+    // amount: product.productDetails?.price * product.quantity,
+    amount: selectedVariation?.promo_price_pkr
+      ? selectedVariation?.promo_price_pkr * Number(product?.quantity)
+      : selectedVariation?.price
+        ? selectedVariation?.price * Number(product?.quantity)
+        : product.productDetails?.promo_price_pkr
+          ? product?.productDetails?.promo_price_pkr * Number(product?.quantity)
+          : product?.productDetails?.price
+            ? product?.productDetails?.price * Number(product.quantity)
+            : null,
     currencyCode: 'PKR',
   });
-
 
   let gallery: string[] = [];
   if (item?.productDetails.gallery) {
@@ -58,7 +77,21 @@ export const OrderDetailsContent: React.FC<{ item?: any }> = ({ item }) => {
         {typeof item.quantity === 'number' && <p>{item.quantity}x</p>}
       </div>
       <div className="self-center col-span-2">
-        {typeof item.productDetails.price === 'number' && <p>{price}</p>}
+        {/* {typeof item.productDetails.price === 'number' && <p>{price}</p>} */}
+        <p>{itemTotal} 
+         {product.productDetails.delivery > 0 ? (
+          <div className="w-[100px] text-sm text-gray-500">
+            Delivery: Rs {product.productDetails.delivery}
+          </div>
+        ): <div className="w-[100px] text-sm text-gray-500">
+        Free Delivery
+      </div>}
+      {product.productDetails.variations  && selectedVariation &&  (
+          <div className="text-sm text-gray-500">
+            Variation: {selectedVariation?.size}
+          </div>
+        )}
+        </p>
       </div>
     </div>
   );
