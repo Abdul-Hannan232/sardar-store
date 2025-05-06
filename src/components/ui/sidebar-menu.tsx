@@ -356,7 +356,7 @@ const SidebarMenuItem = ({
       ) : null}
     </>
   );
-};
+}; 
 
 
 // function SidebarMenu({ items, className, setParams }: { items: any; className?: string ;setParams:Function}) {
