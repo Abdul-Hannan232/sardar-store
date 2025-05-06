@@ -2,7 +2,7 @@ import usePrice from '@framework/product/use-price';
 import Image from '@components/ui/image';
 
 export const OrderDetailsContent: React.FC<{ item?: any }> = ({ item }) => {
-  console.log('----------- product ',item);
+  // console.log('----------- product ',item);
 
   // const { price } = usePrice({
   //   amount: item.productDetails.price,
@@ -80,10 +80,10 @@ const product = item
         {/* {typeof item.productDetails.price === 'number' && <p>{price}</p>} */}
         <p>{itemTotal} 
          {product.productDetails.delivery > 0 ? (
-          <div className="w-[100px] text-sm text-gray-500">
+          <div className="min-w-[100px] text-sm text-gray-500">
             Delivery: Rs {product.productDetails.delivery}
           </div>
-        ): <div className="w-[100px] text-sm text-gray-500">
+        ): <div className="min-w-[100px] text-sm text-gray-500">
         Free Delivery
       </div>}
       {product.productDetails.variations  && selectedVariation &&  (
