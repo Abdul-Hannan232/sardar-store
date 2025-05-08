@@ -78,7 +78,7 @@ const product = item
       </div>
       <div className="self-center col-span-2">
         {/* {typeof item.productDetails.price === 'number' && <p>{price}</p>} */}
-        <p>{itemTotal} 
+        <div>{itemTotal} 
          {product.productDetails.delivery > 0 ? (
           <div className="min-w-[100px] text-sm text-gray-500">
             Delivery: Rs {product.productDetails.delivery}
@@ -88,10 +88,10 @@ const product = item
       </div>}
       {product.productDetails.variations  && selectedVariation &&  (
           <div className="text-sm text-gray-500">
-            Variation: {selectedVariation?.size}
+            Size: {selectedVariation?.size}
           </div>
         )}
-        </p>
+        </div>
       </div>
     </div>
   );

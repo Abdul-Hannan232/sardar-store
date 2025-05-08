@@ -985,13 +985,17 @@ export default function ProductPopup() {
                 {!isEmpty(variations) && (
                   <>
                     {/* {(selectedQuantity >  Number(stock)) ? ( */}
-                    {(
-                      isInCart(item.id)
-                        ? getItemFromCart(item.id).quantity +
-                            selectedQuantity >=
-                          Number(selectedVariation.stock)
-                        : selectedQuantity >= Number(selectedVariation?.stock)
-                    ) ? (
+                    {Number(selectedVariation?.stock) === 0 ? (
+                      <div className="text-base text-brand-danger whitespace-nowrap">
+                        Out Of Stock
+                      </div>
+                    ) : (
+                        isInCart(item.id)
+                          ? getItemFromCart(item.id).quantity +
+                              selectedQuantity >=
+                            Number(selectedVariation.stock)
+                          : selectedQuantity >= Number(selectedVariation?.stock)
+                      ) ? (
                       <span className="text-sm font-medium text-red-500">
                         {` Only  ${selectedVariation?.stock} items are Available!`}
                       </span>

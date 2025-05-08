@@ -152,7 +152,7 @@ const OrderDrawer = () => {
                   </p>
                 </div>
               </div>
-              <div className="mt-12 ltr:text-right rtl:text-left">
+              {/* <div className="mt-12 ltr:text-right rtl:text-left">
                 <span className="py-3 px-5 cursor-pointer inline-block text-[12px] md:text-[14px] text-black font-medium bg-white rounded border border-solid border-[#DEE5EA] ltr:mr-4 rtl:ml-4 hover:bg-[#F35C5C] hover:text-white hover:border-[#F35C5C] transition-all capitalize">
                   Report order
                 </span>
@@ -162,7 +162,7 @@ const OrderDrawer = () => {
                 >
                   Cancel order
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
         </>

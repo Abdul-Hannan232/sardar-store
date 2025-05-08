@@ -49,7 +49,7 @@ const OrderItemCard = ({ product }: { product: OrderItem }) => {
         )}{' '}
         {product.productDetails.variations  && selectedVariation &&  (
           <div className="text-sm text-gray-500">
-            Variation: {selectedVariation?.size}
+            Size: {selectedVariation?.size}
           </div>
         )}{' '}
       </td>

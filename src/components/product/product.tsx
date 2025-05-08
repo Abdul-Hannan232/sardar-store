@@ -421,7 +421,11 @@ const ProductSingleDetails = () => {
             {!isEmpty(variations) && (
               <>
                 {/* {(selectedQuantity >  Number(stock)) ? ( */}
-                {(
+                {Number(selectedVariation?.stock) === 0 ? (
+                      <div className="text-base text-brand-danger whitespace-nowrap">
+                        Out Of Stock
+                      </div>
+                    ) : (
                   isInCart(item.id)
                     ? getItemFromCart(item.id).quantity + selectedQuantity >=
                       Number(selectedVariation.stock)

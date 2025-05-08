@@ -103,7 +103,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           }
           {item?.variant && (
             <span className="text-13px  text-brand-muted  font-normal">
-              Variant:<span className=""> {item?.variant}</span>{' '}
+              Size:<span className=""> {item?.variant}</span>{' '}
             </span>
           )}
         </div>
