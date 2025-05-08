@@ -21,7 +21,7 @@
 //   // const [user, setUser] = useState(null);
 //   const [user, setUser] = useState(() => {
 //     if (isBrowser) {
-//       const storedUser = localStorage.getItem('user');
+//       const storedUser = sessionStorage.getItem('user');
 //       return storedUser ? JSON.parse(storedUser) : null;
 //     }
 //     return null;
@@ -31,9 +31,9 @@
 //   useEffect(() => {
 //     // Update localStorage whenever the user state changes
 //     if (user) {
-//       localStorage.setItem('user', JSON.stringify(user));
+//       sessionStorage.setItem('user', JSON.stringify(user));
 //     } else {
-//       localStorage.removeItem('user');
+//       sessionStorage.removeItem('user');
 //     }
 //   }, [user]);
 //   const login = (userData) => {
@@ -59,6 +59,8 @@
 'use client';
 import React, { useState, useEffect  } from 'react';
 import UserContext from '@contexts/user/userContext';
+import Cookies from 'js-cookie';
+
 
 
 const isBrowser = typeof window !== 'undefined';
@@ -67,7 +69,7 @@ export const UserProvider = ({ children }) => {
   // const [user, setUser] = useState(null);
   const [user, setUser] = useState(() => {
     if (isBrowser) {
-      const storedUser = localStorage.getItem('user');
+      const storedUser = sessionStorage.getItem('user');
       return storedUser ? JSON.parse(storedUser) : null;
     }
     return null;
@@ -77,10 +79,11 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     // update localStorage
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      sessionStorage.setItem('user', JSON.stringify(user));
     } else {
-      localStorage.removeItem('user');
-    }
+      sessionStorage.removeItem('user');
+     Cookies.remove('auth_token')
+    } 
   }, [user]);
   const signin = (userData) => {
     setUser(userData);

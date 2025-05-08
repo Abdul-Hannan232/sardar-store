@@ -6,7 +6,7 @@ const isBrowser = typeof window !== 'undefined';
 
 let id = '';
 if (isBrowser) {
-  const storedUser = localStorage.getItem('user');
+  const storedUser = sessionStorage.getItem('user');
   id = storedUser ? JSON.parse(storedUser).id : null;
 }
 

@@ -80,13 +80,13 @@
 
 //   const [user, setUser] = useState(() => {
 //     if (isBrowser) {
-//       const storedUser = localStorage.getItem('user');
+//       const storedUser = sessionStorage.getItem('user');
 //       return storedUser ? JSON.parse(storedUser) : null;
 //     }
 //     return null;
 //   });
 
-//   // let user = JSON.parse(localStorage?.getItem('user') as string);
+//   // let user = JSON.parse(sessionStorage?.getItem('user') as string);
 
 //   const {
 //     register,
@@ -169,7 +169,7 @@ import { ContactFormValues ,DeliveryInstructionsProps, User} from '@framework/ty
 //   useEffect(() => {
 //     const fetchUserData = async () => {
 //       if (isBrowser) {
-//         const storedUser = localStorage.getItem('user');
+//         const storedUser = sessionStorage.getItem('user');
 //         const user = storedUser ? JSON.parse(storedUser) : null;
         
 //         if (user) {
@@ -281,7 +281,7 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({
   useEffect(() => {
     const fetchUserData = async () => {
       if (isBrowser) {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = sessionStorage.getItem('user');
         const localUser = storedUser ? JSON.parse(storedUser) : null;
 
         if (localUser) {

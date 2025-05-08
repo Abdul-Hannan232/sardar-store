@@ -8,7 +8,6 @@ import { useUI } from '@contexts/ui.context';
 import cn from 'classnames';
 import { useCategoriesQuery } from '@framework/category/get-all-categories';
 
-
 import {
   IoLogoInstagram,
   IoLogoTwitter,
@@ -16,6 +15,9 @@ import {
   IoLogoYoutube,
   IoClose,
 } from 'react-icons/io5';
+import AuthMenu from './auth-menu';
+import { ROUTES } from '@utils/routes';
+import { useModalAction } from '@components/common/modal/modal.context';
 
 const social = [
   {
@@ -46,14 +48,18 @@ const social = [
     className: 'instagram',
     title: 'text-instagram',
   },
-]; 
+];
 
 export default function MobileMenu() {
   const [activeMenus, setActiveMenus] = useState<any>([]);
   const { site_header } = siteSettings;
-  const { closeSidebar } = useUI();
+  const { closeSidebar, isAuthorized } = useUI();
+  const { openModal } = useModalAction();
 
-
+  function handleLogin() {
+    closeSidebar();
+    openModal('LOGIN_VIEW');
+  }
   const {
     data: categories,
     isLoading: loading,
@@ -72,7 +78,7 @@ export default function MobileMenu() {
       id: 6,
       path: '/pages/my-account/account-settings',
       name: 'Categories',
-      subMenu: categories?.categories?.data
+      subMenu: categories?.categories?.data,
     },
     {
       id: 4,
@@ -95,7 +101,6 @@ export default function MobileMenu() {
       path: 'https://sardar-store-dashboard.vercel.app/login',
       name: 'Admin',
     },
-   
   ];
 
   const handleArrowClick = (menuName: string) => {
@@ -119,19 +124,57 @@ export default function MobileMenu() {
     menuIndex,
     className = '',
   }: any) =>
-    (data.name || typeof data === 'string')   && (
-     
+    (data.name || typeof data === 'string') && (
       <li className={`transition-colors duration-200 ${className}`}>
         <div className="relative flex items-center justify-between">
-          <Link
-            href={data.path ? data.path: `/pages/search?category=${data.name ? data?.name : data}`}
-            // href={`${data.path}`}
-            className="relative w-full py-4 transition duration-300 ease-in-out menu-item ltr:pl-5 rtl:pr-5 md:ltr:pl-7 md:rtl:pr-7 ltr:pr-4 rtl:pl-4 text-brand-dark"
-          >
-            <span className="block w-full" onClick={closeSidebar}>
-              {data.name? data.name : data.name? data.name : data}
+          {data.name && data.name === 'My Account' ? (
+           isAuthorized ?
+               
+           <Link
+           href={
+             data.path
+               ? data.path
+               : `/pages/search?category=${data.name ? data?.name : data}`
+           }
+           // href={`${data.path}`}
+           className="relative w-full py-4 transition duration-300 ease-in-out menu-item ltr:pl-5 rtl:pr-5 md:ltr:pl-7 md:rtl:pr-7 ltr:pr-4 rtl:pl-4 text-brand-dark"
+         >
+           <span className="block w-full" onClick={closeSidebar}>
+             {data.name ? data.name : data}
+           </span>
+         </Link>
+                :
+                <span
+              // href={
+              //   data.path
+              //     ? data.path
+              //     : `/pages/search?category=${data.name ? data?.name : data}`
+              // }
+              // href={`${data.path}`}
+              
+              className="relative w-full py-4 transition duration-300 ease-in-out menu-item ltr:pl-5 rtl:pr-5 md:ltr:pl-7 md:rtl:pr-7 ltr:pr-4 rtl:pl-4 text-brand-dark"
+            >
+              <span className="block w-full cursor-pointer font-medium" onClick={handleLogin}>
+                Login
+              </span>
             </span>
-          </Link>
+             
+          ) : (
+            <Link
+              href={
+                data.path
+                  ? data.path
+                  : `/pages/search?category=${data.name ? data?.name : data}`
+              }
+              // href={`${data.path}`}
+              className="relative w-full py-4 transition duration-300 ease-in-out menu-item ltr:pl-5 rtl:pr-5 md:ltr:pl-7 md:rtl:pr-7 ltr:pr-4 rtl:pl-4 text-brand-dark"
+            >
+              <span className="block w-full" onClick={closeSidebar}>
+                {data.name ? data.name : data}
+              </span>
+            </Link>
+          )}
+
           {hasSubMenu && (
             <div
               className="cursor-pointer w-full h-8 text-[17px] px-5 shrink-0 flex items-center justify-end text-brand-dark text-opacity-80 absolute ltr:right-0 rtl:left-0 top-1/2 transform -translate-y-1/2"
@@ -148,7 +191,7 @@ export default function MobileMenu() {
         {hasSubMenu && (
           <SubMenu
             dept={dept}
-            data={data.subMenu ?  data.subMenu: JSON.parse(data.children)}
+            data={data.subMenu ? data.subMenu : JSON.parse(data.children)}
             toggle={activeMenus.includes(menuName)}
             menuIndex={menuIndex}
           />
@@ -162,7 +205,6 @@ export default function MobileMenu() {
     }
 
     // console.log('---------------->>>>' ,data);
-    
 
     dept = dept + 1;
 

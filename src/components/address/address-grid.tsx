@@ -101,7 +101,7 @@ export default function AddressGrid() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('user');
+      const storedUser = sessionStorage.getItem('user');
       setUser(storedUser ? JSON.parse(storedUser) : null);
       setIsLoading(false);
     }
@@ -129,7 +129,7 @@ export default function AddressGrid() {
 
 
       
-          localStorage.setItem('user', JSON.stringify(data.user));
+          sessionStorage.setItem('user', JSON.stringify(data.user));
    
       }
 

@@ -21,9 +21,9 @@ export const useLogoutMutation = () => {
   return useMutation({
     mutationFn: logout,
     onSuccess: (_data) => {
-      Cookies.remove('auth_token');
       // logoutuser()
-      localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
+      Cookies.remove('auth_token');
       unauthorize();
       // router.push(`/${lang}`);
       router.push(`/`);

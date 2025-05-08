@@ -8,7 +8,7 @@ const isBrowser = typeof window !== 'undefined';
 
 let email= '';
   if (isBrowser) {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
     email =  storedUser ? JSON.parse(storedUser).email : null;
   }
 

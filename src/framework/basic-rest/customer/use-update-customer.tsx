@@ -2,6 +2,8 @@ import http from '@framework/utils/http';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import useWindowSize from '@utils/use-window-size';
+import Cookies from 'js-cookie';
+
 
 export interface UpdateUserType {
   id?: number;
@@ -43,9 +45,10 @@ export const useUpdateUserMutation = () => {
           draggable: true,
         });
 
-        localStorage.setItem('user', JSON.stringify(data.user));
+        sessionStorage.setItem('user', JSON.stringify(data.user));
       } else {
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+        Cookies?.remove('auth_token')
       }
       console.log(data, 'UpdateUser success response');
     },

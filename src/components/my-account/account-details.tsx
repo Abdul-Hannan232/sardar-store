@@ -24,7 +24,7 @@ const AccountDetails = () => {
 const [user, setUser] = useState(() => {
   
   if (isBrowser) {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   }
   return null;
