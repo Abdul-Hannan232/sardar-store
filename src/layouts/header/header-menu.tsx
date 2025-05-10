@@ -50,7 +50,7 @@
 //       },
 //       {
 //         id: 4,
-//         path: '/pages/search',
+//         path: '/pages',
 //         label: 'Search',
 //       },
 
@@ -174,7 +174,6 @@ const HeaderMenu: React.FC<MenuProps> = ({ className }) => {
       path: 'https://sardar-store-dashboard.vercel.app/',
       label: 'Admin',
     },
-   
   ];
   // console.log('site_header ', site_header);
 
@@ -203,32 +202,35 @@ const HeaderMenu: React.FC<MenuProps> = ({ className }) => {
             )}
           </Link>
 
-           
-      {item?.label === 'Categories' && Array.isArray(categories?.categories?.data) && (
-            // <div className={`absolute z-30 opacity-0 subMenu shadow-dropDown transition-all duration-300 invisible bg-brand-light ltr:left-0 rtl:right-0 w-[220px] xl:w-[240px] group-hover:opacity-100`}>
-            <div className={`absolute z-30 opacity-0 subMenu shadow-dropDown transition-all duration-300 invisible bg-brand-light ltr:left-0 rtl:right-0 w-[220px] xl:w-[240px] group-hover:opacity-100`}>
-              <ul className="py-5 text-sm text-brand-muted">
-                {categories?.categories.data.map((menu: any, index: number) => {
-                  // {console.log(menu);
-                  // }
-                  const dept: number = 1;
-                  const menuName: string = `sidebar-menu-${dept}-${index}`;
-                  return (
-                    <ListMenu
-                      dept={dept}
-                      data={menu}
-                      hasSubMenu={menu.children ? true:false}
-                      menuName={menuName}
-                      // key={menuName}
-                      key={index}
-                      menuIndex={index}
-                    />
-                  );
-                })}
-              </ul>
-            </div>
-          )}
-
+          {item?.label === 'Categories' &&
+            Array.isArray(categories?.categories?.data) && (
+              // <div className={`absolute z-30 opacity-0 subMenu shadow-dropDown transition-all duration-300 invisible bg-brand-light ltr:left-0 rtl:right-0 w-[220px] xl:w-[240px] group-hover:opacity-100`}>
+              <div
+                className={`absolute z-30 opacity-0 subMenu shadow-dropDown transition-all duration-300 invisible bg-brand-light ltr:left-0 rtl:right-0 w-[220px] xl:w-[240px] group-hover:opacity-100`}
+              >
+                <ul className="py-5 text-sm text-brand-muted">
+                  {categories?.categories.data.map(
+                    (menu: any, index: number) => {
+                      // {console.log(menu);
+                      // }
+                      const dept: number = 1;
+                      const menuName: string = `sidebar-menu-${dept}-${index}`;
+                      return (
+                        <ListMenu
+                          dept={dept}
+                          data={menu}
+                          hasSubMenu={menu.children ? true : false}
+                          menuName={menuName}
+                          // key={menuName}
+                          key={index}
+                          menuIndex={index}
+                        />
+                      );
+                    },
+                  )}
+                </ul>
+              </div>
+            )}
         </div>
       ))}
 

@@ -20,8 +20,8 @@ export const ShopFilters = () => {
       <SelectedFilters/>
       <CategoryFilter  />
       {/* <CategoryFilter data={data} loading={isLoading} error={error} /> */}
-      <DietaryFilter  />
-      <BrandFilter />
+      {/* <DietaryFilter  />
+      <BrandFilter /> */}
     </div>
   );
 };

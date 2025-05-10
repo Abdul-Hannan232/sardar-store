@@ -46,6 +46,7 @@ const RefinedAllProductFeed: FC<ProductFeedProps> = ({ className = '' }) => {
     error,
   } = useProductsQuery({
     // limit: LIMITS.REFINED_PRODUCTS_LIMITS,
+    // limit: 20,
     // @ts-ignore
     // text: newQuery.category ? `category=${newQuery?.category}` : 'all=true',
     text: newQuery ? `category=${newQuery}` : 'all=true',
@@ -61,7 +62,7 @@ const RefinedAllProductFeed: FC<ProductFeedProps> = ({ className = '' }) => {
     openModal('CATEGORY_VIEW');
   }
 
-  // console.log('--------->>>>', data?.pages[0]?.data.length)
+  // console.log('--------->>>>', data)
   return (
     <div className={cn(className)}>
       <div className="xl:hidden flex items-center justify-between pb-0.5 mb-4 lg:mb-5 xl:mb-6">

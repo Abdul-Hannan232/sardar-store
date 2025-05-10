@@ -12,7 +12,7 @@ import useQueryParam from '@utils/use-query-params';
 
 interface ProductGridProps { 
   className?: string;
-    data: any;
+    data: any; 
     isLoading: boolean;
     error: any;
     fetchNextPage:any;
@@ -78,13 +78,13 @@ export const ProductGrid: FC<ProductGridProps> = ({data,loadingMore,hasNextPage,
       </div>
       {hasNextPage && (
         <div className="pt-8 text-center xl:pt-10">
-          <Button
+          {/* <Button
             loading={loadingMore}
             disabled={loadingMore}
             onClick={() => fetchNextPage()}
           >
             Load More
-          </Button>
+          </Button> */}
         </div>
       )}
     </>

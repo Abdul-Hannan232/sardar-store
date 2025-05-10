@@ -171,7 +171,7 @@ import Image from '@components/ui/image';
 import useQueryParam from '@utils/use-query-params';
 import { useRouter } from 'next/navigation';
 import { useCategoryContext } from '@pages/category-with-products';
-
+import Link from 'next/link';
 
 
 const SidebarMenuItem = ({
@@ -257,6 +257,7 @@ const SidebarMenuItem = ({
     const categoryName = item.name || subItem || ''; // Ensure name fallback
   
     // console.log(">>>>>",item);
+    
     
     if (categoryName === formState) {
       // Remove category from query params if already selected
@@ -360,16 +361,127 @@ const SidebarMenuItem = ({
 
 
 // function SidebarMenu({ items, className, setParams }: { items: any; className?: string ;setParams:Function}) {
-function SidebarMenu({ items, className,  }: { items: any; className?: string }) {
+// function SidebarMenu({ items, className,  }: { items: any; className?: string }) {
+//     const { params, setParams } = useCategoryContext();
+//   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+
+//    const searchParams = useSearchParams();
+
+
+//       // Clone current query params
+
+
+//   return (
+//     <ul className={cn(className)}>
+//         <li
+//         className={`flex justify-between items-center transition ${
+//           className
+//             ? className
+//             : 'text-sm md:text-15px hover:bg-fill-base border-t border-border-base first:border-t-0 px-3.5 2xl:px-4 py-3 xl:py-3.5 2xl:py-2.5 3xl:py-3'
+//         } text-brand-dark text-opacity-70`}
+//       >
+//         <button
+//         onClick={()=>{const newParams = new URLSearchParams(searchParams as any); console.log(newParams);
+//           newParams.delete('category'); setParams("");}}
+//         // href="/"
+        
+//           type="button"
+//           className={cn(
+//             'flex items-center w-full ltr:text-left rtl:text-right outline-none focus:outline-none group focus:ring-0 focus:text-brand-dark',
+//           )}
+//         >
+        
+        
+//             <div className="inline-flex shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto">
+//               <Image
+//                 src={"/assets/images/clear-filter.webp" }
+//                 alt={'clear all'}
+//                 width={40}
+//                 height={40}
+//                 style={{ width: 'auto', height: 'auto' }}
+//               />
+//             </div>
+       
+//           <span className="text-brand-dark group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4">
+//            Clear All
+//           </span>
+//           <span className="ltr:ml-auto rtl:mr-auto"></span>
+//         </button >
+//       </li>
+//       {items?.map((item: any, i: number) => (
+//         // <SidebarMenuItem setParams={setParams} key={i} item={item} activeCategory={activeCategory}
+//         <SidebarMenuItem  key={i} item={item} activeCategory={activeCategory}
+//         setActiveCategory={setActiveCategory}/>
+
+//         // <SidebarMenuItem key={`${item.slug}-key-${item.id}`} item={item} />
+//       ))}
+//     </ul>
+//   );
+// }
+
+
+
+function SidebarMenu({ items, className }: { items: any; className?: string }) {
+  const { params, setParams } = useCategoryContext();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter(); 
+const isClearDisabled = !searchParams?.has('category');
+const [isClearing, setIsClearing] = useState(false);
+
+const handleClearAll = () => {
+  setIsClearing(true); // Show loader
+  const newParams = new URLSearchParams(searchParams as any);
+  newParams.delete('category');
+  
+  // Update state and URL together
+  setParams('');
+  router.replace(`?${newParams.toString()}`);
+
+  // Remove loader after 500ms
+  setTimeout(() => setIsClearing(false), 500);
+};
+
   return (
     <ul className={cn(className)}>
+      <li
+        className={`flex justify-between items-center transition ${
+          className
+            ? className
+            : 'text-sm md:text-15px hover:bg-fill-base border-t border-border-base first:border-t-0 px-3.5 2xl:px-4 py-3 xl:py-3.5 2xl:py-2.5 3xl:py-3'
+        } text-brand-dark text-opacity-70`}
+      >
+        <button
+         disabled={isClearDisabled}
+          onClick={handleClearAll}
+          type="button"
+          className={cn(
+            'flex items-center w-full ltr:text-left rtl:text-right outline-none focus:outline-none group focus:ring-0 focus:text-brand-dark py-2 px-4',
+          )}
+        >
+          <div className="inline-flex shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto">
+            <Image
+              src="/assets/images/clear-filter.webp"
+              alt="clear all"
+              width={40}
+              height={40}
+              style={{ width: 'auto', height: 'auto' }}
+            />
+          </div>
+          <span className="text-brand-dark group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4">
+            {isClearing ? "Clearing..." : "Clear All"}
+          </span>
+          <span className="ltr:ml-auto rtl:mr-auto"></span>
+        </button>
+      </li>
       {items?.map((item: any, i: number) => (
-        // <SidebarMenuItem setParams={setParams} key={i} item={item} activeCategory={activeCategory}
-        <SidebarMenuItem  key={i} item={item} activeCategory={activeCategory}
-        setActiveCategory={setActiveCategory}/>
-
-        // <SidebarMenuItem key={`${item.slug}-key-${item.id}`} item={item} />
+        <SidebarMenuItem
+          key={i}
+          item={item}
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+        />
       ))}
     </ul>
   );

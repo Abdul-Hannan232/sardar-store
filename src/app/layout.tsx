@@ -22,6 +22,7 @@ import '@assets/css/swiper-carousel.css';
 import '@assets/css/custom-plugins.css';
 import '@assets/css/rc-drawer.css';
 import CustomerCare from '@components/common/customer-care/customerCare';
+import { CategoryContextProvider } from './category-with-products';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -83,6 +84,7 @@ export default function RootLayout({
         <body className={`${inter.variable} ${manrope.variable}`}>
           <Providers>
             <UserProvider>
+              <CategoryContextProvider>
             <ManagedUIContext>
               {/* <AntiqueRefinedLayout> */}
             
@@ -93,6 +95,7 @@ export default function RootLayout({
               <ManagedDrawer />
               <ToasterProvider />
             </ManagedUIContext>
+            </CategoryContextProvider>
             </UserProvider>
           </Providers>
 
