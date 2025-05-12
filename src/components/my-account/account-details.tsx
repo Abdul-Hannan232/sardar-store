@@ -117,6 +117,7 @@ const defaultValues = {
                     message: 'forms:email-error',
                   },
                 })}
+                disabled
                 variant="solid"
                 className="w-full sm:w-1/2 px-1.5 md:px-2.5"
                 error={errors.email?.message}
@@ -142,7 +143,7 @@ const defaultValues = {
             </div> */}
           </div>
         </div>
-        <div className="relative flex pt-6 md:pt-8 lg:pt-10">
+        {/* <div className="relative flex pt-6 md:pt-8 lg:pt-10">
           <div className="ltr:pr-2.5 rtl:pl-2.5">
             <Heading className="mb-1 font-medium">Share Profile Data</Heading>
             <Text variant="small">
@@ -179,7 +180,7 @@ const defaultValues = {
               )}
             />
           </div>
-        </div>
+        </div> */}
         <div className="relative flex pb-2 mt-5 sm:ltr:ml-auto sm:rtl:mr-auto lg:pb-0">
           <Button
             type="submit"
