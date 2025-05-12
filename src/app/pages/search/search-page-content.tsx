@@ -17,7 +17,7 @@ export default function SearchPageContent() {
     `${process.env.NEXT_PUBLIC_WEBSITE_URL}${query}`,
   );
 
-  console.log('url ------------- ', newQuery);
+  // console.log('url ------------- ', newQuery);
 
   const {
     isFetching: isLoading,

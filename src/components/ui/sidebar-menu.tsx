@@ -462,7 +462,7 @@ const handleClearAll = () => {
         >
           <div className="inline-flex shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto">
             <Image
-              src="/assets/images/all-product.webp"
+              src="/assets/images/all-product.png"
               alt="clear all"
               width={40}
               height={40}
