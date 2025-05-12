@@ -462,7 +462,7 @@ const handleClearAll = () => {
         >
           <div className="inline-flex shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto">
             <Image
-              src="/assets/images/clear-filter.webp"
+              src="/assets/images/all-product.webp"
               alt="clear all"
               width={40}
               height={40}
@@ -470,7 +470,7 @@ const handleClearAll = () => {
             />
           </div>
           <span className="text-brand-dark group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4">
-            {isClearing ? "Clearing..." : "Clear All"}
+            {isClearing ? "Clearing..." : "All Products"}
           </span>
           <span className="ltr:ml-auto rtl:mr-auto"></span>
         </button>
