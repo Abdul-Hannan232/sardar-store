@@ -66,8 +66,6 @@
 //     }
 //   }
 
- 
-
 //   let expandIcon;
 //   if (Array.isArray(items) && items.length) {
 //     expandIcon = !isOpen ? (
@@ -159,7 +157,6 @@
 
 // export default SidebarMenu;
 
-
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -172,7 +169,6 @@ import useQueryParam from '@utils/use-query-params';
 import { useRouter } from 'next/navigation';
 import { useCategoryContext } from '@pages/category-with-products';
 import Link from 'next/link';
-
 
 const SidebarMenuItem = ({
   className,
@@ -192,9 +188,8 @@ const SidebarMenuItem = ({
 
   const { name, children, icon } = item;
   const isActive = activeCategory === name;
-// console.log(item);
-// console.log(formState);
-
+  // console.log(item);
+  // console.log(formState);
 
   useEffect(() => {
     if (children) {
@@ -215,15 +210,12 @@ const SidebarMenuItem = ({
     setActiveCategory(isActive ? null : name); // toggle between expanding and collapsing
   }
 
-
-  
   useEffect(() => {
     const hasQueryKey = searchParams?.get('category');
     // console.log('searchParams:', searchParams.toString());
     // console.log('hasQueryKey:', hasQueryKey);
     setFormState(hasQueryKey ?? '');
   }, [searchParams]);
-  
 
   // function onClick() {
   //   const newParams = new URLSearchParams(searchParams as any); // Clone current query params
@@ -255,31 +247,29 @@ const SidebarMenuItem = ({
   function onClick() {
     const newParams = new URLSearchParams(searchParams as any); // Clone current query params
     const categoryName = item.name || subItem || ''; // Ensure name fallback
-  
+
     // console.log(">>>>>",item);
-    
-    
+
     if (categoryName === formState) {
       // Remove category from query params if already selected
       newParams.delete('category');
-      setParams("");
+      setParams('');
       setFormState('');
     } else {
       // Add or update category
       newParams.set('category', categoryName);
       setFormState(categoryName);
       setParams(categoryName);
-
     }
     // setParams(categoryName)
 
     // Update the URL without reloading
     const newUrl = `${pathname}?${newParams.toString()}`;
     window.history.pushState({}, '', newUrl);
-  
+
     // Toggle collapse
     setOpen(!isOpen);
-  
+
     if (Array.isArray(items) && !!items.length) {
       toggleCollapse();
     } else {
@@ -287,7 +277,7 @@ const SidebarMenuItem = ({
       displaySidebar && closeSidebar();
     }
   }
-  
+
   let expandIcon;
   if (Array.isArray(items) && items.length) {
     expandIcon = !isActive ? (
@@ -357,20 +347,16 @@ const SidebarMenuItem = ({
       ) : null}
     </>
   );
-}; 
-
+};
 
 // function SidebarMenu({ items, className, setParams }: { items: any; className?: string ;setParams:Function}) {
 // function SidebarMenu({ items, className,  }: { items: any; className?: string }) {
 //     const { params, setParams } = useCategoryContext();
 //   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-
 //    const searchParams = useSearchParams();
 
-
 //       // Clone current query params
-
 
 //   return (
 //     <ul className={cn(className)}>
@@ -385,14 +371,13 @@ const SidebarMenuItem = ({
 //         onClick={()=>{const newParams = new URLSearchParams(searchParams as any); console.log(newParams);
 //           newParams.delete('category'); setParams("");}}
 //         // href="/"
-        
+
 //           type="button"
 //           className={cn(
 //             'flex items-center w-full ltr:text-left rtl:text-right outline-none focus:outline-none group focus:ring-0 focus:text-brand-dark',
 //           )}
 //         >
-        
-        
+
 //             <div className="inline-flex shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto">
 //               <Image
 //                 src={"/assets/images/clear-filter.webp" }
@@ -402,7 +387,7 @@ const SidebarMenuItem = ({
 //                 style={{ width: 'auto', height: 'auto' }}
 //               />
 //             </div>
-       
+
 //           <span className="text-brand-dark group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4">
 //            Clear All
 //           </span>
@@ -420,28 +405,26 @@ const SidebarMenuItem = ({
 //   );
 // }
 
-
-
 function SidebarMenu({ items, className }: { items: any; className?: string }) {
   const { params, setParams } = useCategoryContext();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const router = useRouter(); 
-const isClearDisabled = !searchParams?.has('category');
-const [isClearing, setIsClearing] = useState(false);
+  const router = useRouter();
+  const isClearDisabled = !searchParams?.has('category');
+  const [isClearing, setIsClearing] = useState(false);
 
-const handleClearAll = () => {
-  setIsClearing(true); // Show loader
-  const newParams = new URLSearchParams(searchParams as any);
-  newParams.delete('category');
-  
-  // Update state and URL together
-  setParams('');
-  router.replace(`?${newParams.toString()}`);
+  const handleClearAll = () => {
+    setIsClearing(true); // Show loader
+    const newParams = new URLSearchParams(searchParams as any);
+    newParams.delete('category');
 
-  // Remove loader after 500ms
-  setTimeout(() => setIsClearing(false), 500);
-};
+    // Update state and URL together
+    setParams('');
+    router.replace(`?${newParams.toString()}`);
+
+    // Remove loader after 500ms
+    setTimeout(() => setIsClearing(false), 500);
+  };
 
   return (
     <ul className={cn(className)}>
@@ -453,7 +436,7 @@ const handleClearAll = () => {
         } text-brand-dark text-opacity-70`}
       >
         <button
-         disabled={isClearDisabled}
+          disabled={isClearDisabled}
           onClick={handleClearAll}
           type="button"
           className={cn(
@@ -470,19 +453,34 @@ const handleClearAll = () => {
             />
           </div>
           <span className="text-brand-dark group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4">
-            {isClearing ? "Clearing..." : "All Products"}
+            {isClearing ? 'Clearing...' : 'All Products'}
           </span>
           <span className="ltr:ml-auto rtl:mr-auto"></span>
         </button>
       </li>
-      {items?.map((item: any, i: number) => (
+      {/* {Array.isArray(items) && items?.map((item: any, i: number) => (
         <SidebarMenuItem
           key={i}
           item={item}
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
         />
-      ))}
+
+
+      ))} */}
+
+      {Array.isArray(items) && items.length > 0 ? (
+        items.map((item: any, i: number) => (
+          <SidebarMenuItem
+            key={i}
+            item={item}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+          />
+        ))
+      ) : (
+        <p>No items available</p>
+      )}
     </ul>
   );
 }

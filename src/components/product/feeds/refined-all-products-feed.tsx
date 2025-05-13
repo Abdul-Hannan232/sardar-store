@@ -30,7 +30,7 @@ const RefinedAllProductFeed: FC<ProductFeedProps> = ({ className = '' }) => {
   //   // @ts-ignore
   //   `${process.env.NEXT_PUBLIC_WEBSITE_URL}${query}`,
   // );
-  console.log('query  >>>> ' , newQuery);
+  // console.log('query  >>>> ' , newQuery);
   
   useEffect(()=>{
     setNewQuery(params)

@@ -8,8 +8,8 @@ export const CheckoutItem: React.FC<{
   quantity?: string;
   variationName?: string;
 }> = ({ item, quantity, variationName }) => {
-  console.log('tData ------------', item);
-  console.log('variationName ------------', variationName);
+  // console.log('tData ------------', item);
+  // console.log('variationName ------------', variationName);
 
   const { price } = usePrice({
     amount: item.itemTotal,

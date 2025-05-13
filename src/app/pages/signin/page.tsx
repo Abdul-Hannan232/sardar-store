@@ -15,6 +15,7 @@ export default async function Page() {
           <LoginForm
             isPopup={false}
             className="border rounded-lg border-border-base"
+            redirect={{link:"/", status:true}}
           />
         </div>
       </div>

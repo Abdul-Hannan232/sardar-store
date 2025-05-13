@@ -14,16 +14,20 @@ import CloseButton from '@components/ui/close-button';
 import { FaFacebook, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
 import cn from 'classnames';
 import { useUser } from '@contexts/user/userContext';
+import { useRouter } from 'next/navigation';
 
 interface LoginFormProps {
   isPopup?: boolean;
   className?: string;
+  redirect?:{link: string, status:boolean}
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redirect }) => {
   const { closeModal, openModal } = useModalAction();
+  const router = useRouter()
   const { signin } = useUser();
-  const { mutate: login, isPending } = useLoginMutation(signin);
+   const [error, setError] = useState<string | null>(null);
+  const { mutate: login, isPending } = useLoginMutation(signin, setError);
   const [remember, setRemember] = useState(false);
 
   const {
@@ -33,22 +37,32 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className }) => {
   } = useForm<LoginInputType>();
 
   function onSubmit({ email, password, remember }: LoginInputType) {
+    setError(null);
     login({
       email,
       password,
       remember,
+      
     });
-    closeModal();
+if (redirect && redirect.status) {
+    router.push(redirect?.link || "/"); 
+  } 
+
+  console.log('Redirecting to:', redirect);
+    
+    // closeModal();
     // console.log(email, password, remember, 'data');
   }
-  function handelSocialLogin() {
-    login({
-      email: 'demo@demo.com',
-      password: 'demo',
-      remember: true,
-    });
-    closeModal();
-  }
+  // function handelSocialLogin() {
+  //   login({
+  //     email: 'demo@demo.com',
+  //     password: 'demo',
+  //     remember: true,
+  //   });
+  //   // closeModal();
+  // }
+
+
   function handleSignUp() {
     return openModal('SIGN_UP_VIEW');
   }
@@ -87,6 +101,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className }) => {
               </button>
             </div>
           </div>
+
+          {error && (
+            <div className="mb-4 text-sm text-center text-red-600">
+              {error}
+            </div>
+          )}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col justify-center"
@@ -149,7 +169,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className }) => {
               </div>
             </div>
           </form>
-          <div className="relative flex flex-col items-center justify-center text-sm">
+          {/* <div className="relative flex flex-col items-center justify-center text-sm">
             <span className="mt-6 text-sm text-brand-dark opacity-70">
               or continue with
             </span>
@@ -174,7 +194,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className }) => {
             >
               <FaLinkedinIn className="w-4 h-4 text-opacity-50 transition-all text-brand-dark group-hover:text-brand" />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

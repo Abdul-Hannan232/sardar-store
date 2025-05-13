@@ -4,6 +4,10 @@ import Logo from '@components/ui/logo';
 import { useForm } from 'react-hook-form';
 import { useModalAction } from '@components/common/modal/modal.context';
 import CloseButton from '@components/ui/close-button';
+import { useForgetPasswordMutation } from '@framework/auth/use-forget-password';
+import { toast } from 'react-toastify';
+import useWindowSize from '@utils/use-window-size';
+
 
 type FormValues = {
   email: string;
@@ -14,6 +18,8 @@ const defaultValues = {
 };
 
 const ForgetPasswordForm = () => {
+  const { mutate, isError, isSuccess } = useForgetPasswordMutation();
+    const { width } = useWindowSize();
   const { closeModal, openModal } = useModalAction();
   const {
     register,
@@ -28,7 +34,18 @@ const ForgetPasswordForm = () => {
   }
 
   const onSubmit = (values: FormValues) => {
-    console.log(values, 'token');
+    mutate({ verifyEmail: values?.email });
+     toast('Please check your email to reset password!', {
+            progressClassName: 'fancy-progress-bar',
+            position: width! > 768 ? 'bottom-right' : 'top-right',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          openModal('LOGIN_VIEW');
+    // console.log(values, 'token');
   };
 
   return (

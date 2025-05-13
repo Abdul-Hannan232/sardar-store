@@ -31,6 +31,7 @@ const Copyright: React.FC<CopyrightProps> = ({
             <a
               className="transition-colors duration-200 ease-in-out text-brand-dark hover:text-brand"
               href={siteSettings.author.websiteUrl}
+              target='_blank'
             >
               {siteSettings.author.name}
             </a>

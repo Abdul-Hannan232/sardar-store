@@ -2,13 +2,14 @@ import { useUI } from '@contexts/ui.context';
 import Cookies from 'js-cookie';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { useModalAction } from '@components/common/modal/modal.context';
 
 
 export interface LoginInputType {
   email: string; 
   password: string;
   remember: boolean;
-}
+} 
 async function login(input: LoginInputType) {
 
   try {
@@ -19,6 +20,7 @@ async function login(input: LoginInputType) {
     
     // console.log('response', response.data);
 
+   
     return response.data;
   } catch (error) {
     throw new Error('Signup failed');
@@ -28,17 +30,19 @@ async function login(input: LoginInputType) {
   //   token: `${input.email}.${input.remember}`.split('').reverse().join(''),
   // };
 }
-export const useLoginMutation = (signin: Function) => {
-  const { authorize, closeModal } = useUI();
+export const useLoginMutation = (signin: Function, setError: Function) => {
+  const { authorize } = useUI();
+  const { closeModal, openModal } = useModalAction();
   return useMutation({
     mutationFn: (input: LoginInputType) => login(input),
     onSuccess: (data) => {
       Cookies.set('auth_token', data.token);
       signin(data.user)
       authorize();
-      // closeModal();
+      closeModal();
     },
     onError: (data) => {
+      setError('Invalid email or password.');
       console.log(data, 'login error response');
     },
   });
