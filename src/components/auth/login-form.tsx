@@ -38,17 +38,33 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redire
 
   function onSubmit({ email, password, remember }: LoginInputType) {
     setError(null);
-    login({
-      email,
-      password,
-      remember,
+//     login({
+//       email,
+//       password,
+//       remember,
       
-    });
-if (redirect && redirect.status) {
-    router.push(redirect?.link || "/"); 
-  } 
+//     });
+// if (redirect && redirect.status) {
+//     router.push(redirect?.link || "/"); 
+//   } 
 
-  console.log('Redirecting to:', redirect);
+//   console.log('Redirecting to:', redirect);
+
+ login(
+      { email, password, remember },
+      {
+        onSuccess: (data) => {
+          if (data && redirect && redirect.status) {
+            router.push(redirect?.link  || '/');
+          }
+          console.log('Redirecting to:', redirect?.link  || '/');
+        },
+        onError: (error) => {
+          setError('Invalid email or password.');
+          console.log('Login error:', error);
+        },
+      }
+    );
     
     // closeModal();
     // console.log(email, password, remember, 'data');

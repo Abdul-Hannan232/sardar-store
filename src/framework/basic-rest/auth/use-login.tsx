@@ -35,7 +35,7 @@ export const useLoginMutation = (signin: Function, setError: Function) => {
   const { closeModal, openModal } = useModalAction();
   return useMutation({
     mutationFn: (input: LoginInputType) => login(input),
-    onSuccess: (data) => {
+    onSuccess: (data, variables, context) => {
       Cookies.set('auth_token', data.token);
       signin(data.user)
       authorize();
