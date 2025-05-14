@@ -171,11 +171,14 @@ import { Order, OrderItem, CheckoutCardProps } from '@framework/types';
 import { toast } from 'react-toastify';
 import useWindowSize from '@utils/use-window-size';
 import { isString } from 'lodash';
+import { useUser } from '@contexts/user/userContext';
 
 const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isAuthorized } = useUI();
+  const { setUser } = useUser();
+
   const { openModal } = useModalAction();
 
   const id = searchParams.get('id');
@@ -208,7 +211,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
               ...data,
               promo_price_pkr: selectedVariation.promo_price_pkr,
               price: selectedVariation.price,
-              variant:variationName
+              variant: variationName,
             });
             setOrder({
               userId: Number(userData?.id),
@@ -253,7 +256,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
 
       getProductData();
     }
-  }, [id]);
+  }, [id, userData]);
 
   // get cart items
   const { items, total, isEmpty } = useCart();
@@ -272,11 +275,12 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
         `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${id}`,
         userData,
       );
-
+      // console.log(">>>>>>>>>>>>>> id.. ", data.user);
+      setUser(data.user);
       return data;
     }
   };
-// console.log(items);
+  // console.log(items);
 
   //  cart data order
 
@@ -295,7 +299,6 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
           typeof item?.id === 'string' ? item?.id.split('.')[1] : '',
       }));
 
-      
       const totalPrice = items.reduce(
         (total, item) => total + item.itemTotal + item.delivery,
         0,
@@ -310,12 +313,13 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
 
       setOrder(order);
     }
-  }, [productData, items]);
+  }, [productData, items, userData]);
 
   // place order
-  // console.log(order);
 
   function orderHeader() {
+    console.log(' ggggggggg ', order);
+
     setIsPending(true);
     updateUser(userData?.id as number);
     const placeOrder = async () => {
@@ -347,7 +351,12 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
       }
     };
 
-    !isAuthorized ? openModal('LOGIN_VIEW') : placeOrder();
+    if (!isAuthorized) {
+      openModal('LOGIN_VIEW');
+      setIsPending(false);
+    } else {
+      placeOrder();
+    }
   }
 
   type FooterD = {
@@ -427,7 +436,11 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
             <SearchResultLoader uniqueKey={`product-key`} />
           </div>
         ) : productData ? (
-          <CheckoutItem item={productData} quantity={quantity as string} variationName={variationName as string} />
+          <CheckoutItem
+            item={productData}
+            quantity={quantity as string}
+            variationName={variationName as string}
+          />
         ) : !productData && !isEmpty && mounted ? (
           items.map((item) => <CheckoutItem item={item} key={item.id} />)
         ) : (

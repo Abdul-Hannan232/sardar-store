@@ -151,6 +151,7 @@ import TextArea from '@components/ui/form/text-area';
 import { useForm } from 'react-hook-form';
 import http from '@framework/utils/http'; 
 import { ContactFormValues ,DeliveryInstructionsProps, User} from '@framework/types';
+import { useUser } from '@contexts/user/userContext';
 
 
 // import { handleUpdate as onUpdate } from '@pages/pages/checkout/page';
@@ -274,31 +275,35 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({
   initialData,
   onUpdate,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | any>(null);
+    const { user:currentuser } = useUser();
+  
 
-  const isBrowser = typeof window !== 'undefined';
+  // const isBrowser = typeof window !== 'undefined';
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (isBrowser) {
-        const storedUser = sessionStorage.getItem('user');
-        const localUser = storedUser ? JSON.parse(storedUser) : null;
 
-        if (localUser) {
-          try {
-            const { data } = await http.get<User>(
-              `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${Number(localUser.id)}`
-            );
-            setUser(data); // Ensure data is of type User
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-          }
-        }
-      }
+      currentuser? setUser(currentuser): null
+      // if (isBrowser) {
+      //   const storedUser = sessionStorage.getItem('user');
+      //   const localUser = storedUser ? JSON.parse(storedUser) : null;
+
+      //   if (localUser) {
+      //     try {
+      //       const { data } = await http.get<User>(
+      //         `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/user/${Number(localUser.id)}`
+      //       );
+      //       setUser(data); // Ensure data is of type User
+      //     } catch (error) {
+      //       console.error('Error fetching user data:', error);
+      //     }
+      //   }
+      // }
     };
 
     fetchUserData();
-  }, [isBrowser]);
+  }, [user, currentuser]);
 
   const {
     register,

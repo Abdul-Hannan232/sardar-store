@@ -9,6 +9,7 @@ export interface User {
 
 interface UserContextType {
   user: User | null;
+  setUser: Function | any;
   signin: (user: User) => void;
   // logoutuser: () => void;
 }

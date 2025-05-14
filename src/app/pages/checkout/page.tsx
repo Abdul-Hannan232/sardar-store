@@ -1,6 +1,6 @@
 'use client';
 import CheckoutCard from '@components/checkout/checkout-card';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import Container from '@components/ui/container';
 import Divider from '@components/ui/divider';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ import DeliveryInstructions from '@components/checkout/delivery-instruction';
 // import { metadata } from './metadata'; // Import metadata
 
 import Head from 'next/head';
+import { useUser } from '@contexts/user/userContext';
 
 interface ContactFormValues {
   address: string | null;
@@ -30,16 +31,19 @@ interface ContactFormValues {
 
 export default function CheckoutPage() {
   // let userData : ContactFormValues= { address: '', contact: null }
+  const { user: currentuser } = useUser();
 
-  const isBrowser = typeof window !== 'undefined';
+  // const isBrowser = typeof window !== 'undefined';
 
-  const [user, setUser] = useState(() => {
-    if (isBrowser) {
-      const storedUser = sessionStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : null;
-    }
-    return null;
-  });
+  // const [user, setUser] = useState(() => {
+  //   if (isBrowser) {
+  //     const storedUser = sessionStorage.getItem('user');
+  //     return storedUser ? JSON.parse(storedUser) : null;
+  //   }
+  //   return null;
+  // });
+
+  const [user, setUser] = useState(currentuser);
 
   const [userData, setUserData] = useState<ContactFormValues>({
     ...user,
@@ -53,6 +57,16 @@ export default function CheckoutPage() {
     setUserData({ ...user, ...values });
   };
 
+  useEffect(() => {
+    setUser(currentuser);
+    setUserData({
+      address: currentuser?.address || '',
+      phone: currentuser?.phone || null,
+      id: currentuser?.id || null,
+    });
+  }, [currentuser]);
+
+  // console.log('<<<<<<<<<<<<<<< currentUser', user);
   // console.log('<<<<<<<<<<<<<<< userData', userData);
 
   return (
@@ -70,8 +84,8 @@ export default function CheckoutPage() {
               <DeliveryInstructions onUpdate={handleUpdate} />
             </div>
             <div className="w-full col-start-9 col-end-13 mt-7 lg:mt-0">
-            <Suspense fallback={<div>Loading...</div>}>
-              <CheckoutCard userData={userData} />
+              <Suspense fallback={<div>Loading...</div>}>
+                <CheckoutCard userData={userData} />
               </Suspense>
             </div>
           </div>
@@ -81,6 +95,3 @@ export default function CheckoutPage() {
     </>
   );
 }
-
-
-

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Input from '@components/ui/form/input';
 import PasswordInput from '@components/ui/form/password-input';
 import Button from '@components/ui/button';
@@ -13,8 +13,9 @@ import Switch from '@components/ui/switch';
 import CloseButton from '@components/ui/close-button';
 import { FaFacebook, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
 import cn from 'classnames';
-import { useUser } from '@contexts/user/userContext';
+import   { useUser } from '@contexts/user/userContext';
 import { useRouter } from 'next/navigation';
+import { useUI } from '@contexts/ui.context';
 
 interface LoginFormProps {
   isPopup?: boolean;
@@ -25,10 +26,11 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redirect }) => {
   const { closeModal, openModal } = useModalAction();
   const router = useRouter()
-  const { signin } = useUser();
+  const { signin ,setUser } = useUser();
    const [error, setError] = useState<string | null>(null);
   const { mutate: login, isPending } = useLoginMutation(signin, setError);
   const [remember, setRemember] = useState(false);
+  const {authorize} = useUI()
 
   const {
     register,
@@ -54,6 +56,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redire
       { email, password, remember },
       {
         onSuccess: (data) => {
+          console.log("<<Ggg ", data?.user);
+          
+          setUser(data?.user)
+          authorize();
           if (data && redirect && redirect.status) {
             router.push(redirect?.link  || '/');
           }
