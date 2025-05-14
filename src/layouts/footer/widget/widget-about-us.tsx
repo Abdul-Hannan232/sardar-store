@@ -26,8 +26,7 @@ const WidgetAbout: React.FC<AboutProps> = ({ social, className }) => {
           className="mx-auto mb-3 lg:mb-5 sm:ltr:ml-0 sm:rtl:mr-0"
         />
         <Text>
-          We offer high-quality foods and the best delivery service, and the
-          food market you can blindly trust
+        SardarBaba brings you top-quality products with fast, reliable delivery — a store you can trust.
         </Text>
       </div>
 

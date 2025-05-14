@@ -48,6 +48,12 @@ export default function AboutPageContent() {
                 className=""
               />
             </div>
+             <h2 className="text-lg md:text-xl lg:text-[24px] text-brand-dark font-semibold mb-4 lg:mb-7">
+              {
+                // @ts-ignore
+                aboutSetting?.titleTwo
+              }
+            </h2>
             <div
               className="text-sm leading-7 text-brand-dark opacity-70 lg:text-15px lg:leading-loose"
               dangerouslySetInnerHTML={{
@@ -60,6 +66,12 @@ export default function AboutPageContent() {
               <Image src={aboutUs4} alt="about" className="ltr:mr-4 rtl:ml-4" />
               <Image src={aboutUs5} alt="about" className="" />
             </div>
+             <h2 className="text-lg md:text-xl lg:text-[24px] text-brand-dark font-semibold mb-4 lg:mb-7">
+              {
+                // @ts-ignore
+                aboutSetting?.titleThree
+              }
+            </h2>
             <div
               className="text-sm leading-7 text-brand-dark opacity-70 lg:text-15px lg:leading-loose"
               dangerouslySetInnerHTML={{
@@ -73,7 +85,7 @@ export default function AboutPageContent() {
             <h2 className="text-lg md:text-xl lg:text-[24px] text-brand-dark font-semibold mb-4 lg:mb-7">
               {
                 // @ts-ignore
-                aboutSetting.titleTwo
+                aboutSetting.titleFour
               }
             </h2>
             <div
@@ -84,8 +96,8 @@ export default function AboutPageContent() {
               }}
             />
             <p className="text-brand-dark font-medium text-base lg:text-lg leading-7 2xl:text-[20px] lg:leading-loose lg:mt-4 mb-3.5">
-              {aboutSetting.titleThree} &nbsp;
-              <a href="mailto:press@borobazar.com">press@sardar.store.com</a>.
+              {aboutSetting.titleFive} &nbsp;
+              {/* <a href="mailto:press@borobazar.com">press@sardar.store.com</a>. */}
             </p>
             <div
               className="text-sm leading-7 text-brand-dark opacity-70 lg:text-15px lg:leading-loose"
