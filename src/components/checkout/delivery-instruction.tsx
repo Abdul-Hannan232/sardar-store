@@ -341,7 +341,7 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({
   const onSubmit = (values: ContactFormValues) => {
     console.log(values, 'Delivery Note');
   };
-console.log('Current User user', user);
+// console.log('Current User user', user);
   return (
     <div className="w-full">
       <div className="w-full mx-auto">
