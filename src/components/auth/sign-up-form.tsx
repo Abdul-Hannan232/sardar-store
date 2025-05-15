@@ -57,7 +57,7 @@ export default function SignUpForm({
       },
     );
     closeModal();
-    console.log(name, email, password, 'sign form values');
+    // console.log(name, email, password, 'sign form values');
   }
   return (
     <div

@@ -37,10 +37,12 @@ export const useSignUpMutation = (signin: Function) => {
   return useMutation({
     mutationFn: (input: SignUpInputType) => signUp(input),
     onSuccess: (data) => {
-      Cookies.set('auth_token', data.token);
-      signin(data.user)
+      // Cookies.set('auth_token', data.token);
+      // signin(data.user)
+      // authorize();
+
+
       // Cookies.set('user', data.user);
-      authorize();
       // closeModal();
     },
     onError: (data) => {

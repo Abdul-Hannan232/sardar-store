@@ -7,7 +7,14 @@ import EmailIcon from '@components/icons/email-icon';
 import SendIcon from '@components/icons/send-icon';
 import Text from '@components/ui/text';
 import Heading from '@components/ui/heading';
+
 import cn from 'classnames';
+import {
+  useSubscriptionMutation,
+  SubscriptionType,
+} from '@framework/subscriptions/subscription';
+import { Button } from '@headlessui/react';
+import { ImSpinner2 } from 'react-icons/im';
 
 interface NewsLetterFormValues {
   email: string;
@@ -24,37 +31,52 @@ function SubscriptionForm() {
   } = useForm<NewsLetterFormValues>({
     defaultValues,
   });
+  const { mutate: Subscription, isPending } = useSubscriptionMutation();
+  console.log('  >, isPending>>>>>>>.. isPending', isPending);
+
   const [subscriptionSuccess, setSubscriptionSuccess] =
     useState<Boolean>(false);
 
   function onSubmit(values: NewsLetterFormValues, e: any) {
-    // show success message
-    setSubscriptionSuccess(true);
+    Subscription(values, {
+      onSuccess: () => {
+        // show success message
+        setSubscriptionSuccess(true);
 
-    // remove success message after 3 seconds
-    setTimeout(() => {
-      setSubscriptionSuccess(false);
-    }, 5000);
+        // remove success message after 3 seconds
+        setTimeout(() => {
+          setSubscriptionSuccess(false);
+        }, 5000);
 
-    // reset form after submit
-    e.target.reset();
-    console.log(values, 'News letter');
+        // reset form after submit
+        e.target.reset();
+      },
+    });
+
+    // console.log(values, 'News letter');
   }
+
+  //  const onSubmit = (values: NewsLetterFormValues, e: any) => {
+  //   e.preventDefault();
+  //   Subscription(values);
+  // };
+
   return (
     <form
       noValidate
       className="relative mt-5 max-w-[400px]"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <span className="flex items-center absolute ltr:left-0 rtl:right-0 top-0 h-12 px-3.5 transform">
+      <Button className="flex items-center absolute ltr:left-0 rtl:right-0 top-0 h-12 px-3.5 transform">
         <EmailIcon className="w-4 2xl:w-[18px] h-4 2xl:h-[18px]" />
-      </span>
+      </Button>
       <Input
         placeholder="Write your email here"
         type="email"
         id="subscription-email"
         variant="solid"
         className="w-full"
+        disabled={isPending}
         inputClassName="ltr:pl-10 rtl:pr-10 2xl:px-11 h-12 rounded-md"
         {...register('email', {
           required: `You must need to provide your email address`,
