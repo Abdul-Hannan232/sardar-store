@@ -341,11 +341,11 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({
   const onSubmit = (values: ContactFormValues) => {
     console.log(values, 'Delivery Note');
   };
-
+console.log('Current User user', user);
   return (
     <div className="w-full">
       <div className="w-full mx-auto">
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form  onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="mb-6">
             <TextArea
               inputClassName="focus:border-2 focus:outline-none focus:border-brand"
