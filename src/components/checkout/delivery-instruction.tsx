@@ -321,11 +321,11 @@ const DeliveryInstructions: React.FC<DeliveryInstructionsProps> = ({
 
   useEffect(() => {
     if (user) {
-      setValue('address', user.address as string);
-      setValue('phone', user.phone as string);
+      setValue('address', user.address as string ||currentuser?.address as string );
+      setValue('phone', user.phone as string || currentuser?.address as string);
       setValue('id', user.id as number);
     }
-  }, [user, setValue]);
+  }, [user, setValue, currentuser]);
 
   useEffect(() => {
     const subscription = watch((values) => {
