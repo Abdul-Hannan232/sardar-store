@@ -32,7 +32,7 @@ function SubscriptionForm() {
     defaultValues,
   });
   const { mutate: Subscription, isPending } = useSubscriptionMutation();
-  console.log('  >, isPending>>>>>>>.. isPending', isPending);
+  // console.log('  >, isPending>>>>>>>.. isPending', isPending);
 
   const [subscriptionSuccess, setSubscriptionSuccess] =
     useState<Boolean>(false);

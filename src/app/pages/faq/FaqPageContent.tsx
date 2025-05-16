@@ -43,7 +43,7 @@ const FaqPageContent = () => {
 
   return (
     <>
-      <PageHeroSection className="faq-banner-area" />
+      <PageHeroSection title='Frequently Ask Question' className="faq-banner-area" />
       <Container>
         <div className="flex flex-col max-w-2xl py-12 mx-auto 2xl:max-w-4xl md:py-20">
           {faqs.map((item) => (

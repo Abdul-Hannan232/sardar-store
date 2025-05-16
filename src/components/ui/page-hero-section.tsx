@@ -11,13 +11,16 @@ interface HeaderProps {
   mobileBackgroundThumbnail?: Attachment | string;
   variant?: 'default' | 'white';
   className?: string;
+  title?:string
 }
 
 const PageHeroSection: React.FC<HeaderProps> = ({
-  backgroundThumbnail = '/assets/images/page-hero-bg.png',
+  // backgroundThumbnail = '/assets/images/page-hero-bg.png',
+  backgroundThumbnail = '/assets/images/FAQ.png',
   mobileBackgroundThumbnail = '/assets/images/page-hero-bg-mobile.png',
   variant = 'default',
   className = '',
+  title="Frequently Ask Question"
 }) => {
   const { width } = useWindowSize();
   return (
@@ -46,7 +49,7 @@ const PageHeroSection: React.FC<HeaderProps> = ({
           )}
         >
           <span className="block mb-3 font-bold font-manrope md:mb-4 lg:mb-5 2xl:mb-7 ">
-          Frequently Ask Question
+          {title}
           </span>
           {/* <span className="block mb-3 font-bold font-manrope md:mb-4 lg:mb-5 2xl:mb-7 ">
             Page Section Title

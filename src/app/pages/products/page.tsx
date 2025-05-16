@@ -15,7 +15,7 @@ export default async function Page() {
 
   return (
     <>
-      <PageHeroSection />
+      <PageHeroSection   />
       {/* <PageHeroSection heroTitle="text-all-grocery-items" /> */}
       <Suspense fallback={<SearchBarFallback />}>
         <ProductsPageContent />

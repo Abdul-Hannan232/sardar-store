@@ -22,8 +22,8 @@ async function login(input: LoginInputType) {
 
    
     return response.data;
-  } catch (error) {
-    throw new Error('Signup failed');
+  } catch (error:any) {    
+    throw new Error(error.response.data.message ||'Sigin failed');
     // throw new Error(error.response?.data?.message || 'Signup failed');
   }
   // return {
@@ -42,8 +42,8 @@ export const useLoginMutation = (signin: Function, setError: Function) => {
       closeModal();
     },
     onError: (data) => {
-      setError('Invalid email or password.');
-      console.log(data, 'login error response');
+      setError(data ||'Invalid email or password.');
+      console.log( 'login error response',data);
     },
   });
 };

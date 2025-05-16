@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <>
-      <PageHeroSection />
+      <PageHeroSection title='Privacy Policy' />
       {/* <PageHeroSection heroTitle="text-page-privacy-policy" /> */}
       <PrivacyPageContent />
       <DownloadApps />

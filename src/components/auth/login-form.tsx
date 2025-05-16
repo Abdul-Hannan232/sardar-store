@@ -13,24 +13,28 @@ import Switch from '@components/ui/switch';
 import CloseButton from '@components/ui/close-button';
 import { FaFacebook, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
 import cn from 'classnames';
-import   { useUser } from '@contexts/user/userContext';
+import { useUser } from '@contexts/user/userContext';
 import { useRouter } from 'next/navigation';
 import { useUI } from '@contexts/ui.context';
 
 interface LoginFormProps {
   isPopup?: boolean;
   className?: string;
-  redirect?:{link: string, status:boolean}
+  redirect?: { link: string; status: boolean };
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redirect }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  isPopup = true,
+  className,
+  redirect,
+}) => {
   const { closeModal, openModal } = useModalAction();
-  const router = useRouter()
-  const { signin ,setUser } = useUser();
-   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { signin, setUser } = useUser();
+  const [error, setError] = useState<string | null>(null);
   const { mutate: login, isPending } = useLoginMutation(signin, setError);
   const [remember, setRemember] = useState(false);
-  const {authorize} = useUI()
+  const { authorize } = useUI();
 
   const {
     register,
@@ -40,38 +44,42 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redire
 
   function onSubmit({ email, password, remember }: LoginInputType) {
     setError(null);
-//     login({
-//       email,
-//       password,
-//       remember,
-      
-//     });
-// if (redirect && redirect.status) {
-//     router.push(redirect?.link || "/"); 
-//   } 
+    //     login({
+    //       email,
+    //       password,
+    //       remember,
 
-//   console.log('Redirecting to:', redirect);
+    //     });
+    // if (redirect && redirect.status) {
+    //     router.push(redirect?.link || "/");
+    //   }
 
- login(
+    //   console.log('Redirecting to:', redirect);
+
+    login(
       { email, password, remember },
       {
         onSuccess: (data) => {
-          console.log("<<Ggg ", data?.user);
-          
-          setUser(data?.user)
+          console.log('<<Ggg ', data?.user);
+
+          setUser(data?.user);
           authorize();
           if (data && redirect && redirect.status) {
-            router.push(redirect?.link  || '/');
+            router.push(redirect?.link || '/');
           }
-          console.log('Redirecting to:', redirect?.link  || '/');
+          console.log('Redirecting to:', redirect?.link || '/');
         },
-        onError: (error) => {
-          setError('Invalid email or password.');
-          console.log('Login error:', error);
+        onError: (data: any) => {
+          const errorMessage =
+            (data instanceof Error && data.message) ||
+            'Invalid email or password.';
+
+          setError(errorMessage);
+          console.log('Login error:', data);
         },
-      }
+      },
     );
-    
+
     // closeModal();
     // console.log(email, password, remember, 'data');
   }
@@ -83,7 +91,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redire
   //   });
   //   // closeModal();
   // }
-
 
   function handleSignUp() {
     return openModal('SIGN_UP_VIEW');
@@ -125,9 +132,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isPopup = true, className, redire
           </div>
 
           {error && (
-            <div className="mb-4 text-sm text-center text-red-600">
-              {error}
-            </div>
+            <div className="mb-4 text-sm text-center text-red-600">{error}</div>
           )}
           <form
             onSubmit={handleSubmit(onSubmit)}

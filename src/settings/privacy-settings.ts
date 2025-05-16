@@ -91,7 +91,7 @@ export const privacyPolicy = [
   {
     id: '8',
     title: 'International Users',
-    description: `<p>If you are accessing our website from outside [Insert Your Country], please note that your data may be transferred, stored, and processed in our servers located in [Insert Country/Region]. By using our services, you consent to such transfer.</p>`,
+    description: `<p>If you are accessing our website from outside Pakistan (privacy policy), please note that your data may be transferred, stored, and processed in our servers located in [Insert Country/Region]. By using our services, you consent to such transfer.</p>`,
   },
   {
     id: '9',
