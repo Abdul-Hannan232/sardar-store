@@ -28,7 +28,7 @@ export default async function Page() {
         </div>
         <ContactInformation />
       </Container>
-      <div className="mt-12 md:mt-16 xl:mt-20 2xl:mt-24 bg-fill-two relative h-[420px]">
+      {/* <div className="mt-12 md:mt-16 xl:mt-20 2xl:mt-24 bg-fill-two relative h-[420px]">
         <Map
           lat={1.295831}
           lng={103.76261}
@@ -36,7 +36,7 @@ export default async function Page() {
           zoom={15}
           showInfoWindow={true}
         />
-      </div>
+      </div> */}
       <DownloadApps />
     </>
   );

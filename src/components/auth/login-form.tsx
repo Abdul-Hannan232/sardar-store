@@ -101,7 +101,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
   return (
     <div
       className={cn(
-        'w-full md:w-[720px] lg:w-[920px] xl:w-[1000px] 2xl:w-[1200px] relative',
+        // 'w-full md:w-[720px] lg:w-[920px] xl:w-[1000px] 2xl:w-[1200px] relative',
+        'w-full   lg:w-[920px] xl:w-[1000px] 2xl:w-[1200px] relative',
         className,
       )}
     >
@@ -109,7 +110,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
       <div className="flex mx-auto overflow-hidden rounded-lg bg-brand-light">
         <div className="md:w-1/2 lg:w-[55%] xl:w-[60%] registration hidden md:block relative">
-          <Image src="/assets/images/login.png" alt="signin" fill />
+          {/* <Image src="/assets/images/login-banner.png" alt="signin" fill /> */}
+          <Image src="/assets/images/login-banner.png" alt="signin" width={600} height={600} />
         </div>
         <div className="w-full md:w-1/2 lg:w-[45%] xl:w-[40%] py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 rounded-md flex flex-col justify-center">
           <div className="mb-6 text-center">

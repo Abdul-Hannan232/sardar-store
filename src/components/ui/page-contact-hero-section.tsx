@@ -12,7 +12,8 @@ interface HeaderProps {
 const PageContactHeroSection: React.FC<HeaderProps> = ({
   // heroTitle = 'text-contact-page-header',
   // heroDescription = 'text-contact-page-explore',
-  backgroundThumbnail = '/assets/images/contact-page-banner.png',
+  // backgroundThumbnail = '/assets/images/contact-page-banner.png',
+backgroundThumbnail = '/assets/images/customer-support.png',
 }) => {
   const mounted = useIsMounted();
   return (

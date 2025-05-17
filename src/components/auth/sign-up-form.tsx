@@ -68,9 +68,11 @@ export default function SignUpForm({
     >
       {isPopup === true && <CloseButton onClick={closeModal} />}
       <div className="flex w-full mx-auto overflow-hidden rounded-lg bg-brand-light">
-        <div className="md:w-1/2 lg:w-[55%] xl:w-[60%] registration hidden md:block relative">
+        {/* <div className="md:w-1/2 lg:w-[55%] xl:w-[60%] registration hidden md:block relative"> */}
+        <div className="  lg:w-[55%] xl:w-[60%] registration hidden lg:block relative">
           <Image
-            src="/assets/images/registration.png"
+            // src="/assets/images/registration.png"
+            src="/assets/images/signup-banner.png"
             alt="sign up"
             fill
             sizes="(max-width: 768px) 100vw,
@@ -78,7 +80,8 @@ export default function SignUpForm({
               33vw"
           />
         </div>
-        <div className="w-full md:w-1/2 lg:w-[45%] xl:w-[40%] py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 rounded-md shadow-dropDown flex flex-col justify-center">
+        {/* <div className="w-full md:w-1/2 lg:w-[45%] xl:w-[40%] py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 rounded-md shadow-dropDown flex flex-col justify-center"> */}
+        <div className="w-full  lg:w-[45%] xl:w-[40%] py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 rounded-md shadow-dropDown flex flex-col justify-center">
           <div className="text-center mb-6 pt-2.5">
             <div onClick={closeModal}>
               <Logo />
