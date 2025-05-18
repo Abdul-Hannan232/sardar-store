@@ -50,7 +50,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       { email, password, remember },
       {
         onSuccess: (data) => {
-          console.log('<<lgin ', data);
+          // console.log('<<lgin ', data);
           if (
             data?.message ===
             "Your email is not verified. We've sent a verification link to your email address. Please check your inbox to complete the verification process."
@@ -78,7 +78,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
             'Invalid email or password.';
 
           setError(errorMessage);
-          console.log('Login error:', data);
+          // console.log('Login error:', data);
         },
       },
     );

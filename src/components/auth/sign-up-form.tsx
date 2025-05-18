@@ -74,7 +74,7 @@ export default function SignUpForm({
         const errorMessage =
           (error instanceof Error && error.message) || "Signup failed";
         setError(errorMessage);
-        console.error("Signup failed:", error);
+        // console.error("Signup failed:", error);
       },
     }
   );

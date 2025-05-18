@@ -29,7 +29,7 @@ async function login(input: LoginInputType) {
 }
 export const useLoginMutation = (signin: Function, setError: Function) => {
   // const { authorize } = useUI();
-  const { closeModal, openModal } = useModalAction();
+  // const { closeModal, openModal } = useModalAction();
   return useMutation({
     mutationFn: (input: LoginInputType) => login(input),
     onSuccess: (data, variables, context) => {
