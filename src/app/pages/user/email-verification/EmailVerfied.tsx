@@ -7,20 +7,24 @@ import cn from 'classnames';
 import { ROUTES } from '@utils/routes';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface SignUpFormProps {
   isPopup?: boolean;
   className?: string;
 }
 
-export default function SignUpModal({
+export default function EmailVerfied({
   isPopup = true,
   className,
 }: SignUpFormProps) {
   const { closeModal } = useModalAction();
+      const router = useRouter();
+  
 
   useEffect(() => {
     setTimeout(() => {
+        router.push('/pages/signin');
       closeModal();
     }, 3500);
   }, []);
@@ -33,11 +37,11 @@ export default function SignUpModal({
         className,
       )}
     >
-      {isPopup === true && <CloseButton onClick={closeModal} />}
+      {isPopup === true && <CloseButton onClick={()=>{  router.push('/pages/signin'); closeModal();}} />}
       <div className="flex w-full mx-auto overflow-hidden rounded-lg bg-brand-light">
         <div className="w-full   py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 rounded-md shadow-dropDown flex flex-col justify-center">
           <div className="text-center mb-6 pt-2.5">
-            <div onClick={closeModal}>
+            <div onClick={()=>{  router.push('/pages/signin'); closeModal();}}>
               <Logo />
             </div>
             <Image
@@ -48,10 +52,11 @@ export default function SignUpModal({
               height={300}
             />
 
-            <h1 className="text-xl py-2">Please check your email to verify!</h1>
+            <h1 className="text-xl py-2">Email verified successfully!</h1>
           </div>
         </div>
       </div>
     </div>
   );
 }
+

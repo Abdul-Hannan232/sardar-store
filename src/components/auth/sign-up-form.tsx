@@ -15,7 +15,8 @@ import CloseButton from '@components/ui/close-button';
 import cn from 'classnames';
 import { ROUTES } from '@utils/routes';
 import { useUser } from '@contexts/user/userContext';
-
+import { toast } from 'react-toastify';
+import useWindowSize from '@utils/use-window-size';
 
 interface SignUpFormProps {
   isPopup?: boolean;
@@ -30,6 +31,8 @@ export default function SignUpForm({
   const { mutate: signUp, isPending } = useSignUpMutation(signin);
   const { closeModal, openModal } = useModalAction();
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { width } = useWindowSize();
 
   const {
     register,
@@ -39,26 +42,83 @@ export default function SignUpForm({
   function handleSignIn() {
     return openModal('LOGIN_VIEW');
   }
+  // function onSubmit({ name, email, password, remember }: SignUpInputType) {
+  //   setError(null);
+  //   signUp(
+  //     {
+  //       name,
+  //       email,
+  //       password,
+  //       remember,
+  //     },
+  //     {
+  //       onSuccess: (data) => {
+  //         // closeModal();
+  //         if (data?.showMessage === "closeModal") {
+  //           toast(data?.message || 'User Already Registered', {
+  //             progressClassName: 'fancy-progress-bar',
+  //             position: width! > 768 ? 'bottom-right' : 'top-right',
+  //             autoClose: 1500,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //           });
+  //           closeModal();
+  //         }
+          
+  //           openModal('SIGNUP_SUCCESS');
+  //         // console.log(name, email, password, 'sign form values');
+  //         console.log(data, 'sign form values');
+  //       },
+  //       onError: (error) => {
+  //         const errorMessage =
+  //           (error instanceof Error && error.message) || 'Signup failed';
+  //         setError(errorMessage);
+  //         console.error('Signup failed:', error);
+  //       },
+  //     },
+  //   );
+  //   // closeModal();
+  //   // console.log(name, email, password, 'sign form values');
+  // }
+
+
   function onSubmit({ name, email, password, remember }: SignUpInputType) {
-    signUp(
-      {
-        name,
-        email,
-        password,
-        remember,
-      }, {
-        onSuccess: () => {
+  setError(null);
+  signUp(
+    { name, email, password, remember },
+    {
+      onSuccess: (data) => {
+        console.log("Response Data:", data); // Debugging ke liye
+
+        if (data?.showMessage === "closeModal") {
+          toast(data?.message || "User Already Registered", {
+            progressClassName: "fancy-progress-bar",
+            position: width! > 768 ? "bottom-right" : "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
           closeModal();
-          console.log(name, email, password, 'sign form values');
-        },
-        onError: (error) => {
-          console.error('Signup failed:', error);
-        },
+        } else if (data?.showMessage === "modalOpen") {
+          setError(data?.message); // Modal ko open rakhein aur error show karein
+        } else if (data?.message === "Please check your email to verify!") {
+          openModal("SIGNUP_SUCCESS"); // Signup success modal open karein
+        }
       },
-    );
-    closeModal();
-    // console.log(name, email, password, 'sign form values');
-  }
+      onError: (error) => {
+        const errorMessage =
+          (error instanceof Error && error.message) || "Signup failed";
+        setError(errorMessage);
+        console.error("Signup failed:", error);
+      },
+    }
+  );
+}
+
   return (
     <div
       className={cn(
@@ -100,6 +160,9 @@ export default function SignUpForm({
               </button>
             </div>
           </div>
+          {error && (
+            <div className="mb-4 text-sm text-center text-red-600">{error}</div>
+          )}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col justify-center"

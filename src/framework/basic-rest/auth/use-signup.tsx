@@ -22,10 +22,12 @@ async function signUp(input: SignUpInputType) {
     // console.log('response', response.data);
 
     return response.data;
-  } catch (error) {
-    throw new Error('Signup failed');
+  } catch (error:any) {
     
-    // throw new Error(error.response?.data?.message || 'Signup failed');
+    // throw new Error(error.response.data.message ||'Signup failed');
+    // console.log(error.response.data.message ||'Signup failed');
+    
+    throw new Error(error.response?.data?.message || 'Signup failed');
   }
   // return {
 
@@ -41,12 +43,13 @@ export const useSignUpMutation = (signin: Function) => {
       // signin(data.user)
       // authorize();
 
+console.log(">>>>>>>> data ,", data);
 
       // Cookies.set('user', data.user);
       // closeModal();
     },
     onError: (data) => {
-      console.log(data, 'login error response');
+      console.log(data, 'signup error response');
     },
   });
 };
