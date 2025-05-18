@@ -8,6 +8,7 @@ import {
 } from '@components/common/modal/modal.context';
 import SignUpModal from '@components/auth/signup-modal';
 import EmailVerfied from '@pages/pages/user/email-verification/EmailVerfied';
+import LoginModal from '@components/auth/login-modal';
 const LoginForm = dynamic(() => import('@components/auth/login-form'));
 const SignUpForm = dynamic(() => import('@components/auth/sign-up-form'));
 const ForgetPasswordForm = dynamic(
@@ -47,6 +48,7 @@ export default function ManagedModal() {
     <Modal open={isOpen} onClose={closeModal}>
       {view === 'LOGIN_VIEW' && <LoginForm />}
       {view === 'SIGNUP_SUCCESS' && <SignUpModal />}
+      {view === 'SIGNIN_SUCCESS' && <LoginModal />}
       {view === 'SIGN_UP_VIEW' && <SignUpForm />}
       {view === 'FORGET_PASSWORD' && <ForgetPasswordForm />}
       {view === 'EMAIL_VERIFIED' && <EmailVerfied />}

@@ -16,6 +16,7 @@ import cn from 'classnames';
 import { useUser } from '@contexts/user/userContext';
 import { useRouter } from 'next/navigation';
 import { useUI } from '@contexts/ui.context';
+import Cookies from 'js-cookie';
 
 interface LoginFormProps {
   isPopup?: boolean;
@@ -44,30 +45,32 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   function onSubmit({ email, password, remember }: LoginInputType) {
     setError(null);
-    //     login({
-    //       email,
-    //       password,
-    //       remember,
-
-    //     });
-    // if (redirect && redirect.status) {
-    //     router.push(redirect?.link || "/");
-    //   }
-
-    //   console.log('Redirecting to:', redirect);
 
     login(
       { email, password, remember },
       {
         onSuccess: (data) => {
-          console.log('<<Ggg ', data?.user);
+          console.log('<<lgin ', data);
+          if (
+            data?.message ===
+            "Your email is not verified. We've sent a verification link to your email address. Please check your inbox to complete the verification process."
+          ) {
+            openModal('SIGNIN_SUCCESS');
+            return;
+          } 
+          
+          if(data?.message === "Sigin Successfully!" && data?.success ){
+            setUser(data?.user);
+            signin(data?.user);
+            authorize();
+            Cookies.set('auth_token', data.token);
 
-          setUser(data?.user);
-          authorize();
-          if (data && redirect && redirect.status) {
-            router.push(redirect?.link || '/');
+            if (data && redirect && redirect.status) {
+              router.push(redirect?.link || '/');
+            }
+            closeModal();
+            return
           }
-          console.log('Redirecting to:', redirect?.link || '/');
         },
         onError: (data: any) => {
           const errorMessage =
@@ -111,7 +114,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
       <div className="flex mx-auto overflow-hidden rounded-lg bg-brand-light">
         <div className="md:w-1/2 lg:w-[55%] xl:w-[60%] registration hidden md:block relative">
           {/* <Image src="/assets/images/login-banner.png" alt="signin" fill /> */}
-          <Image src="/assets/images/login-banner.png" alt="signin" width={600} height={600} />
+          <Image
+            src="/assets/images/login-banner.png"
+            alt="signin"
+            width={600}
+            height={600}
+          />
         </div>
         <div className="w-full md:w-1/2 lg:w-[45%] xl:w-[40%] py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 rounded-md flex flex-col justify-center">
           <div className="mb-6 text-center">

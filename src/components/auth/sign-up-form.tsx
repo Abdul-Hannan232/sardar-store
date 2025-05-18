@@ -42,55 +42,14 @@ export default function SignUpForm({
   function handleSignIn() {
     return openModal('LOGIN_VIEW');
   }
-  // function onSubmit({ name, email, password, remember }: SignUpInputType) {
-  //   setError(null);
-  //   signUp(
-  //     {
-  //       name,
-  //       email,
-  //       password,
-  //       remember,
-  //     },
-  //     {
-  //       onSuccess: (data) => {
-  //         // closeModal();
-  //         if (data?.showMessage === "closeModal") {
-  //           toast(data?.message || 'User Already Registered', {
-  //             progressClassName: 'fancy-progress-bar',
-  //             position: width! > 768 ? 'bottom-right' : 'top-right',
-  //             autoClose: 1500,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //           });
-  //           closeModal();
-  //         }
-          
-  //           openModal('SIGNUP_SUCCESS');
-  //         // console.log(name, email, password, 'sign form values');
-  //         console.log(data, 'sign form values');
-  //       },
-  //       onError: (error) => {
-  //         const errorMessage =
-  //           (error instanceof Error && error.message) || 'Signup failed';
-  //         setError(errorMessage);
-  //         console.error('Signup failed:', error);
-  //       },
-  //     },
-  //   );
-  //   // closeModal();
-  //   // console.log(name, email, password, 'sign form values');
-  // }
-
-
+ 
   function onSubmit({ name, email, password, remember }: SignUpInputType) {
   setError(null);
   signUp(
     { name, email, password, remember },
     {
       onSuccess: (data) => {
-        console.log("Response Data:", data); // Debugging ke liye
+        // console.log("Response Data:", data); 
 
         if (data?.showMessage === "closeModal") {
           toast(data?.message || "User Already Registered", {
@@ -103,10 +62,12 @@ export default function SignUpForm({
             draggable: true,
           });
           closeModal();
-        } else if (data?.showMessage === "modalOpen") {
-          setError(data?.message); // Modal ko open rakhein aur error show karein
-        } else if (data?.message === "Please check your email to verify!") {
-          openModal("SIGNUP_SUCCESS"); // Signup success modal open karein
+        } 
+        // else if (data?.showMessage === "modalOpen") {
+        //   setError(data?.message); 
+        // }
+         else if (data?.message === "Please check your email to verify!") {
+          openModal("SIGNUP_SUCCESS"); 
         }
       },
       onError: (error) => {
