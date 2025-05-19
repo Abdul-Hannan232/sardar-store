@@ -17,17 +17,17 @@ const ReviewCard: FC<ReviewProps> = ({ item, className = '' }) => {
         {[...Array(5)].map((_, idx) => (
           <StarIcon
             key={idx}
-            color={idx < item.rating ? '#F3B81F' : '#DFE6ED'}
+            color={idx < item.ratings ? '#F3B81F' : '#DFE6ED'}
             className="w-3.5 lg:w-4 h-3.5 lg:h-4 mx-0.5"
           />
         ))}
       </div>
       <Heading className="mb-1.5">{item.title}</Heading>
-      <Text className="xl:leading-[2em]">{item.description}</Text>
+      <Text className="xl:leading-[2em]">{item.message}</Text>
       <div className="pt-2 text-sm text-brand-dark text-opacity-80">
         By
         <span className="inline-block ltr:ml-[3px] rtl:mr-[3px] font-semibold">
-          {item.author}
+          {item?.user?.name}
         </span>
       </div>
     </div>

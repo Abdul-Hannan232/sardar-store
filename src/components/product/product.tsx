@@ -599,7 +599,7 @@ const ProductSingleDetails = () => {
           </div>
         </div>
       </div>
-      <ProductDetailsTab products_detail={data?.description as string} />
+      <ProductDetailsTab productId={data?.id} products_detail={data?.description as string} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '@components/ui/form/input';
 import Button from '@components/ui/button';
 import { useForm } from 'react-hook-form';
@@ -7,26 +7,105 @@ import Heading from '@components/ui/heading';
 import Text from '@components/ui/text';
 import cn from 'classnames';
 import Rate from '@components/ui/rate';
+import { useUser } from '@contexts/user/userContext';
+import http from '@framework/utils/http';
+import { toast } from 'react-toastify';
+import useWindowSize from '@utils/use-window-size';
 
 interface ReviewFormProps {
   className?: string;
+  productId: number | string | undefined;
+  setReviews:Function,
+  reviews:any
 }
 interface ReviewFormValues {
+  userId: string | number;
+  title: string;
   name: string;
   email: string;
-  cookie: string;
   message: string;
+  productId: number | string | undefined;
+  ratings: number;
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ className = '' }) => {
+const ReviewForm: React.FC<ReviewFormProps> = ({
+  className = '',
+  productId,
+  setReviews,
+  reviews
+}) => {
+  const { user } = useUser();
+  const [rating_custom_icon, set_rating_custom_icon] = useState(0);
+  const [ratingError, setRatingError] = useState<boolean>(false);
+  const { width } = useWindowSize();
+
+  const defaultValues = {
+    userId: user?.id,
+    productId: productId,
+    name: user?.name,
+    email: user?.email,
+    message: '',
+    title: '',
+    ratings: rating_custom_icon,
+  };
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<ReviewFormValues>();
-  const [rating_custom_icon, set_rating_custom_icon] = useState(1);
-  function onSubmit(values: ReviewFormValues) {
-    console.log(values, 'review');
+  } = useForm<ReviewFormValues>({
+    defaultValues,
+  });
+
+  useEffect(() => {
+    setValue('ratings', rating_custom_icon);
+  }, [rating_custom_icon]);
+
+  useEffect(() => {
+    if (user) {
+      setValue('userId', user.id);
+      setValue('email', user.email);
+      setValue('name', user.name);
+    }
+  }, [user]);
+
+  async function onSubmit(values: ReviewFormValues) {
+
+    if (!rating_custom_icon) {
+      setRatingError(true);
+      return;
+    }
+
+    try {
+      const response = await http.post(
+        `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
+        values,
+      );
+
+      toast(response?.data?.message || 'Review submitted successfully!', {
+        progressClassName: 'fancy-progress-bar',
+        position: width! > 768 ? 'bottom-right' : 'top-right',
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      setReviews([response?.data?.review,...reviews ])
+      setValue('message', '');
+      setValue('title', '');
+      setValue('ratings', 0);
+      set_rating_custom_icon(0);
+      setRatingError(false);
+
+    } catch (error: any) {
+      console.error(
+        'Error saving review:',
+        error.response?.data || error.message,
+      );
+    }
   }
 
   return (
@@ -52,11 +131,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ className = '' }) => {
               className="-mb-2"
               onChange={(value) => set_rating_custom_icon(value)}
             />
+            {ratingError && (
+              <p className="text-red-300 text-sm">Rating is required!</p>
+            )}
           </div>
           <Input
-            label="Name *"
-            {...register('name', { required: 'Name is required' })}
-            error={errors.name?.message}
+            label="Title *"
+            {...register('title', { required: 'Title is required' })}
+            error={errors.title?.message}
             variant="solid"
           />
           <TextArea
@@ -65,12 +147,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ className = '' }) => {
             {...register('message', { required: 'Message is required' })}
             error={errors.message?.message}
           />
-          <div className="flex flex-col space-y-5 md:flex-row md:space-y-0">
+          <div className="flex flex-col space-y-5 md:flex-row md:space-y-0 ">
             <Input
               label="Name *"
               {...register('name', { required: 'Name is required' })}
-              className="w-full md:w-1/2 "
+              className="w-full md:w-1/2 opacity-75 "
               error={errors.name?.message}
+              disabled={true}
               variant="solid"
             />
             <Input
@@ -84,7 +167,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ className = '' }) => {
                   message: 'Please provide valid email address',
                 },
               })}
-              className="w-full md:w-1/2 md:ltr:ml-2.5 md:rtl:mr-2.5 lg:ltr:ml-5 lg:rtl:mr-5 mt-2 md:mt-0"
+              disabled={true}
+              className="w-full md:w-1/2 md:ltr:ml-2.5 md:rtl:mr-2.5 lg:ltr:ml-5 lg:rtl:mr-5 mt-2 md:mt-0 opacity-75"
               error={errors.email?.message}
               variant="solid"
             />
