@@ -11,12 +11,14 @@ import { useUser } from '@contexts/user/userContext';
 import http from '@framework/utils/http';
 import { toast } from 'react-toastify';
 import useWindowSize from '@utils/use-window-size';
+import { useUI } from '@contexts/ui.context';
+import { useModalAction } from '../modal/modal.context';
 
 interface ReviewFormProps {
   className?: string;
   productId: number | string | undefined;
-  setReviews:Function,
-  reviews:any
+  setReviews: Function;
+  reviews: any;
 }
 interface ReviewFormValues {
   userId: string | number;
@@ -32,12 +34,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   className = '',
   productId,
   setReviews,
-  reviews
+  reviews,
 }) => {
   const { user } = useUser();
   const [rating_custom_icon, set_rating_custom_icon] = useState(0);
   const [ratingError, setRatingError] = useState<boolean>(false);
   const { width } = useWindowSize();
+  const { isAuthorized } = useUI();
+  const { openModal } = useModalAction();
 
   const defaultValues = {
     userId: user?.id,
@@ -71,40 +75,42 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   }, [user]);
 
   async function onSubmit(values: ReviewFormValues) {
-
     if (!rating_custom_icon) {
       setRatingError(true);
       return;
     }
 
-    try {
-      const response = await http.post(
-        `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
-        values,
-      );
+    if (!isAuthorized) {
+      openModal('LOGIN_VIEW');
+    } else {
+      try {
+        const response = await http.post(
+          `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
+          values,
+        );
 
-      toast(response?.data?.message || 'Review submitted successfully!', {
-        progressClassName: 'fancy-progress-bar',
-        position: width! > 768 ? 'bottom-right' : 'top-right',
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+        toast(response?.data?.message || 'Review submitted successfully!', {
+          progressClassName: 'fancy-progress-bar',
+          position: width! > 768 ? 'bottom-right' : 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
 
-      setReviews([response?.data?.review,...reviews ])
-      setValue('message', '');
-      setValue('title', '');
-      setValue('ratings', 0);
-      set_rating_custom_icon(0);
-      setRatingError(false);
-
-    } catch (error: any) {
-      console.error(
-        'Error saving review:',
-        error.response?.data || error.message,
-      );
+        setReviews([response?.data?.review, ...reviews]);
+        setValue('message', '');
+        setValue('title', '');
+        setValue('ratings', 0);
+        set_rating_custom_icon(0);
+        setRatingError(false);
+      } catch (error: any) {
+        console.error(
+          'Error saving review:',
+          error.response?.data || error.message,
+        );
+      }
     }
   }
 
@@ -150,26 +156,20 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           <div className="flex flex-col space-y-5 md:flex-row md:space-y-0 ">
             <Input
               label="Name *"
-              {...register('name', { required: 'Name is required' })}
+              // {...register('name', { required: 'Name is required' })}
+              {...register('name')}
               className="w-full md:w-1/2 opacity-75 "
-              error={errors.name?.message}
+              // error={errors.name?.message}
               disabled={true}
               variant="solid"
             />
             <Input
               label="Email *"
               type="email"
-              {...register('email', {
-                required: 'You must need to provide your email address',
-                pattern: {
-                  value:
-                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                  message: 'Please provide valid email address',
-                },
-              })}
+              {...register('email')}
               disabled={true}
               className="w-full md:w-1/2 md:ltr:ml-2.5 md:rtl:mr-2.5 lg:ltr:ml-5 lg:rtl:mr-5 mt-2 md:mt-0 opacity-75"
-              error={errors.email?.message}
+              // error={errors.email?.message}
               variant="solid"
             />
           </div>
