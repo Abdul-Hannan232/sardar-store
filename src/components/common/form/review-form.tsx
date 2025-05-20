@@ -16,9 +16,10 @@ import { useModalAction } from '../modal/modal.context';
 
 interface ReviewFormProps {
   className?: string;
-  productId: number | string | undefined;
-  setReviews: Function;
-  reviews: any;
+  productId?: number | string | undefined;
+  setReviews?: Function;
+  reviews?: any;
+  order?: any;
 }
 interface ReviewFormValues {
   userId: string | number;
@@ -26,7 +27,7 @@ interface ReviewFormValues {
   name: string;
   email: string;
   message: string;
-  productId: number | string | undefined;
+  productId?: number | string | undefined;
   ratings: number;
 }
 
@@ -35,13 +36,15 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   productId,
   setReviews,
   reviews,
+  order,
 }) => {
   const { user } = useUser();
   const [rating_custom_icon, set_rating_custom_icon] = useState(0);
   const [ratingError, setRatingError] = useState<boolean>(false);
   const { width } = useWindowSize();
-  const { isAuthorized } = useUI();
+  const { isAuthorized, closeDrawer } = useUI();
   const { openModal } = useModalAction();
+  // console.log(">>>>>>>>>> order", order);
 
   const defaultValues = {
     userId: user?.id,
@@ -84,12 +87,29 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       openModal('LOGIN_VIEW');
     } else {
       try {
-        const response = await http.post(
-          `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
-          values,
-        );
+        // Check if it's a single product or multiple order items
+        const reviewPromises = order?.items
+          ? order.items.map((item: any) => {
+              const reviewData = {
+                ...values,
+                productId: item.productId, // replace productId for each product
+              };
+              return http.post(
+                `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
+                reviewData,
+              );
+            })
+          : [
+              http.post(
+                `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
+                { ...values, productId: productId }, // use single productId
+              ),
+            ];
 
-        toast(response?.data?.message || 'Review submitted successfully!', {
+        // wait for all reviews to be submitted
+        const responses = await Promise.all(reviewPromises);
+
+        toast('Review submitted successfully!', {
           progressClassName: 'fancy-progress-bar',
           position: width! > 768 ? 'bottom-right' : 'top-right',
           autoClose: 1500,
@@ -99,20 +119,79 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           draggable: true,
         });
 
-        setReviews([response?.data?.review, ...reviews]);
+        //  update reviews state for UI
+        if (reviews && setReviews) {
+          const newReviews = responses.map(
+            (response: any) => response.data.review,
+          );
+          setReviews([...newReviews, ...reviews]);
+        }
+
         setValue('message', '');
         setValue('title', '');
         setValue('ratings', 0);
         set_rating_custom_icon(0);
         setRatingError(false);
+        closeDrawer();
       } catch (error: any) {
         console.error(
-          'Error saving review:',
+          'Error saving reviews:',
           error.response?.data || error.message,
         );
+        toast('Failed to submit review(s).', {
+          progressClassName: 'fancy-progress-bar',
+          position: width! > 768 ? 'bottom-right' : 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   }
+
+  // async function onSubmit(values: ReviewFormValues) {
+  //   if (!rating_custom_icon) {
+  //     setRatingError(true);
+  //     return;
+  //   }
+
+  //   if (!isAuthorized) {
+  //     openModal('LOGIN_VIEW');
+  //   } else {
+  //     try {
+  //       const response = await http.post(
+  //         `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/reviews/add`,
+  //         values,
+  //       );
+
+  //       toast(response?.data?.message || 'Review submitted successfully!', {
+  //         progressClassName: 'fancy-progress-bar',
+  //         position: width! > 768 ? 'bottom-right' : 'top-right',
+  //         autoClose: 1500,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //       });
+
+  //       if (reviews && setReviews) {
+  //         setReviews([response?.data?.review, ...reviews]);
+  //       }
+  //       setValue('message', '');
+  //       setValue('title', '');
+  //       setValue('ratings', 0);
+  //       set_rating_custom_icon(0);
+  //       setRatingError(false);
+  //     } catch (error: any) {
+  //       console.error(
+  //         'Error saving review:',
+  //         error.response?.data || error.message,
+  //       );
+  //     }
+  //   }
+  // }
 
   return (
     <div className={cn(className)}>

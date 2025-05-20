@@ -6,51 +6,22 @@ import OrderStatus from './order-status';
 // import useWindowSize from '@utils/use-window-size';
 // import { toast } from 'react-toastify';
 import { useUI } from '@contexts/ui.context';
+import ReviewForm from '@components/common/form/review-form';
 // import http from '@framework/utils/http';
 
-const OrderDrawer = () => {
+const OrderReviewDrawer = () => {
   const { data, closeDrawer } = useUI();
   // const { width } = useWindowSize();
 
   let { user } = data;
 
-  // const handleCancelOrder = async (orderId: number) => {
-  //   // console.log('orderId: ' , orderId);
-
-  //   closeDrawer();
-  //   try {
-  //     const response = await http.put(
-  //       `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/orders/${orderId}`,
-  //       {
-  //         status: 'Cancel',
-  //       },
-  //     );
-
-  //     if (response.status === 200) {
-  //       // @ts-ignore
-  //       toast(response.data.message, {
-  //         progressClassName: 'fancy-progress-bar',
-  //         position: width! > 768 ? 'bottom-right' : 'top-right',
-  //         autoClose: 1500,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //       });
-  //       // getUpdatedOrder()
-  //     }
-  //   } catch (error) {
-  //     console.error('Error cancelling order:', error);
-  //     alert('Failed to cancel order');
-  //   }
-  // };
   return (
     <>
       {data !== '' && (
         <>
           <div className="block">
             <div className="relative flex items-center justify-between w-full border-b ltr:pl-5 rtl:pr-5 md:ltr:pl-7 md:rtl:pr-7 border-border-base">
-              <Heading variant="titleMedium">Order details:</Heading>
+              <Heading variant="titleMedium">ADD Review:</Heading>
               <button
                 className="flex items-center justify-center px-4 py-6 text-2xl transition-opacity md:px-6 lg:py-7 focus:outline-none text-brand-dark hover:opacity-60"
                 onClick={closeDrawer}
@@ -59,13 +30,18 @@ const OrderDrawer = () => {
                 <IoClose />
               </button>
             </div>
-            <div className="p-5 md:p-8">
+
+            <ReviewForm
+              order={data}
+              className="flex-grow lg:w-[500px] xl:w-[540px] 2xl:w-[600px] 3xl:w-[730px]  ltr:pl-10  rtl:pr-10 xl:ltr:pl-14 xl:rtl:pr-14 3xl:ltr:pl-20 3xl:rtl:pr-20 shrink-0 pt-10"
+            />
+
+            {/* <div className="p-5 md:p-8">
               <div className="text-[14px] opacity-70 mb-3 text-brand-dark">
                 Delivery Address
               </div>
               <div className="rounded border border-solid min-h-[90px] bg-fill-base p-4 border-border-two text-[12px] md:text-[14px]">
                 <p className="text-brand-dark opacity-70">
-                  {/* {formatAddress(user?.address)} */}
                   {user?.address}
                 </p>
               </div>
@@ -85,7 +61,6 @@ const OrderDrawer = () => {
                 </div>
                 <div className="col-span-2">Price</div>
               </div>
-              {/* {data?.products?.map((item: any, index: string) => ( */}
               {data?.items?.map((item: any, index: string) => (
                 <OrderDetailsContent key={index} item={item} />
               ))}
@@ -97,18 +72,8 @@ const OrderDrawer = () => {
                   </p>
                 </div>
               </div>
-              {/* <div className="mt-12 ltr:text-right rtl:text-left">
-                <span className="py-3 px-5 cursor-pointer inline-block text-[12px] md:text-[14px] text-black font-medium bg-white rounded border border-solid border-[#DEE5EA] ltr:mr-4 rtl:ml-4 hover:bg-[#F35C5C] hover:text-white hover:border-[#F35C5C] transition-all capitalize">
-                  Report order
-                </span>
-                <span
-                  onClick={() => handleCancelOrder(data?.id)}
-                  className="py-3 px-5 cursor-pointer inline-block text-[12px] md:text-[14px] text-white font-medium bg-[#F35C5C] rounded border border-solid border-[#F35C5C]  hover:bg-white hover:text-black hover:border-[#DEE5EA] transition-all capitalize"
-                >
-                  Cancel order
-                </span>
-              </div> */}
-            </div>
+             
+            </div> */}
           </div>
         </>
       )}
@@ -116,4 +81,4 @@ const OrderDrawer = () => {
   );
 };
 
-export default OrderDrawer;
+export default OrderReviewDrawer;
