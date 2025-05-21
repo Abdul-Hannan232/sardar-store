@@ -27,7 +27,7 @@ const ReviewCard: FC<ReviewProps> = ({ item, className = '' }) => {
       <div className="pt-2 text-sm text-brand-dark text-opacity-80">
         By
         <span className="inline-block ltr:ml-[3px] rtl:mr-[3px] font-semibold">
-          {item?.user?.name}
+          {item?.user?.name || item?.reviewerName}
         </span>
       </div>
     </div>
