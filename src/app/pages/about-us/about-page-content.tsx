@@ -4,24 +4,27 @@
 import Image from '@components/ui/image';
 import Container from '@components/ui/container';
 import { aboutSetting } from '@settings/about-setting';
-import aboutUs1 from '@public/assets/images/about-us/1.png';
-import aboutUs2 from '@public/assets/images/about-us/2.png';
-import aboutUs3 from '@public/assets/images/about-us/3.png';
-import aboutUs4 from '@public/assets/images/about-us/4.png';
-import aboutUs5 from '@public/assets/images/about-us/5.png';
-import aboutUs6 from '@public/assets/images/about-us/6.png';
+import aboutUs1 from '@public/assets/images/about/About-Us-Banner-1.png';
+import aboutUs2 from '@public/assets/images/about/About-Us-Banner-2.png';
+import aboutUs3 from '@public/assets/images/about/Who-We-Are-Banner-1.png';
+import aboutUs4 from '@public/assets/images/about/Who-We-Are-Banner-2.png';
+import aboutUs5 from '@public/assets/images/about/Who-We-Are-Banner-3.png';
+import aboutUs6 from '@public/assets/images/about/Bottom-Banner.png';
 
-const backgroundThumbnail = '/assets/images/about-us.png';
+// const backgroundThumbnail = '/assets/images/about-us.png';
+const backgroundThumbnail = '/assets/images/Top-Banner.png';
 
 export default function AboutPageContent() {
   return (
     <>
       <div
-        className="flex justify-center h-[250px] lg:h-96 2xl:h-[500px] w-full bg-cover bg-no-repeat bg-center"
+        className="flex justify-center h-[250px] lg:h-96 2xl:h-[500px] w-full bg-cover bg-no-repeat bg-center relative"
         style={{
-          backgroundImage: `url(${backgroundThumbnail})`,
+          // backgroundImage: `url(${backgroundThumbnail})`,
+          position:"relative"
         }}
       />
+      <img alt="about-us-banner" className='h-[250px] lg:h-96 2xl:h-[500px]' style={{position:"absolute", top:"0", left:"0", right:"0", bottom:"0"}} src={backgroundThumbnail}  />
       <div className="py-8 lg:py-16 2xl:py-20">
         <Container>
           <div className="flex flex-col w-full mx-auto max-w-[1200px]">

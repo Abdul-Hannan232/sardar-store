@@ -75,7 +75,7 @@
 
 import cn from 'classnames';
 import { Disclosure, Transition } from '@headlessui/react';
-import { MdKeyboardArrowRight } from 'react-icons/md';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 type CollapseProps = {
   item: any;
@@ -96,23 +96,26 @@ export const Accordion: React.FC<CollapseProps> = ({
         <Disclosure>
           {({ open }) => (
             <div>
-              <Disclosure.Button className="flex justify-between w-full px-5 py-4 text-base font-medium 2xl:px-6 2xl:py-6 ltr:text-left rtl:text-right text-brand-dark focus:outline-none">
+              <Disclosure.Button className="flex justify-between w-full px-5 py-4 text-base font-medium 2xl:px-6 2xl:py-6 text-right text-brand-dark focus:outline-none">
+                {/* <MdKeyboardArrowRight */}
+                <MdKeyboardArrowLeft
+                  className={`text-xl lg:text-2xl text-brand-dark text-opacity-60 group-hover:text-opacity-100 -mr-2 lg:-mr-1.5 shrink-0 ${
+                    open ? 'transform -rotate-90' : ''
+                  }`}
+                />
                 <span
                   className={cn(
-                    'text-sm font-medium leading-relaxed text-heading ltr:pr-2 rtl:pl-2',
+                    'text-sm flex-grow font-medium leading-relaxed text-heading  ltr:pr-2 rtl:pl-2',
                     {
                       'md:text-base': variant === 'gray',
                       'md:text-base lg:text-lg': variant === 'transparent',
                     },
                   )}
+                  dir="rtl"
                 >
                   {question}
                 </span>
-                <MdKeyboardArrowRight
-                  className={`text-xl lg:text-2xl text-brand-dark text-opacity-60 group-hover:text-opacity-100 -mr-2 lg:-mr-1.5 shrink-0 ${
-                    open ? 'transform rotate-90' : ''
-                  }`}
-                />
+                
               </Disclosure.Button>
 
               <Transition
@@ -127,7 +130,7 @@ export const Accordion: React.FC<CollapseProps> = ({
               >
                 {open && (
                   <Disclosure.Panel static>
-                    <div className="px-5 pb-4 -mt-1 text-sm leading-7 2xl:pb-7 2xl:px-6 2xl:mt-0 2xl:text-15px text-brand-dark opacity-70">
+                    <div dir="rtl" className="px-5 pb-4 -mt-1 text-sm leading-7 2xl:pb-7 2xl:px-6 2xl:mt-0 2xl:text-15px text-brand-dark opacity-70">
                       {answer}
                     </div>
                   </Disclosure.Panel>
