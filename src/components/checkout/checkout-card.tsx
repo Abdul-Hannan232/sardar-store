@@ -318,7 +318,7 @@ const CheckoutCard: React.FC<CheckoutCardProps> = ({ userData }) => {
   // place order
 
   function orderHeader() {
-    console.log(' ggggggggg ', order);
+    // console.log(' ggggggggg ', order);
 
     setIsPending(true);
     updateUser(userData?.id as number);

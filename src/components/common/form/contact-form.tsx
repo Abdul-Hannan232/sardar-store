@@ -5,6 +5,10 @@ import Button from '@components/ui/button';
 import TextArea from '@components/ui/form/text-area';
 import { useForm } from 'react-hook-form';
 import { useIsMounted } from '@utils/use-is-mounted';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import useWindowSize from '@utils/use-window-size';
 
 interface ContactFormValues {
   name: string;
@@ -17,11 +21,58 @@ const ContactForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ContactFormValues>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { width } = useWindowSize();
 
-  function onSubmit(values: ContactFormValues) {
-    console.log(values, 'Contact');
+  async function onSubmit(values: ContactFormValues) {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/messages/add`,
+        {
+          fullName: values.name,
+          email: values.email,
+          phone: values.phone,
+          message: values.message,
+        },
+      );
+
+      if (response.status === 201) {
+        toast(response?.data?.message || 'Message sent successfully!', {
+          progressClassName: 'fancy-progress-bar',
+          position: width! > 768 ? 'bottom-right' : 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        reset(); // Reset the form
+      }
+    } catch (error: any) {
+      console.error('Error:', error);
+      toast(
+        error.response?.data?.message ||
+          'An error occurred while sending the message.',
+        {
+          progressClassName: 'fancy-progress-bar',
+          position: width! > 768 ? 'bottom-right' : 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        },
+      );
+      console.log(
+        error.response?.data?.message ||
+          'An error occurred while sending the message.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const mounted = useIsMounted();
@@ -65,7 +116,12 @@ const ContactForm = () => {
         {...register('message')}
         placeholder="Briefly describe.."
       />
-      <Button variant="formButton" className="w-full" type="submit">
+      <Button
+        loading={isSubmitting}
+        variant="formButton"
+        className="w-full"
+        type="submit"
+      >
         {mounted && <>Send Message</>}
       </Button>
     </form>
