@@ -6,7 +6,8 @@ import Link from '@components/ui/link';
 import useWindowSize from '@utils/use-window-size';
 import { useEffect, useState } from 'react';
 import http from '@framework/utils/http';
-
+import { useRouter } from 'next/navigation'
+import { ROUTES } from '@utils/routes';
 const data = {
   title: 'Make your online shop easier with our mobile app',
   description:
@@ -44,6 +45,7 @@ const DownloadAppsTwo: React.FC<Props> = ({
 }) => {
   const [visibleBanner, setVisibleBanner] = useState<any>({});
   const { width } = useWindowSize();
+   const router = useRouter()
 
   const { appButtons, title, description, appImage, appBG } = data;
 
@@ -77,18 +79,21 @@ const DownloadAppsTwo: React.FC<Props> = ({
   const backgroundImage = visibleBanner?.image;
 
   return (
+    
     <div
       className={cn(
         'relative bg-fill-two overflow-hidden bg-cover bg-top  ',
         className,
       )}
+       onClick={() => router.push(`${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${visibleBanner?.product?.title}`)}
       // style={{
       // backgroundImage: `url(${appBG})`,
       // }}
     >
       <Image
         src={backgroundImage || '/assets/images/page-hero-bg-mobile.png'}
-        alt="Background"
+                alt={visibleBanner.alt || "Background"}
+
         layout="fill"
         style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
         priority
@@ -116,6 +121,7 @@ const DownloadAppsTwo: React.FC<Props> = ({
                 {/* App Store Link */}
                 {visibleBanner?.app_store_url && (
                   <Link
+                  onClick={(e) => e.stopPropagation()}
                     key={visibleBanner.id}
                     href={visibleBanner.app_store_url}
                     className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80 mx-1 md:mx-1.5"
@@ -133,6 +139,7 @@ const DownloadAppsTwo: React.FC<Props> = ({
                 {/* Play Store Link */}
                 {visibleBanner?.play_store_url && (
                   <Link
+                  onClick={(e) => e.stopPropagation()}
                     key={`${visibleBanner.id}-playstore`}
                     href={visibleBanner.play_store_url}
                     className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80 mx-1 md:mx-1.5"

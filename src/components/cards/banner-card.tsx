@@ -4,6 +4,7 @@ import Link from '@components/ui/link';
 import Image from 'next/image';
 import useWindowSize from '@utils/use-window-size';
 import cn from 'classnames';
+import { ROUTES } from '@utils/routes';
 
 interface BannerProps {
   banner: any;
@@ -15,15 +16,17 @@ interface BannerProps {
 
 function getImage(deviceWidth: number, imgObj: any) {
   // return deviceWidth < 480 ? imgObj.mobile : imgObj.desktop;
-  return deviceWidth < 480 ? {
-    url: imgObj,
-    width: 450,
-    height: 520,
-  } : {
-    url: imgObj,
-    width: 1840,
-    height: 370,
-  };
+  return deviceWidth < 480
+    ? {
+        url: imgObj,
+        width: 450,
+        height: 520,
+      }
+    : {
+        url: imgObj,
+        width: 1840,
+        height: 370,
+      };
 }
 
 const BannerCard: React.FC<BannerProps> = ({
@@ -34,12 +37,13 @@ const BannerCard: React.FC<BannerProps> = ({
   classNameInner,
 }) => {
   const { width } = useWindowSize();
-  const {  title, image } = banner;
+  const { title, image } = banner;
   const selectedImage = getImage(width!, image);
   return (
-    <div className={cn('mx-auto', className)}>
+    <div  className={cn('mx-auto', className)}>
       <Link
-        href={`/pages/search`}
+        href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${banner?.product?.title}`}
+        // href={`/pages/search`}
         className={cn(
           ' h-full group flex justify-center relative overflow-hidden',
           classNameInner,
@@ -49,13 +53,17 @@ const BannerCard: React.FC<BannerProps> = ({
           src={selectedImage.url}
           width={selectedImage.width}
           height={selectedImage.height}
-          alt={title}
+          // alt={title}
+          alt={banner?.alt}
           quality={100}
           priority
           // className={cn(' bg-fill-thumbnail object-cover max-h-[280px] w-full', {
-          className={cn(' bg-fill-thumbnail object-cover object-center max-h-[250px] w-full', {
-            'rounded-md': variant === 'rounded',
-          })}
+          className={cn(
+            ' bg-fill-thumbnail object-cover object-center max-h-[250px] w-full',
+            {
+              'rounded-md': variant === 'rounded',
+            },
+          )}
         />
         {effectActive && (
           <div className="absolute top-0 block w-1/2 h-full transform -skew-x-12 ltr:-left-full rtl:-right-full z-5 bg-gradient-to-r from-transparent to-white opacity-30 group-hover:animate-shine" />
