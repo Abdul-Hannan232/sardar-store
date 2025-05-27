@@ -14,11 +14,11 @@ export default function SignUpModal({
 }) {
   const { closeModal } = useModalAction();
 
-  useEffect(() => {
-    setTimeout(() => {
-      closeModal();
-    }, 3500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     closeModal();
+  //   }, 3500);
+  // }, []);
 
   return (
     <div
