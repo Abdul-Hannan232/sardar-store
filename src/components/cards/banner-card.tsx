@@ -37,8 +37,9 @@ const BannerCard: React.FC<BannerProps> = ({
   classNameInner,
 }) => {
   const { width } = useWindowSize();
-  const { title, image } = banner;
+  const { title, image, smImage } = banner;
   const selectedImage = getImage(width!, image);
+  const selectedSmImage = getImage(width!, smImage);
   return (
     <div  className={cn('mx-auto', className)}>
       <Link
@@ -50,7 +51,8 @@ const BannerCard: React.FC<BannerProps> = ({
         )}
       >
         <Image
-          src={selectedImage.url}
+          // src={selectedImage.url}
+        src={(width &&width <= 900) ? selectedSmImage.url||  selectedImage.url: selectedImage.url || '/assets/images/page-hero-bg-mobile.png'}
           width={selectedImage.width}
           height={selectedImage.height}
           // alt={title}

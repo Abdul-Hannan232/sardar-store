@@ -120,9 +120,8 @@ import cn from 'classnames';
 import Link from '@components/ui/link';
 import http from '@framework/utils/http';
 import useWindowSize from '@utils/use-window-size';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { ROUTES } from '@utils/routes';
-
 
 const data = {
   title: 'Make your online shop easier with our mobile app',
@@ -157,7 +156,7 @@ const DownloadApps: React.FC<Props> = ({ className = 'pt-1.5 md:pt-0' }) => {
   const { appButtons, title, description, appImage } = data;
   const [visibleBanner, setVisibleBanner] = useState<any>({});
   const { width } = useWindowSize();
-   const router = useRouter()
+  const router = useRouter();
 
   // ////////////// getApp Promo Banners
 
@@ -185,21 +184,27 @@ const DownloadApps: React.FC<Props> = ({ className = 'pt-1.5 md:pt-0' }) => {
     fetchBanners();
   }, []);
 
-
   const backgroundImage = visibleBanner?.image;
+  const backgroundSMImage = visibleBanner?.smImage;
 
   return (
     // <div className={cn('bg-fill-two overflow-hidden', className)}>
     <div
-           onClick={() => router.push(`${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${visibleBanner?.product?.title}`)}
-    
-    className={cn('bg-fill-two overflow-hidden  relative', className)}>
+      onClick={() =>
+        router.push(
+          `${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${visibleBanner?.product?.title}`,
+        )
+      }
+      className={cn('bg-fill-two overflow-hidden  relative', className)}
+    >
       <Image
-           
-
         // src={backgroundImage || '/assets/images/page-hero-bg-mobile.png'}
-        src={backgroundImage || '/assets/images/page-hero-bg-mobile.png'}
-        alt={visibleBanner.alt || "Background"}
+        src={
+          width && width <= 900
+            ? backgroundSMImage || backgroundImage
+            : backgroundImage || '/assets/images/page-hero-bg-mobile.png'
+        }
+        alt={visibleBanner.alt || 'Background'}
         layout="fill"
         style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
         priority
@@ -219,7 +224,7 @@ const DownloadApps: React.FC<Props> = ({ className = 'pt-1.5 md:pt-0' }) => {
                 {/* App Store Link */}
                 {visibleBanner?.app_store_url && (
                   <Link
-                   onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}
                     key={visibleBanner.id}
                     href={visibleBanner.app_store_url}
                     className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80 mx-1 md:mx-1.5"
@@ -237,7 +242,7 @@ const DownloadApps: React.FC<Props> = ({ className = 'pt-1.5 md:pt-0' }) => {
                 {/* Play Store Link */}
                 {visibleBanner?.play_store_url && (
                   <Link
-                   onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}
                     key={`${visibleBanner.id}-playstore`}
                     href={visibleBanner.play_store_url}
                     className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80 mx-1 md:mx-1.5"

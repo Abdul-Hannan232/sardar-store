@@ -77,6 +77,7 @@ const DownloadAppsTwo: React.FC<Props> = ({
 
 
   const backgroundImage = visibleBanner?.image;
+  const backgroundSMImage = visibleBanner?.smImage;
 
   return (
     
@@ -91,7 +92,7 @@ const DownloadAppsTwo: React.FC<Props> = ({
       // }}
     >
       <Image
-        src={backgroundImage || '/assets/images/page-hero-bg-mobile.png'}
+        src={(width &&width <= 900) ? backgroundSMImage|| '/assets/images/page-hero-bg-mobile.png': backgroundImage || '/assets/images/page-hero-bg-mobile.png'}
                 alt={visibleBanner.alt || "Background"}
 
         layout="fill"
