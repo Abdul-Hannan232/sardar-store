@@ -20,6 +20,7 @@ function getImage(deviceWidth: number, imgObj: any) {
     ? {
         url: imgObj,
         width: 450,
+        // height: 520,
         height: 520,
       }
     : {
@@ -41,7 +42,7 @@ const BannerCard: React.FC<BannerProps> = ({
   const selectedImage = getImage(width!, image);
   const selectedSmImage = getImage(width!, smImage);
   return (
-    <div  className={cn('mx-auto', className)}>
+    <div className={cn('mx-auto', className)}>
       <Link
         href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${ROUTES.PRODUCT}/${banner?.product?.title}`}
         // href={`/pages/search`}
@@ -52,7 +53,11 @@ const BannerCard: React.FC<BannerProps> = ({
       >
         <Image
           // src={selectedImage.url}
-        src={(width &&width <= 900) ? selectedSmImage.url||  selectedImage.url: selectedImage.url || '/assets/images/page-hero-bg-mobile.png'}
+          src={
+            width && width <= 768
+              ? selectedSmImage.url || selectedImage.url
+              : selectedImage.url || '/assets/images/page-hero-bg-mobile.png'
+          }
           width={selectedImage.width}
           height={selectedImage.height}
           // alt={title}
@@ -61,7 +66,8 @@ const BannerCard: React.FC<BannerProps> = ({
           priority
           // className={cn(' bg-fill-thumbnail object-cover max-h-[280px] w-full', {
           className={cn(
-            ' bg-fill-thumbnail object-cover object-center max-h-[250px] w-full',
+            // ' bg-fill-thumbnail object-cover object-center max-h-[250px] w-full',
+            ' bg-fill-thumbnail object-cover object-center  max-h-[442px] md:max-h-[250px] w-full',
             {
               'rounded-md': variant === 'rounded',
             },
