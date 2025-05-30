@@ -314,7 +314,9 @@ const SidebarMenuItem = ({
               />
             </div>
           )}
-          <span className="text-brand-dark group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4">
+          <span
+            className={`text-brand-dark ${subItem && subItem === formState || name && name === formState ? 'text-[#02B290]' : ''}  group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4`}
+          >
             {subItem ? subItem : name}
           </span>
           <span className="ltr:ml-auto rtl:mr-auto">{expandIcon}</span>
