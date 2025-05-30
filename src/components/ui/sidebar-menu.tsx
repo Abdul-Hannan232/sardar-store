@@ -103,7 +103,7 @@ const SidebarMenuItem = ({
 
   // console.log(">>>>>>> name ", name);
   // console.log('>>>>>>> subItem ', item);
-  // console.log('>>>>>>> formState ', formState);
+  console.log('>>>>>>> formState ', searchParams?.get('category') === formState ?'text-[#02b290]':"");
 
   return (
     <>
@@ -113,7 +113,7 @@ const SidebarMenuItem = ({
           className
             ? className
             : 'text-sm md:text-15px hover:bg-fill-base border-t border-border-base first:border-t-0 px-3.5 2xl:px-4 py-3 xl:py-3.5 2xl:py-2.5 3xl:py-3'
-        } ${isActive ? 'bg-fill-base' : 'text-brand-dark text-opacity-70'}`}
+        } ${isActive ? 'bg-fill-base' : 'text-brand-dark text-opacity-70'} ${searchParams?.get('category') === formState ?'text-[#02b290]':""} `}
       >
         <button
           type="button"
@@ -133,7 +133,8 @@ const SidebarMenuItem = ({
             </div>
           )}
           <span
-            className={`text-brand-dark ${subItem === formState || name === formState ? 'text-[#02b290]' : ''}  group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4`}
+            // className={`text-brand-dark ${subItem == formState || name == formState && 'text-[#02b290]'}  group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4`}
+            className={` ${subItem === formState ?'text-[#02b290]':"text-brand-dark"}  group-hover:text-opacity-80 capitalize ltr:pl-2.5 rtl:pr-2.5 md:ltr:pl-4 md:rtl:pr-4 2xl:ltr:pl-3 2xl:rtl:pr-3 3xl:ltr:pl-4 3xl:rtl:pr-4`}
           >
             {subItem ? subItem : name}
           </span>
